@@ -7,7 +7,8 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:debuggable="true">
         <activity
             android:name="com.example.joe.mbls.spotify.MainActivity"
             android:label="@string/app_name" >
@@ -20,7 +21,7 @@
         </activity>
 
         <activity android:name="com.example.joe.mbls.spotify.SpotifySearchActivity"/>
-
+        <activity android:name=".SpotifyDisplayMySongs"/>
         // Needed for LoginActivity to work
         <activity
             android:name="com.spotify.sdk.android.authentication.LoginActivity"

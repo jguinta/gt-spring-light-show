@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
@@ -44,6 +45,9 @@ public class MainActivity extends Activity implements
     private SpotifyApi spotifyApi;
 
     private Button btnSearchTracks;
+    private Button btnSearchArtists;
+    private Button btnMySongs;
+    private Button btnMyPlaylists;
 
     // Request code that will be used to verify if the result comes from correct activity
     // Can be any integer
@@ -64,10 +68,28 @@ public class MainActivity extends Activity implements
             }
         });
 
+       /* btnSearchArtists = (Button) findViewById(R.id.search_artists);
+        btnSearchArtists.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SpotifySearchActivity.class);
+                startActivity(intent);
+            }
+        });
+*/
+        btnMySongs = (Button) findViewById(R.id.my_songs);
+        btnMySongs.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SpotifyDisplayMySongs.class);
+                startActivity(intent);
+            }
+        });
+
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                 AuthenticationResponse.Type.TOKEN,
                 REDIRECT_URI);
-        builder.setScopes(new String[]{"user-read-private", "streaming"});
+        builder.setScopes(new String[]{"user-read-private", "user-library-read", "playlist-read-private", "streaming"});
         AuthenticationRequest request = builder.build();
 
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
@@ -89,8 +111,6 @@ public class MainActivity extends Activity implements
                 spotifyApi = new SpotifyApi();
                 spotifyApi.setAccessToken(playerConfig.oauthToken);
                 spotifyService = spotifyApi.getService();
-                spotifyApplication.setSpotifyService(spotifyService);
-
 
                 mPlayer = Spotify.getPlayer(playerConfig, this, new Player.InitializationObserver() {
                     @Override
@@ -104,6 +124,9 @@ public class MainActivity extends Activity implements
                         Log.e("MainActivity", "Could not initialize player: " + throwable.getMessage());
                     }
                 });
+
+                spotifyApplication.setPlayer(mPlayer);
+
             }
         }
     }
@@ -138,6 +161,7 @@ public class MainActivity extends Activity implements
     public void onPlaybackEvent(EventType eventType, PlayerState playerState) {
         Log.d("MainActivity", "Playback event received: " + eventType.name());
     }
+
 
     @Override
     public void onPlaybackError(ErrorType errorType, String errorDetails) {
