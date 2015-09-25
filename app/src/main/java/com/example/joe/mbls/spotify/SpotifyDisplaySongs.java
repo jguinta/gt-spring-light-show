@@ -1,63 +1,39 @@
 package com.example.joe.mbls.spotify;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.internal.widget.AdapterViewCompat;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
-import com.spotify.sdk.android.authentication.AuthenticationClient;
-import com.spotify.sdk.android.authentication.AuthenticationRequest;
-import com.spotify.sdk.android.authentication.AuthenticationResponse;
-import com.spotify.sdk.android.player.Config;
-import com.spotify.sdk.android.player.ConnectionStateCallback;
 import com.spotify.sdk.android.player.Player;
-import com.spotify.sdk.android.player.PlayerNotificationCallback;
-import com.spotify.sdk.android.player.PlayerState;
-import com.spotify.sdk.android.player.Spotify;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;
-import kaaes.spotify.webapi.android.models.SavedTrack;
+import kaaes.spotify.webapi.android.models.Playlist;
+import kaaes.spotify.webapi.android.models.PlaylistTrack;
 import kaaes.spotify.webapi.android.models.Track;
-import kaaes.spotify.webapi.android.models.TracksPager;
+import kaaes.spotify.webapi.android.models.TrackSimple;
 
-public class SpotifyDisplayMySongs extends Activity implements
-        PlayerNotificationCallback {
+public class SpotifyDisplaySongs extends Activity  {
 
     private SpotifyService spotifyService;
     private ListView listView;
     private SpotifyArrayAdapter adapter;
-    private ArrayList<SavedTrack> tracks = new ArrayList<SavedTrack>();
+    private ArrayList<TrackSimple> tracks = new ArrayList<TrackSimple>();
     private Player mPlayer;
+    private String userId;
 
     // Request code that will be used to verify if the result comes from correct activity
     // Can be any integer
     private static final int REQUEST_CODE = 1337;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,16 +43,26 @@ public class SpotifyDisplayMySongs extends Activity implements
         SpotifyApplication spotifyApplication = ((SpotifyApplication) getApplicationContext());
         spotifyService = spotifyApplication.getSpotifyService();
         mPlayer = spotifyApplication.getPlayer();
+        userId = spotifyApplication.getUserId();
+
 
         listView = (ListView) findViewById(R.id.responseView);
 
         registerForContextMenu(listView);
 
 
-        adapter = new SpotifyArrayAdapter<SavedTrack>(this, R.layout.track_row, tracks);
+        adapter = new SpotifyArrayAdapter<TrackSimple>(this, R.layout.track_row, tracks);
         listView.setAdapter(adapter);
 
-        new RetrieveMySongsTask().execute();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            if (extras.containsKey("album")) {
+                Log.d("displaysongs", "contains album");
+                new RetrieveAlbumSongsTask(extras.getString("album")).execute();
+            } else if (extras.containsKey("playlist")) {
+                new RetrievePlaylistSongsTask(extras.getString("playlist")).execute();
+            }
+        }
     }
 
 
@@ -90,13 +76,13 @@ public class SpotifyDisplayMySongs extends Activity implements
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        SavedTrack track = (SavedTrack) adapter.getItem(info.position);
+        TrackSimple track = (TrackSimple) adapter.getItem(info.position);
         switch(item.getItemId()) {
             case R.id.add_track_to_playlist:
-                mPlayer.queue(track.track.uri);
+                mPlayer.queue(track.uri);
                 return true;
             case R.id.track_play_now:
-                mPlayer.play(track.track.uri);
+                mPlayer.play(track.uri);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -105,26 +91,21 @@ public class SpotifyDisplayMySongs extends Activity implements
 
 
 
-    @Override
-    public void onPlaybackEvent(EventType eventType, PlayerState playerState) {
-        Log.d("MainActivity", "Playback event received: " + eventType.name());
-    }
-
-    @Override
-    public void onPlaybackError(ErrorType errorType, String errorDetails) {
-        Log.d("MainActivity", "Playback error received: " + errorType.name());
-    }
 
     @Override
     protected void onDestroy() {
-        Spotify.destroyPlayer(this);
         super.onDestroy();
     }
 
 
-    class RetrieveMySongsTask extends AsyncTask<Void, Void, String> {
-        private String API_URL = "https://api.spotify.com/v1/search";
-        private Exception exception;
+    class RetrieveAlbumSongsTask extends AsyncTask<Void, Void, String> {
+
+
+        private String album;
+
+        public RetrieveAlbumSongsTask(String album) {
+            this.album = album;
+        }
 
         protected void onPreExecute() {
             findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
@@ -133,8 +114,42 @@ public class SpotifyDisplayMySongs extends Activity implements
 
         protected String doInBackground(Void... urls) {
 
-            Pager<SavedTrack> tracksPager = spotifyService.getMySavedTracks();
+            Log.d("display songs", "getting album tracks for " + album);
+            Pager<Track> tracksPager = spotifyService.getAlbumTracks(album);
+            //tracks = new ArrayList<Track>();
             tracks.addAll(tracksPager.items);
+            return "success";
+        }
+
+
+        protected void onPostExecute(String result) {
+            findViewById(R.id.progressBar).setVisibility(View.GONE);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+
+    class RetrievePlaylistSongsTask extends AsyncTask<Void, Void, String> {
+
+
+        private String playlist;
+
+        public RetrievePlaylistSongsTask(String playlist) {
+            this.playlist = playlist;
+        }
+
+        protected void onPreExecute() {
+            findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+            adapter.clear();
+        }
+
+        protected String doInBackground(Void... urls) {
+
+
+            Pager<PlaylistTrack> tracksPager = spotifyService.getPlaylistTracks(playlist, userId);
+            for (PlaylistTrack playlistTrack: tracksPager.items) {
+                tracks.add(playlistTrack.track);
+            }
             return "success";
         }
 

@@ -5,15 +5,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
@@ -25,12 +19,10 @@ import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerNotificationCallback;
 import com.spotify.sdk.android.player.PlayerState;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Pager;
+import kaaes.spotify.webapi.android.models.PlaylistTrack;
 
 public class MainActivity extends Activity implements
         PlayerNotificationCallback, ConnectionStateCallback {
@@ -63,20 +55,20 @@ public class MainActivity extends Activity implements
         btnSearchTracks.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SpotifySearchActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SpotifySearchTrackActivity.class);
                 startActivity(intent);
             }
         });
 
-       /* btnSearchArtists = (Button) findViewById(R.id.search_artists);
+        btnSearchArtists = (Button) findViewById(R.id.search_artists);
         btnSearchArtists.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SpotifySearchActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SpotifySearchArtistActivity.class);
                 startActivity(intent);
             }
         });
-*/
+
         btnMySongs = (Button) findViewById(R.id.my_songs);
         btnMySongs.setOnClickListener(new OnClickListener() {
             @Override
@@ -85,6 +77,17 @@ public class MainActivity extends Activity implements
                 startActivity(intent);
             }
         });
+
+        btnMyPlaylists = (Button) findViewById(R.id.my_playlists);
+        btnMyPlaylists.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SpotifyDisplayMyPlaylists.class);
+                startActivity(intent);
+            }
+        });
+
+
 
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                 AuthenticationResponse.Type.TOKEN,
@@ -106,7 +109,6 @@ public class MainActivity extends Activity implements
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
                 Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
-
                 SpotifyApplication spotifyApplication = ((SpotifyApplication)getApplicationContext());
                 spotifyApi = new SpotifyApi();
                 spotifyApi.setAccessToken(playerConfig.oauthToken);
@@ -126,6 +128,9 @@ public class MainActivity extends Activity implements
                 });
 
                 spotifyApplication.setPlayer(mPlayer);
+                spotifyApplication.setSpotifyService(spotifyService);
+                new RetrieveUserIdTask().execute();
+
 
             }
         }
@@ -174,5 +179,17 @@ public class MainActivity extends Activity implements
         super.onDestroy();
     }
 
+
+    class RetrieveUserIdTask extends AsyncTask<Void, Void, String> {
+
+
+
+        protected String doInBackground(Void... urls) {
+            ((SpotifyApplication) getApplicationContext()).setUserId(spotifyService.getMe().id);
+            return null;
+        }
+
+
+    }
 
 }

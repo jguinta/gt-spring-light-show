@@ -1,5 +1,6 @@
 package com.example.joe.mbls.spotify;
 
+import android.app.AlarmManager;
 import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,8 +12,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import kaaes.spotify.webapi.android.models.Album;
+import kaaes.spotify.webapi.android.models.Artist;
+import kaaes.spotify.webapi.android.models.PlaylistSimple;
 import kaaes.spotify.webapi.android.models.SavedTrack;
 import kaaes.spotify.webapi.android.models.Track;
+import kaaes.spotify.webapi.android.models.TrackSimple;
 
 /**
  * Created by JOE on 9/23/2015.
@@ -36,12 +41,20 @@ public class SpotifyArrayAdapter<T> extends ArrayAdapter<T> {
         TextView textView = (TextView) rowView.findViewById(R.id.rowTextView);
 
         // Change icon based on name
-        T track = getItem(position);
+        T item = getItem(position);
 
-        if (track instanceof Track) {
-            textView.setText(((Track) track).name);
-        } else if (track instanceof SavedTrack) {
-            textView.setText(((SavedTrack) track).track.name);
+        if (item instanceof Track) {
+            textView.setText(((Track) item).name);
+        } else if (item instanceof SavedTrack) {
+            textView.setText(((SavedTrack) item).track.name);
+        } else if (item instanceof Artist) {
+            textView.setText(((Artist) item).name);
+        } else if (item instanceof Album) {
+            textView.setText(((Album) item).name);
+        } else if (item instanceof PlaylistSimple) {
+            textView.setText(((PlaylistSimple) item).name);
+        } else if (item instanceof TrackSimple) {
+            textView.setText(((TrackSimple) item).name);
         }
 
         return rowView;

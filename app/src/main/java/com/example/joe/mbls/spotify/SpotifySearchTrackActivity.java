@@ -1,13 +1,10 @@
 package com.example.joe.mbls.spotify;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.internal.widget.AdapterViewCompat;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,53 +13,35 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
-import com.spotify.sdk.android.authentication.AuthenticationClient;
-import com.spotify.sdk.android.authentication.AuthenticationRequest;
-import com.spotify.sdk.android.authentication.AuthenticationResponse;
-import com.spotify.sdk.android.player.Config;
-import com.spotify.sdk.android.player.ConnectionStateCallback;
 import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerNotificationCallback;
 import com.spotify.sdk.android.player.PlayerState;
 import com.spotify.sdk.android.player.Spotify;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
-import kaaes.spotify.webapi.android.models.Pager;
-import kaaes.spotify.webapi.android.models.SavedTrack;
 import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.TracksPager;
 
-public class SpotifyDisplayMySongs extends Activity implements
-        PlayerNotificationCallback {
+public class SpotifySearchTrackActivity extends Activity implements
+        PlayerNotificationCallback, OnClickListener {
 
     private SpotifyService spotifyService;
     private ListView listView;
     private SpotifyArrayAdapter adapter;
-    private ArrayList<SavedTrack> tracks = new ArrayList<SavedTrack>();
+    private ArrayList<Track> tracks = new ArrayList<Track>();
     private Player mPlayer;
 
     // Request code that will be used to verify if the result comes from correct activity
     // Can be any integer
     private static final int REQUEST_CODE = 1337;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_items_list);
+        setContentView(R.layout.activity_search_track);
 
         SpotifyApplication spotifyApplication = ((SpotifyApplication) getApplicationContext());
         spotifyService = spotifyApplication.getSpotifyService();
@@ -73,10 +52,13 @@ public class SpotifyDisplayMySongs extends Activity implements
         registerForContextMenu(listView);
 
 
-        adapter = new SpotifyArrayAdapter<SavedTrack>(this, R.layout.track_row, tracks);
+        adapter = new SpotifyArrayAdapter<Track>(this, R.layout.track_row, tracks);
         listView.setAdapter(adapter);
 
-        new RetrieveMySongsTask().execute();
+        Button queryButton = (Button) findViewById(R.id.queryButton);
+        // because we implement OnClickListener we only have to pass "this"
+        // (much easier)
+        queryButton.setOnClickListener(this);
     }
 
 
@@ -90,16 +72,26 @@ public class SpotifyDisplayMySongs extends Activity implements
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        SavedTrack track = (SavedTrack) adapter.getItem(info.position);
+        Track track = (Track) adapter.getItem(info.position);
         switch(item.getItemId()) {
             case R.id.add_track_to_playlist:
-                mPlayer.queue(track.track.uri);
+                mPlayer.queue(track.uri);
                 return true;
             case R.id.track_play_now:
-                mPlayer.play(track.track.uri);
+                mPlayer.play(track.uri);
                 return true;
             default:
                 return super.onContextItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        // detect the view that was "clicked"
+        switch (view.getId()) {
+            case R.id.queryButton:
+                new RetrieveSongTask(((EditText) findViewById(R.id.song)).getText().toString()).execute();
+                break;
         }
     }
 
@@ -122,9 +114,16 @@ public class SpotifyDisplayMySongs extends Activity implements
     }
 
 
-    class RetrieveMySongsTask extends AsyncTask<Void, Void, String> {
+    class RetrieveSongTask extends AsyncTask<Void, Void, String> {
         private String API_URL = "https://api.spotify.com/v1/search";
         private Exception exception;
+
+
+        private String song;
+
+        public RetrieveSongTask(String song) {
+            this.song = song;
+        }
 
         protected void onPreExecute() {
             findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
@@ -133,8 +132,10 @@ public class SpotifyDisplayMySongs extends Activity implements
 
         protected String doInBackground(Void... urls) {
 
-            Pager<SavedTrack> tracksPager = spotifyService.getMySavedTracks();
-            tracks.addAll(tracksPager.items);
+
+            TracksPager tracksPager = spotifyService.searchTracks(song);
+            //tracks = new ArrayList<Track>();
+            tracks.addAll(tracksPager.tracks.items);
             return "success";
         }
 

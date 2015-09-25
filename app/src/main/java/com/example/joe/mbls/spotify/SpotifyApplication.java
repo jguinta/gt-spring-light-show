@@ -14,6 +14,7 @@ public class SpotifyApplication extends Application {
 
     private SpotifyService spotifyService;
     private Player mPlayer;
+    private String userId;
 
     public void setSpotifyService(SpotifyService spotifyService) {
         this.spotifyService = spotifyService;
@@ -30,6 +31,14 @@ public class SpotifyApplication extends Application {
 
     public Player getPlayer() {
         return mPlayer;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
 }
