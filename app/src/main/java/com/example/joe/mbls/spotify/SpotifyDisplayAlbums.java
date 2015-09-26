@@ -32,7 +32,7 @@ public class SpotifyDisplayAlbums extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_track);
+        setContentView(R.layout.activity_display_items_list);
 
         SpotifyApplication spotifyApplication = ((SpotifyApplication) getApplicationContext());
         spotifyService = spotifyApplication.getSpotifyService();

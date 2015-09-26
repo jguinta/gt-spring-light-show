@@ -83,6 +83,7 @@ public class SpotifyDisplayMyPlaylists extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PlaylistSimple playlist = (PlaylistSimple) adapter.getItem(position);
                 Intent intent = new Intent(getApplicationContext(), SpotifyDisplaySongs.class);
+                intent.putExtra("playlist_owner", playlist.owner.id);
                 intent.putExtra("playlist", playlist.id);
                 startActivity(intent);
             }

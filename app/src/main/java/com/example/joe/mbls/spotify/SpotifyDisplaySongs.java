@@ -60,7 +60,7 @@ public class SpotifyDisplaySongs extends Activity  {
                 Log.d("displaysongs", "contains album");
                 new RetrieveAlbumSongsTask(extras.getString("album")).execute();
             } else if (extras.containsKey("playlist")) {
-                new RetrievePlaylistSongsTask(extras.getString("playlist")).execute();
+                new RetrievePlaylistSongsTask(extras.getString("playlist"), extras.getString("playlist_owner")).execute();
             }
         }
     }
@@ -133,9 +133,11 @@ public class SpotifyDisplaySongs extends Activity  {
 
 
         private String playlist;
+        private String owner;
 
-        public RetrievePlaylistSongsTask(String playlist) {
+        public RetrievePlaylistSongsTask(String playlist, String owner) {
             this.playlist = playlist;
+            this.owner = owner;
         }
 
         protected void onPreExecute() {
@@ -146,7 +148,7 @@ public class SpotifyDisplaySongs extends Activity  {
         protected String doInBackground(Void... urls) {
 
 
-            Pager<PlaylistTrack> tracksPager = spotifyService.getPlaylistTracks(playlist, userId);
+            Pager<PlaylistTrack> tracksPager = spotifyService.getPlaylistTracks(owner, playlist);
             for (PlaylistTrack playlistTrack: tracksPager.items) {
                 tracks.add(playlistTrack.track);
             }
