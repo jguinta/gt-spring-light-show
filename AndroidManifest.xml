@@ -69,6 +69,8 @@
         android:name="android.software.leanback"
         android:required="false" />
 
+
+
     <application
         android:allowBackup="true"
         android:allowClearUserData="true"
@@ -77,6 +79,23 @@
         android:label="MBLS"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
+
+        <activity
+            android:name="br.com.carlosrafaelgn.fplay.MainMenu"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize"
+            android:hardwareAccelerated="true"
+            android:label="@string/visualizer"
+            android:multiprocess="false"
+            android:screenOrientation="unspecified"
+            android:stateNotNeeded="true"
+            android:theme="@style/AppTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
         <activity
             android:name="br.com.carlosrafaelgn.fplay.activity.ActivityHost"
             android:clearTaskOnLaunch="true"
@@ -87,15 +106,7 @@
             android:screenOrientation="unspecified"
             android:stateNotNeeded="true"
             android:theme="@style/AppTheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <!-- External file support
-             http://developer.android.com/guide/components/intents-filters.html
-             http://developer.android.com/guide/topics/manifest/data-element.html
-             http://stackoverflow.com/questions/3760276/android-intent-filter-associate-app-with-file-extension
-             -->
+
             <intent-filter
                 android:icon="@drawable/ic_launcher"
                 android:label="MBLS"
@@ -128,8 +139,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="file" android:host="*" android:mimeType="application/itunes" />
             </intent-filter>
-            <!-- beware: .*\\.EXT matches name.EXT but does match name.something.EXT!!! :( -->
-            <!-- do not include hardcoded 3GP and MP4 extensions, as they are widely used for videos -->
+
             <intent-filter
                 android:icon="@drawable/ic_launcher"
                 android:label="MBLS"
@@ -184,11 +194,10 @@
                 <data android:scheme="file" android:host="*" android:pathPattern=".*\\.MKV" android:mimeType="*/*" />
                 <data android:scheme="file" android:host="*" android:pathPattern=".*\\.FLAC" android:mimeType="*/*" />
             </intent-filter>
-            <!-- TV support! -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
-            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.carlosrafaelgn.fplay.MainMenu" />
         </activity>
         <activity
             android:name="br.com.carlosrafaelgn.fplay.activity.ActivityVisualizer"

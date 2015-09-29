@@ -6,4 +6,4 @@
        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
        android:repeatCount="0"
        android:toAlpha="1.0"/>
-<!-- From: file:/C:/Users/yvinogradov/Desktop/myStuff/4012/gt-spring-light-show/res/anim/fadein.xml -->
+<!-- From: file:/home/evgeniy/AndroidStudioProjects/MBLS/gt-spring-light-show/res/anim/fadein.xml -->

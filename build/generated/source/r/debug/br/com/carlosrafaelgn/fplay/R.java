@@ -39,7 +39,7 @@ public final class R {
         public static final int btnChangeEffect=0x7f0a001e;
         public static final int btnChkAll=0x7f0a0010;
         public static final int btnDecreaseVolume=0x7f0a003a;
-        public static final int btnExit=0x7f0a0040;
+        public static final int btnExit=0x7f0a0042;
         public static final int btnFavorite=0x7f0a0018;
         public static final int btnGoBack=0x7f0a0001;
         public static final int btnGoBackToPlayer=0x7f0a0014;
@@ -55,6 +55,8 @@ public final class R {
         public static final int btnSearch=0x7f0a001c;
         public static final int btnURL=0x7f0a000c;
         public static final int btnVolume=0x7f0a002c;
+        public static final int button=0x7f0a0040;
+        public static final int button2=0x7f0a0041;
         public static final int chkAlbumArt=0x7f0a000e;
         public static final int chkAll=0x7f0a0011;
         public static final int chkBass=0x7f0a0022;
@@ -108,10 +110,11 @@ public final class R {
         public static final int activity_main_l_left=0x7f03000a;
         public static final int activity_settings=0x7f03000b;
         public static final int activity_visualizer=0x7f03000c;
-        public static final int main_widget=0x7f03000d;
-        public static final int main_widget_transparent=0x7f03000e;
-        public static final int notification=0x7f03000f;
-        public static final int notification_simple=0x7f030010;
+        public static final int main_menu=0x7f03000d;
+        public static final int main_widget=0x7f03000e;
+        public static final int main_widget_transparent=0x7f03000f;
+        public static final int notification=0x7f030010;
+        public static final int notification_simple=0x7f030011;
     }
     public static final class string {
         public static final int about=0x7f060000;

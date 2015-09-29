@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/yvinogradov/Desktop/myStuff/4012/gt-spring-light-show/res/values-uk/strings.xml -->
+    <!-- From: file:/home/evgeniy/AndroidStudioProjects/MBLS/gt-spring-light-show/res/values-uk/strings.xml -->
     <eat-comment/>
     <string name="about">Про програму</string>
     <string name="accessibility">Доступність</string>

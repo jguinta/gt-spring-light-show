@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/yvinogradov/Desktop/myStuff/4012/gt-spring-light-show/res/values/colors.xml -->
+    <!-- From: file:/home/evgeniy/AndroidStudioProjects/MBLS/gt-spring-light-show/res/values/colors.xml -->
     <eat-comment/>
     <color name="color_transparent">#00000000</color>
-    <!-- From: file:/C:/Users/yvinogradov/Desktop/myStuff/4012/gt-spring-light-show/res/values/dimens.xml -->
+    <!-- From: file:/home/evgeniy/AndroidStudioProjects/MBLS/gt-spring-light-show/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="widget_margin">8dp</dimen>
-    <!-- From: file:/C:/Users/yvinogradov/Desktop/myStuff/4012/gt-spring-light-show/res/values/strings.xml -->
+    <!-- From: file:/home/evgeniy/AndroidStudioProjects/MBLS/gt-spring-light-show/res/values/strings.xml -->
     <eat-comment/>
     <string name="about">About</string>
     <string name="accessibility">Accessibility</string>
@@ -314,7 +314,7 @@
     <string name="yes">Yes</string>
     <string name="zero_preset">Zero out preset</string>
     <string name="zoom">Zoom</string>
-    <!-- From: file:/C:/Users/yvinogradov/Desktop/myStuff/4012/gt-spring-light-show/res/values/styles.xml -->
+    <!-- From: file:/home/evgeniy/AndroidStudioProjects/MBLS/gt-spring-light-show/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppBaseTheme" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
         <!--
