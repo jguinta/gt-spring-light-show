@@ -29,7 +29,7 @@
     <string name="albumsL">albums</string>
     <string name="all_files">All files</string>
     <string name="animations">Animations</string>
-    <string name="app_by">by Carlos Rafael Gimenes das Neves</string>
+    <string name="app_by">by ECE 4012 MBLS Team based on Carlos Rafael Gimenes das Neves Fplay music player app</string>
     <string name="app_description">Music player with clean interface, equalizer, bass boost and customizable colors</string>
     <string name="app_license" translatable="false">&lt;br/>&lt;br/>Copyright © 2013–2014, Carlos Rafael Gimenes das Neves&lt;br/>All rights reserved.&lt;br/>&lt;br/>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:&lt;br/>&lt;br/>1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.&lt;br/>2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.&lt;br/>&lt;br/>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&lt;br/>&lt;br/>The views and conclusions contained in the software and documentation are those of the authors and should not be interpreted as representing official policies, either expressed or implied, of the FreeBSD Project.</string>
     <string name="app_more_info">Looking for more info?&lt;br/>Maybe the source code?&lt;br/>Have a request?&lt;br/>Found a bug?!?&lt;br/>Just want to contact me? :)&lt;br/>&lt;br/>Drop me an e-mail:&lt;br/>&lt;a href=\"mailto:dev@carlosrafaelgn.com.br\">dev@carlosrafaelgn.com.br&lt;/a>&lt;br/>or visit the application\'s project site on GitHub: &lt;a href=\"https://github.com/carlosrafaelgn/FPlayAndroid\">FPlayAndroid&lt;/a>&lt;br/>&lt;br/>Very special thanks to the people who helped translating FPlay:&lt;br/>&lt;br/>Sviat Hurskyi (&lt;a href=\"mailto:sviat.hurskyi@gmail.com\">sviat.hurskyi@gmail.com&lt;/a>)&lt;br/>Stefan Fitzenreiter (&lt;a href=\"mailto:sfitzenreiter@gmail.com\">sfitzenreiter@gmail.com&lt;/a>)&lt;br/>David Gonzalez (&lt;a href=\"mailto:redandy16@gmail.com\">redandy16@gmail.com&lt;/a>)&lt;br/>Soudain (&lt;a href=\"mailto:grorigan@gmail.com\">grorigan@gmail.com&lt;/a>)&lt;br/>&lt;br/>Thanks a lot!! :D</string>
@@ -121,7 +121,6 @@
     <string name="favorite">Favorite</string>
     <string name="flat_details">Details in flat colors</string>
     <string name="folder">Folder</string>
-    <string name="fplay">MBLS</string>
     <string name="fullscreen">Fullscreen</string>
     <string name="general">General</string>
     <string name="genre">Genre</string>
@@ -156,6 +155,7 @@
     <string name="load_list">Load list</string>
     <string name="load_preset">Load preset</string>
     <string name="loading">Loading…</string>
+    <string name="mbls">MBLS</string>
     <string name="menu">Menu</string>
     <string name="minute">minute</string>
     <string name="minutes">minutes</string>

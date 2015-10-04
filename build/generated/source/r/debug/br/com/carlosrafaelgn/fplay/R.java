@@ -24,8 +24,11 @@ public final class R {
         public static final int bg_notification_button=0x7f020000;
         public static final int bg_widget_button=0x7f020001;
         public static final int ic_launcher=0x7f020002;
-        public static final int ic_main_widget=0x7f020003;
-        public static final int ic_notification=0x7f020004;
+        public static final int ic_lightshow=0x7f020003;
+        public static final int ic_main_widget=0x7f020004;
+        public static final int ic_notification=0x7f020005;
+        public static final int ic_settings=0x7f020006;
+        public static final int ic_spotify=0x7f020007;
     }
     public static final class id {
         public static final int barBass=0x7f0a0023;
@@ -39,7 +42,7 @@ public final class R {
         public static final int btnChangeEffect=0x7f0a001e;
         public static final int btnChkAll=0x7f0a0010;
         public static final int btnDecreaseVolume=0x7f0a003a;
-        public static final int btnExit=0x7f0a0042;
+        public static final int btnExit=0x7f0a0044;
         public static final int btnFavorite=0x7f0a0018;
         public static final int btnGoBack=0x7f0a0001;
         public static final int btnGoBackToPlayer=0x7f0a0014;
@@ -55,8 +58,9 @@ public final class R {
         public static final int btnSearch=0x7f0a001c;
         public static final int btnURL=0x7f0a000c;
         public static final int btnVolume=0x7f0a002c;
-        public static final int button=0x7f0a0040;
-        public static final int button2=0x7f0a0041;
+        public static final int button=0x7f0a0041;
+        public static final int button2=0x7f0a0042;
+        public static final int button3=0x7f0a0043;
         public static final int chkAlbumArt=0x7f0a000e;
         public static final int chkAll=0x7f0a0011;
         public static final int chkBass=0x7f0a0022;
@@ -95,6 +99,7 @@ public final class R {
         public static final int panelTop=0x7f0a001d;
         public static final int sep=0x7f0a000f;
         public static final int sep2=0x7f0a0016;
+        public static final int textView=0x7f0a0040;
     }
     public static final class layout {
         public static final int activity_about=0x7f030000;
@@ -265,6 +270,7 @@ public final class R {
         public static final int load_list=0x7f060090;
         public static final int load_preset=0x7f060091;
         public static final int loading=0x7f060092;
+        public static final int mbls=0x7f060132;
         public static final int menu=0x7f060093;
         public static final int minute=0x7f060094;
         public static final int minutes=0x7f060095;

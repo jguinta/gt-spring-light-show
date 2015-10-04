@@ -81,7 +81,7 @@
             android:name="br.com.carlosrafaelgn.fplay.MainMenu"
             android:clearTaskOnLaunch="true"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize"
-            android:label="FPlay"
+            android:label="MBLS"
             android:launchMode="singleTask"
             android:multiprocess="false"
             android:screenOrientation="unspecified"
@@ -100,7 +100,7 @@
             -->
             <intent-filter
                 android:icon="@drawable/ic_launcher"
-                android:label="FPlay"
+                android:label="MBLS"
                 android:priority="1" >
                 <action android:name="android.intent.action.VIEW" />
 
@@ -113,7 +113,7 @@
             </intent-filter>
             <intent-filter
                 android:icon="@drawable/ic_launcher"
-                android:label="FPlay"
+                android:label="MBLS"
                 android:priority="1" >
                 <action android:name="android.intent.action.VIEW" />
 
@@ -126,7 +126,7 @@
             </intent-filter>
             <intent-filter
                 android:icon="@drawable/ic_launcher"
-                android:label="FPlay"
+                android:label="MBLS"
                 android:priority="1" >
                 <action android:name="android.intent.action.VIEW" />
 
@@ -154,7 +154,7 @@
             <!-- do not include hardcoded 3GP and MP4 extensions, as they are widely used for videos -->
             <intent-filter
                 android:icon="@drawable/ic_launcher"
-                android:label="FPlay"
+                android:label="MBLS"
                 android:priority="1" >
                 <action android:name="android.intent.action.VIEW" />
 
@@ -263,7 +263,7 @@
             </intent-filter>
             <intent-filter
                 android:icon="@drawable/ic_launcher"
-                android:label="FPlay"
+                android:label="MBLS"
                 android:priority="1" >
                 <action android:name="android.intent.action.VIEW" />
 
@@ -412,7 +412,7 @@
 
         <receiver
             android:name="br.com.carlosrafaelgn.fplay.WidgetMain"
-            android:label="FPlay" >
+            android:label="MBLS" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
