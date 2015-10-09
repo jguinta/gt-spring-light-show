@@ -40,6 +40,9 @@ public class MainActivity extends Activity implements
     private Button btnSearchArtists;
     private Button btnMySongs;
     private Button btnMyPlaylists;
+    private Button btnPlayPause;
+    private Button btnSkipNext;
+    private Button btnSkipPrevious;
 
     // Request code that will be used to verify if the result comes from correct activity
     // Can be any integer
@@ -48,7 +51,6 @@ public class MainActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         btnSearchTracks = (Button) findViewById(R.id.search_tracks);
@@ -87,8 +89,38 @@ public class MainActivity extends Activity implements
             }
         });
 
+   /*     btnPlayPause = (Button) findViewById(R.id.play_button);
+        btnPlayPause.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(btnPlayPause.getDraw == ???) {
+                    mPlayer.resume();
+                    btnPlayPause.setImageResource(R.drawable.pause_button);
+                }
+                else {
+                    mPlayer.pause();
+                    btnPlayPause.setImageResource(R.drawable.play_button);
+                }
+            }
 
+        });
 
+        btnSkipNext = (Button) findViewById(R.id.skip_next);
+        btnSkipNext.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPlayer.skipToNext();
+            }
+        });
+
+        btnSkipPrevious = (Button) findViewById(R.id.skip_previous);
+        btnSkipPrevious.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPlayer.skipToPrevious();
+            }
+        });
+*/
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                 AuthenticationResponse.Type.TOKEN,
                 REDIRECT_URI);
@@ -114,7 +146,14 @@ public class MainActivity extends Activity implements
                 spotifyApi.setAccessToken(playerConfig.oauthToken);
                 spotifyService = spotifyApi.getService();
 
-                mPlayer = Spotify.getPlayer(playerConfig, this, new Player.InitializationObserver() {
+                SimpleAudioController audioController = new SimpleAudioController();
+                Player.Builder builder = new Player.Builder(playerConfig);
+                builder.setAudioController(audioController);
+
+
+
+               // mPlayer = Spotify.getPlayer(playerConfig, this, new Player.InitializationObserver() {
+                mPlayer = Spotify.getPlayer(builder, this, new Player.InitializationObserver() {
                     @Override
                     public void onInitialized(Player player) {
                         mPlayer.addConnectionStateCallback(MainActivity.this);

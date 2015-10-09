@@ -94,6 +94,7 @@
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="appcompat-v7-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="artnet4j-0001" level="project" />
     <orderEntry type="library" exported="" name="spotify-player-1.0.0-beta10" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
     <orderEntry type="library" exported="" name="spotify-web-api-android-0.1.1-" level="project" />

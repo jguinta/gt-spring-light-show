@@ -43,4 +43,7 @@ tools:context="com.sample.foo.simplewebapi.MainActivity">
         android:text="Now Playing"
         android:id="@+id/now_playing"
         android:layout_gravity="center_horizontal" />
+
+
+
 </LinearLayout>
