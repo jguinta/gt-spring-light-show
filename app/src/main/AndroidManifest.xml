@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com" >
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="19" />
+
+    <!-- So we can play songs while the device is locked -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- So we can save new Playlists on the disc -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <application
+        android:name=".example.joe.mbls.spotify.SpotifyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launchericon"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".MainMenu"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".example.joe.mbls.spotify.MainActivity"
+            android:label="@string/app_name" >
+
+        </activity>
+
+        <activity android:name=".example.joe.mbls.spotify.SpotifySearchTrackActivity"/>
+        <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayMySongs"/>
+        <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayMyPlaylists"/>
+        <activity android:name=".example.joe.mbls.spotify.SpotifySearchArtistActivity"/>
+        <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayAlbums"/>
+        <activity android:name=".example.joe.mbls.spotify.SpotifyDisplaySongs"/>
+
+
+        //Music Player
+
+        <activity
+            android:name=".kure.musicplayer.activities.ActivityMenuMain"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+
+
+        </activity>
+
+        <activity
+            android:name=".kure.musicplayer.activities.ActivityMenuMusic"
+            android:label="@string/menu_main_music"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".kure.musicplayer.activities.ActivityMenuMain"
+            />
+
+        <activity
+            android:name=".kure.musicplayer.activities.ActivityMenuSettings"
+            android:label="@string/settings"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".kure.musicplayer.activities.ActivityMenuMain"
+            />
+
+        <activity
+            android:name=".kure.musicplayer.activities.ActivityMenuArtist"
+            android:label="@string/menu_music_artists"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".kure.musicplayer.activities.ActivityMenuMusic"
+            />
+
+        <activity
+            android:name=".kure.musicplayer.activities.ActivityMenuAlbum"
+            android:label="@string/menu_music_albums"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".kure.musicplayer.activities.ActivityMenuMusic"
+            />
+
+        <activity
+            android:name=".kure.musicplayer.activities.ActivityMenuGenre"
+            android:label="@string/menu_music_genres"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".kure.musicplayer.activities.ActivityMenuMusic"
+            />
+
+        <activity
+            android:name=".kure.musicplayer.activities.ActivityMenuYear"
+            android:label="@string/menu_music_years"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:parentActivityName="com.kure.musicplayer.activities.ActivityMenuMusic"
+            />
+
+        <activity
+            android:name=".kure.musicplayer.activities.ActivityMenuPlaylist"
+            android:label="@string/menu_music_playlists"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".kure.musicplayer.activities.ActivityMenuMusic"
+            />
+
+        <activity
+            android:name=".kure.musicplayer.activities.ActivityListSongs"
+            android:label="@string/songs"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".kure.musicplayer.activities.XXX"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            />
+
+        <activity
+            android:name=".kure.musicplayer.activities.ActivityListAlbums"
+            android:label="@string/songs"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".kure.musicplayer.activities.ActivityNowPlaying"
+            android:label="@string/now_playing"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".kure.musicplayer.activities.ActivityQuit"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+
+        <service android:name=".kure.musicplayer.services.ServicePlayMusic" />
+        <service android:name=".kure.musicplayer.services.ServiceScrobbleMusic" />
+
+
+        <receiver android:name=".kure.musicplayer.NotificationMusic$NotificationPlayButtonHandler" />
+        <receiver android:name=".kure.musicplayer.NotificationMusic$NotificationSkipButtonHandler" />
+
+
+        <receiver android:name=".kure.musicplayer.services.ServicePlayMusic$ExternalBroadcastReceiver" >
+            <intent-filter>
+
+                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+
+        // Needed for LoginActivity to work
+        <activity
+            android:name="com.spotify.sdk.android.authentication.LoginActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+    </application>
+</manifest>
