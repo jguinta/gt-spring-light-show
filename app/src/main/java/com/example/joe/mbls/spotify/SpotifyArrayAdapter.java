@@ -54,6 +54,8 @@ public class SpotifyArrayAdapter<T> extends ArrayAdapter<T> {
             textView.setText(((PlaylistSimple) item).name);
         } else if (item instanceof TrackSimple) {
             textView.setText(((TrackSimple) item).name);
+        } else if (item instanceof String) {
+            textView.setText((String) item);
         }
 
         return rowView;

@@ -42,7 +42,7 @@
         <activity android:name=".example.joe.mbls.spotify.SpotifySearchArtistActivity"/>
         <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayAlbums"/>
         <activity android:name=".example.joe.mbls.spotify.SpotifyDisplaySongs"/>
-
+        <activity android:name=".joe.artnet.ConnectReceiverActivity"/>
 
         //Music Player
 

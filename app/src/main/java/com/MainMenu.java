@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.joe.mbls.spotify.MainActivity;
+import com.joe.artnet.ConnectReceiverActivity;
 import com.kure.musicplayer.activities.ActivityMenuMain;
 
 /**
@@ -34,6 +35,15 @@ public class MainMenu extends Activity{
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button artnetButton = (Button) findViewById(R.id.artnet_connect_button);
+        artnetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ConnectReceiverActivity.class);
                 startActivity(intent);
             }
         });

@@ -24,7 +24,7 @@
         android:drawableLeft="@drawable/ic_launcher"
         android:layout_width="245dp"
         android:layout_height="wrap_content"
-        android:text="local music files"
+        android:text="Local Music"
         android:id="@+id/button"
         android:layout_gravity="center_horizontal" />
 
@@ -32,14 +32,23 @@
         android:drawableLeft="@drawable/ic_spotify"
         android:layout_width="245dp"
         android:layout_height="wrap_content"
-        android:text="spotify"
+        android:text="Spotify"
         android:id="@+id/button2"
         android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:drawableLeft="@drawable/ic_spotify"
+        android:layout_width="245dp"
+        android:layout_height="wrap_content"
+        android:text="Artnet"
+        android:id="@+id/artnet_connect_button"
+        android:layout_gravity="center_horizontal" />
+
     <Button
         android:drawableLeft="@drawable/ic_settings"
         android:layout_width="245dp"
         android:layout_height="wrap_content"
-        android:text="settings"
+        android:text="Settings"
         android:id="@+id/button3"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>
