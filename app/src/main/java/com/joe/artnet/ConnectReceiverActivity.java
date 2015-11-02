@@ -11,13 +11,21 @@ import android.widget.ListView;
 import com.R;
 import com.example.joe.mbls.spotify.SpotifyArrayAdapter;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 import artnet4j.ArtNet;
 import artnet4j.ArtNetException;
 import artnet4j.ArtNetNode;
+import artnet4j.ArtNetServer;
 import artnet4j.events.ArtNetDiscoveryListener;
 import artnet4j.packets.ArtDmxPacket;
 
@@ -34,6 +42,7 @@ public class ConnectReceiverActivity extends Activity implements ArtNetDiscovery
     private ListView listView;
     private ArrayAdapter<String> adapter;
     private ArrayList<String> nodeIds = new ArrayList<>();
+    private DatagramSocket socket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +73,6 @@ public class ConnectReceiverActivity extends Activity implements ArtNetDiscovery
                     adapter.notifyDataSetChanged();
                 }
             });
-
         }
     }
 
@@ -84,6 +92,7 @@ public class ConnectReceiverActivity extends Activity implements ArtNetDiscovery
             System.out.println(n);
             nodeIds.add(n.getLongName() + " " + n.getIPAddress());
         }
+        nodeIds.add("hello: " + System.currentTimeMillis());
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -107,8 +116,7 @@ public class ConnectReceiverActivity extends Activity implements ArtNetDiscovery
 
         protected String doInBackground(Void... urls) {
 
-            ArtNet artnet = new ArtNet();
-
+            /*ArtNet artnet = new ArtNet();
 
             try {
                 artnet.start();
@@ -119,8 +127,125 @@ public class ConnectReceiverActivity extends Activity implements ArtNetDiscovery
                 throw new AssertionError(e);
             } catch (ArtNetException e) {
                 throw new AssertionError(e);
+            }*/
+            int j = 0;
+            while (j < 20) {
+                j++;
+                if (socket == null) {
+                    try {
+
+                        socket = new DatagramSocket(null);
+                        socket.setReuseAddress(true);
+                        socket.bind(new InetSocketAddress(6454));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                nodeIds.add("created socket");
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        System.out.print(e);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                nodeIds.add("error 1");
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+
+                    }
+
+                }
+
+
+
+                try {
+
+                    InetAddress inetAddress = InetAddress.getByName("255.255.255.255");
+                    byte abyte[] = "1sch \r\n".getBytes();
+                    DatagramPacket datagrampacket = new DatagramPacket(abyte, abyte.length, inetAddress, 6454);
+                    socket.send(datagrampacket);
+                    DatagramPacket datagrampacket1;
+                    byte abyte1[] = new byte[1024];
+                    datagrampacket1 = new DatagramPacket(abyte1, abyte1.length, inetAddress, 6454);
+                    socket.setSoTimeout(100);
+                    socket.receive(datagrampacket1);
+                    socket.receive((datagrampacket1));
+                    final String IP = String.valueOf(datagrampacket1.getAddress()).substring(1);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            nodeIds.add(IP);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+
+                    byte abyte0[] = new byte[41];
+                    abyte0[0] = 52;
+                    abyte0[1] = 115;
+                    abyte0[2] = 112;
+                    abyte0[3] = 112;
+                    abyte0[4] = (byte) 200;
+                    abyte0[5] = (byte) 0;
+                    abyte0[6] = (byte) 255;
+                    abyte0[7] = (byte)0;
+                    abyte0[8] = (byte)0;
+                    abyte0[9] = (byte)0;
+                    abyte0[10] = (byte)0;
+                    abyte0[11] = (byte)0;
+                    abyte0[12] = (byte)0;
+                    abyte0[13] = (byte)0;
+                    abyte0[14] = (byte)0;
+                    abyte0[15] = (byte)0;
+                    abyte0[16] = (byte)0;
+                    abyte0[17] = (byte)0;
+                    abyte0[18] = (byte)0;
+                    abyte0[19] = (byte)0;
+                    abyte0[20] = (byte)0;
+                    abyte0[21] = (byte)0;
+                    abyte0[22] = (byte)0;
+                    abyte0[23] = (byte)0;
+                    abyte0[24] = (byte)0;
+                    abyte0[25] = (byte)0;
+                    abyte0[26] = (byte)0;
+                    abyte0[27] = (byte)0;
+                    abyte0[28] = (byte)0;
+                    abyte0[29] = (byte)0;
+                    abyte0[30] = (byte)0;
+                    abyte0[31] = (byte)0;
+                    abyte0[32] = (byte)0;
+                    abyte0[33] = (byte)0;
+                    abyte0[34] = (byte)0;
+                    abyte0[35] = (byte)0;
+                    abyte0[36] = (byte)0;
+                    abyte0[37] = (byte)0;
+                    abyte0[38] = (byte)0;
+                    abyte0[39] = (byte)0;
+                    abyte0[40] = 32;
+
+                    DatagramPacket udpSendPacket = new DatagramPacket(abyte0, abyte0.length, datagrampacket.getAddress(), 6454);
+
+                    socket.send(udpSendPacket);
+
+                } catch (Exception e) {
+                    System.out.println(e);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            nodeIds.add("error2");
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+
             }
-            return "ok";
+
+
+
+
+        return "ok";
         }
 
 

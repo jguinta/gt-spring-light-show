@@ -97,8 +97,8 @@
     <orderEntry type="library" exported="" name="artnet4j-0001" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="spotify-web-api-android-0.1.1-" level="project" />
-    <orderEntry type="library" exported="" name="okio-1.2.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="okio-1.2.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="okhttp-2.2.0" level="project" />
     <orderEntry type="library" exported="" name="spotify-player-1.0.0-beta10" level="project" />
