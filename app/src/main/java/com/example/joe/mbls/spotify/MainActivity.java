@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.R;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
@@ -39,9 +40,11 @@ public class MainActivity extends Activity implements
     private Button btnSearchArtists;
     private Button btnMySongs;
     private Button btnMyPlaylists;
-    private Button btnPlayPause;
-    private Button btnSkipNext;
-    private Button btnSkipPrevious;
+    private ImageButton btnPlayPause;
+    private ImageButton btnSkipNext;
+    private ImageButton btnSkipPrevious;
+    private ImageButton btnShuffle;
+    private ImageButton btnRepeat;
 
     // Request code that will be used to verify if the result comes from correct activity
     // Can be any integer
@@ -88,23 +91,25 @@ public class MainActivity extends Activity implements
             }
         });
 
-   /*     btnPlayPause = (Button) findViewById(R.id.play_button);
+        btnPlayPause = (ImageButton) findViewById(R.id.activity_now_playing_play);
+        btnPlayPause.setTag("pause");
         btnPlayPause.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnPlayPause.getDraw == ???) {
+                if (btnPlayPause.getTag().equals("play")) {
                     mPlayer.resume();
-                    btnPlayPause.setImageResource(R.drawable.pause_button);
-                }
-                else {
+                    btnPlayPause.setTag("pause");
+                    btnPlayPause.setImageResource(R.drawable.pause);
+                } else {
                     mPlayer.pause();
-                    btnPlayPause.setImageResource(R.drawable.play_button);
+                    btnPlayPause.setTag("play");
+                    btnPlayPause.setImageResource(R.drawable.play);
                 }
             }
 
         });
 
-        btnSkipNext = (Button) findViewById(R.id.skip_next);
+        btnSkipNext = (ImageButton) findViewById(R.id.activity_now_playing_skip_next);
         btnSkipNext.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,14 +117,51 @@ public class MainActivity extends Activity implements
             }
         });
 
-        btnSkipPrevious = (Button) findViewById(R.id.skip_previous);
+        btnSkipPrevious = (ImageButton) findViewById(R.id.activity_now_playing_skip_previous);
         btnSkipPrevious.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPlayer.skipToPrevious();
+                mPlayer.skipToNext();
             }
         });
-*/
+
+        btnRepeat = (ImageButton) findViewById(R.id.activity_now_playing_repeat);
+        btnRepeat.setTag("false");
+        btnRepeat.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (btnRepeat.getTag().equals("false")) {
+                    mPlayer.setRepeat(true);
+                    btnRepeat.setTag("true");
+                    btnRepeat.setImageResource(R.drawable.ic_menu_repeat_on);
+
+                } else {
+                    mPlayer.setRepeat(false);
+                    btnRepeat.setImageResource(R.drawable.ic_menu_repeat_off);
+                    btnRepeat.setTag("false");
+                }
+
+            }
+        });
+
+        btnShuffle = (ImageButton) findViewById(R.id.activity_now_playing_shuffle);
+        btnShuffle.setTag("false");
+        btnShuffle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (btnShuffle.getTag().equals("false")) {
+                    mPlayer.setShuffle(true);
+                    btnShuffle.setImageResource(R.drawable.ic_menu_shuffle_on);
+                    btnShuffle.setTag("true");
+                } else {
+                    mPlayer.setShuffle(false);
+                    btnShuffle.setImageResource(R.drawable.ic_menu_shuffle_off);
+                    btnShuffle.setTag("false");
+                }
+
+            }
+        });
+
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                 AuthenticationResponse.Type.TOKEN,
                 REDIRECT_URI);
@@ -127,7 +169,6 @@ public class MainActivity extends Activity implements
         AuthenticationRequest request = builder.build();
 
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
-
 
 
     }
@@ -145,9 +186,9 @@ public class MainActivity extends Activity implements
                 spotifyApi.setAccessToken(playerConfig.oauthToken);
                 spotifyService = spotifyApi.getService();
 
-                SimpleAudioController audioController = new SimpleAudioController();
+                //SimpleAudioController audioController = new SimpleAudioController();
                 Player.Builder builder = new Player.Builder(playerConfig);
-                builder.setAudioController(audioController);
+               // builder.setAudioController(audioController);
 
 
 

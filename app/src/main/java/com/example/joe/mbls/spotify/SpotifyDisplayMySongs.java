@@ -73,6 +73,7 @@ public class SpotifyDisplayMySongs extends Activity implements
         switch(item.getItemId()) {
             case R.id.add_track_to_playlist:
                 mPlayer.queue(track.track.uri);
+                Log.d("SpotifyDisplayMySongs", "Adding song to queue: " + track.track.id);
                 return true;
             case R.id.track_play_now:
                 mPlayer.play(track.track.uri);
