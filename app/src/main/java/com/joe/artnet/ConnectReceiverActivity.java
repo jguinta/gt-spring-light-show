@@ -28,6 +28,9 @@ import artnet4j.ArtNetNode;
 import artnet4j.ArtNetServer;
 import artnet4j.events.ArtNetDiscoveryListener;
 import artnet4j.packets.ArtDmxPacket;
+import artnet4j.packets.ArtNetPacket;
+import artnet4j.packets.ArtNetPacketParser;
+import artnet4j.packets.ArtPollReplyPacket;
 
 /**
  * Created by JOE on 10/8/2015.
@@ -172,7 +175,7 @@ public class ConnectReceiverActivity extends Activity implements ArtNetDiscovery
                     datagrampacket1 = new DatagramPacket(abyte1, abyte1.length, inetAddress, 6454);
                     socket.setSoTimeout(100);
                     socket.receive(datagrampacket1);
-                    socket.receive((datagrampacket1));
+                    //socket.receive((datagrampacket1));
                     final String IP = String.valueOf(datagrampacket1.getAddress()).substring(1);
                     runOnUiThread(new Runnable() {
                         @Override
@@ -181,6 +184,8 @@ public class ConnectReceiverActivity extends Activity implements ArtNetDiscovery
                             adapter.notifyDataSetChanged();
                         }
                     });
+
+
 
                     byte abyte0[] = new byte[41];
                     abyte0[0] = 52;
@@ -214,42 +219,66 @@ public class ConnectReceiverActivity extends Activity implements ArtNetDiscovery
                     abyte0[28] = (byte)0;
                     abyte0[29] = (byte)0;
                     abyte0[30] = (byte)0;
-                    abyte0[31] = (byte)0;
-                    abyte0[32] = (byte)0;
-                    abyte0[33] = (byte)0;
-                    abyte0[34] = (byte)0;
-                    abyte0[35] = (byte)0;
-                    abyte0[36] = (byte)0;
-                    abyte0[37] = (byte)0;
-                    abyte0[38] = (byte)0;
-                    abyte0[39] = (byte)0;
-                    abyte0[40] = 32;
+            abyte0[31] = (byte)0;
+            abyte0[32] = (byte)0;
+            abyte0[33] = (byte)0;
+            abyte0[34] = (byte)0;
+            abyte0[35] = (byte)0;
+            abyte0[36] = (byte)0;
+            abyte0[37] = (byte)0;
+            abyte0[38] = (byte)0;
+            abyte0[39] = (byte)0;
+            abyte0[40] = 32;
 
-                    DatagramPacket udpSendPacket = new DatagramPacket(abyte0, abyte0.length, datagrampacket.getAddress(), 6454);
+            DatagramPacket udpSendPacket = new DatagramPacket(abyte0, abyte0.length, datagrampacket.getAddress(), 6454);
+            ArtNetPacket artPollReplyPacket = new ArtNetPacketParser().parse(datagrampacket1);
+            ArtNetNode artNetNode = new ArtNetNode();
+            artNetNode.extractConfig((ArtPollReplyPacket) artPollReplyPacket);
 
-                    socket.send(udpSendPacket);
-
-                } catch (Exception e) {
-                    System.out.println(e);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            nodeIds.add("error2");
-                            adapter.notifyDataSetChanged();
+                    while (true) {
+                        ArtDmxPacket dmx = new ArtDmxPacket();
+                        dmx.setUniverse(artNetNode.getSubNet(), artNetNode.getDmxOuts()[0]);
+                        dmx.setSequenceID(sequenceID % 255);
+                        byte[] buffer = new byte[510];
+                        for (int i = 0; i < buffer.length; i++) {
+                            buffer[i] =
+                                    (byte) (Math.sin(sequenceID * 0.05 + i * 0.8) * 127 + 128);
                         }
-                    });
+                        dmx.setDMX(buffer, buffer.length);
+                       // artnet.unicastPacket(dmx, netLynx.getIPAddress());
+                        DatagramPacket packet = new DatagramPacket(dmx.getData(), dmx
+                                .getLength(), artNetNode.getIPAddress(), 6454);
+                        socket.send(packet);
+                        dmx.setUniverse(netLynx.getSubNet(),
+                                netLynx.getDmxOuts()[1]);
+                      //  artnet.unicastPacket(dmx, netLynx.getIPAddress());
+                        packet = new DatagramPacket(dmx.getData(), dmx
+                                .getLength(), artNetNode.getIPAddress(), 6454);
+                        socket.send(packet);
+                    }
+            //socket.send(udpSendPacket);
+
+        } catch (Exception e) {
+            System.out.println(e);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    nodeIds.add("error2");
+                    adapter.notifyDataSetChanged();
                 }
-
-            }
-
-
-
-
-        return "ok";
+            });
         }
 
+    }
 
-        protected void onPostExecute(String result) {
+
+
+
+    return "ok";
+}
+
+
+    protected void onPostExecute(String result) {
            // adapter.notifyDataSetChanged();
         }
     }
