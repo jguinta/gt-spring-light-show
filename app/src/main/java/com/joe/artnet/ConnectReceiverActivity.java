@@ -21,6 +21,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import artnet4j.ArtNet;
 import artnet4j.ArtNetException;
@@ -28,6 +29,9 @@ import artnet4j.ArtNetNode;
 import artnet4j.ArtNetServer;
 import artnet4j.events.ArtNetDiscoveryListener;
 import artnet4j.packets.ArtDmxPacket;
+import artnet4j.packets.ArtNetPacket;
+import artnet4j.packets.ArtNetPacketParser;
+import artnet4j.packets.ArtPollReplyPacket;
 
 /**
  * Created by JOE on 10/8/2015.
@@ -116,18 +120,9 @@ public class ConnectReceiverActivity extends Activity implements ArtNetDiscovery
 
         protected String doInBackground(Void... urls) {
 
-            /*ArtNet artnet = new ArtNet();
 
-            try {
-                artnet.start();
-                artnet.getNodeDiscovery().addListener(ConnectReceiverActivity.this);
-                artnet.startNodeDiscovery();
 
-            } catch (SocketException e) {
-                throw new AssertionError(e);
-            } catch (ArtNetException e) {
-                throw new AssertionError(e);
-            }*/
+
             int j = 0;
             while (j < 20) {
                 j++;
@@ -173,83 +168,50 @@ public class ConnectReceiverActivity extends Activity implements ArtNetDiscovery
                     socket.setSoTimeout(100);
                     socket.receive(datagrampacket1);
                     socket.receive((datagrampacket1));
-                    final String IP = String.valueOf(datagrampacket1.getAddress()).substring(1);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            nodeIds.add(IP);
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
 
-                    byte abyte0[] = new byte[41];
-                    abyte0[0] = 52;
-                    abyte0[1] = 115;
-                    abyte0[2] = 112;
-                    abyte0[3] = 112;
-                    abyte0[4] = (byte) 200;
-                    abyte0[5] = (byte) 0;
-                    abyte0[6] = (byte) 255;
-                    abyte0[7] = (byte)0;
-                    abyte0[8] = (byte)0;
-                    abyte0[9] = (byte)0;
-                    abyte0[10] = (byte)0;
-                    abyte0[11] = (byte)0;
-                    abyte0[12] = (byte)0;
-                    abyte0[13] = (byte)0;
-                    abyte0[14] = (byte)0;
-                    abyte0[15] = (byte)0;
-                    abyte0[16] = (byte)0;
-                    abyte0[17] = (byte)0;
-                    abyte0[18] = (byte)0;
-                    abyte0[19] = (byte)0;
-                    abyte0[20] = (byte)0;
-                    abyte0[21] = (byte)0;
-                    abyte0[22] = (byte)0;
-                    abyte0[23] = (byte)0;
-                    abyte0[24] = (byte)0;
-                    abyte0[25] = (byte)0;
-                    abyte0[26] = (byte)0;
-                    abyte0[27] = (byte)0;
-                    abyte0[28] = (byte)0;
-                    abyte0[29] = (byte)0;
-                    abyte0[30] = (byte)0;
-                    abyte0[31] = (byte)0;
-                    abyte0[32] = (byte)0;
-                    abyte0[33] = (byte)0;
-                    abyte0[34] = (byte)0;
-                    abyte0[35] = (byte)0;
-                    abyte0[36] = (byte)0;
-                    abyte0[37] = (byte)0;
-                    abyte0[38] = (byte)0;
-                    abyte0[39] = (byte)0;
-                    abyte0[40] = 32;
+                    DmxPacket dmxPacket = new DmxPacket();
+                    DmxLight dmxLight = new SimpleDmxLight();
+                    dmxPacket.addLight(dmxLight);
+                    dmxPacket.setBlue((byte) 200);
+                    dmxPacket.setBrightness((byte) 100);
 
+                    byte[] abyte0 = dmxPacket.buildDmxPacket();
                     DatagramPacket udpSendPacket = new DatagramPacket(abyte0, abyte0.length, datagrampacket.getAddress(), 6454);
 
                     socket.send(udpSendPacket);
 
-                } catch (Exception e) {
+                    Random r = new Random();
+
+                    while (true) {
+                        dmxPacket.setBlue((byte) r.nextInt(255));
+                        dmxPacket.setRed((byte) r.nextInt(255));
+                        dmxPacket.setGreen((byte) r.nextInt(255));
+                        dmxPacket.setBrightness((byte) r.nextInt(255));
+                        abyte0 = dmxPacket.buildDmxPacket();
+
+                        udpSendPacket = new DatagramPacket(abyte0, abyte0.length, datagrampacket.getAddress(), 6454);
+                        socket.send(udpSendPacket);
+                    }
+
+
+                } catch (final Exception e) {
                     System.out.println(e);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            nodeIds.add("error2");
+                            nodeIds.add(e.getMessage());
+                            nodeIds.add(e.toString());
                             adapter.notifyDataSetChanged();
                         }
                     });
                 }
 
             }
+         return "ok";
+    }
 
 
-
-
-        return "ok";
-        }
-
-
-        protected void onPostExecute(String result) {
+    protected void onPostExecute(String result) {
            // adapter.notifyDataSetChanged();
         }
     }
