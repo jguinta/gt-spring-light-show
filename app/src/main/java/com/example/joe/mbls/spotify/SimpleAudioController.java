@@ -1,12 +1,12 @@
 package com.example.joe.mbls.spotify;
 
-import com.spotify.sdk.android.player.AudioController;
-import com.spotify.sdk.android.player.AudioRingBuffer;
-
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Build;
+
+import com.spotify.sdk.android.player.AudioController;
+import com.spotify.sdk.android.player.AudioRingBuffer;
 
 public final class SimpleAudioController implements AudioController {
 
