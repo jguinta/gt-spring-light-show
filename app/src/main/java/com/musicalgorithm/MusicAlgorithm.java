@@ -28,10 +28,10 @@ public class MusicAlgorithm {
          mag -= average;
          opacity += mag;
          if(opacity <= 0) {
-             opacity = 0.1;
+             opacity = 0.1f;
          }
          else if(opacity > 1) {
-             opacity = 1;
+             opacity = 1f;
          }
          return opacity;    
     }

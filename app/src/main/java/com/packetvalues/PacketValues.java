@@ -1,4 +1,4 @@
-package com.packetvalues
+package com.packetvalues;
 
 /**
  * Created by michael-leon on 11/5/2015.
@@ -12,36 +12,35 @@ public class PacketValues {
 	private int b;
 
 
-	public static void setBrightness(float opacity) {
-		brightness = opacity*127;
-	}
-
-	public static void setR() {
-
-	}
-
-	public static void setG() {
-
-	}
-
-	public static void setB() {
-
-	}
-
-	public static void getBrightness() {
+	public int getBrightness() {
 		return brightness;
 	}
 
-	public static void getR() {
+	public void setBrightness(int brightness) {
+		this.brightness = brightness*127;
+	}
+
+	public int getR() {
 		return r;
 	}
 
-	public static void getG() {
+	public void setR(int r) {
+		this.r = r;
+	}
+
+	public int getG() {
 		return g;
 	}
 
-	public static void getB() {
+	public void setG(int g) {
+		this.g = g;
+	}
+
+	public int getB() {
 		return b;
 	}
 
+	public void setB(int b) {
+		this.b = b;
+	}
 }
