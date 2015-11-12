@@ -168,7 +168,7 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
         synchronized (mMutex) {
             mAudioTrack = new AudioTrack(type, rate, outChannel, size, length,
                     AudioTrack.MODE_STREAM);
-            mAudioTrack.setPositionNotificationPeriod(8192);
+            mAudioTrack.setPositionNotificationPeriod(4096);
             mAudioTrack.setPlaybackPositionUpdateListener(this);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mAudioTrack.setVolume(AudioTrack.getMaxVolume());
@@ -224,7 +224,7 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
                     float x = MusicAlgorithm.getOpacity(packet.data);
 
                     DmxPacket result = new DmxPacket(defaultPacket);
-                    result.setRed((byte) 120);
+                    result.setBlue((byte) 120);
                     result.setBrightness((byte) x);
                     dmxPackets.put(result);
                 } catch (InterruptedException e) {
