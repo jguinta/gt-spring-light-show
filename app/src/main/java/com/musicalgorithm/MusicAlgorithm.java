@@ -36,5 +36,119 @@ public class MusicAlgorithm {
          return opacity;    
     }
 
+/** THIS IS SKELETON CODE/WILL NOT WORK */
+/** 1. Get kick beat.
+*   2. Set marker.
+*   3. Get kick beat.
+*   4. Set marker.
+*   5. Subtract 2 markers for sample size.
+*   6. Divide size by 44100 to get seconds per beat.
+*   7. 60 / seconds per beat to get bpm. */
 
+    public void setTempo(AudioBuffer buffer) {
+    	detect(buffer);
+    	flag = isKick();
+    	if(flag) {
+    		s1 = s2;
+    		s2 = setMarkerAtSample();
+    		tempo = 60 / ((s2 - s1) / 44100);
+    	}
+    }
+    
+    public static void setColors() {
+    	bool lightFlags[4] = {true, true, true, true};
+    	int index;
+    	if(tempo < 60) { // dark greens, navy blues, dark violets, dark reds
+    		index = rand(0, 3)
+    		setR(0, index); 				// GREEN
+    		setG(70 + rand(70), index);
+    		setB(5 + rand(10), index);
+    		lightFlags[index] = false;
+    
+    		while(lightFlags[index] = false) {
+    			index = rand(0, 3);
+    		}
+    		setR(5 + rand(10), index); 				// NAVY BLUES
+    		setG(0, index);
+    		setB(45 + rand(100), index);
+    		lightFlags[index] = false;
+    
+    		while(lightFlags[index] = false) {
+    			index = rand(0, 3);
+    		}
+    		setR(50 + rand(100), index); 				// DARK VIOLETS
+    		setG(0, index);
+    		setB(50 + rand(100), index);
+    		lightFlags[index] = false;
+    
+    		while(lightFlags[index] = false) {
+    			index = rand(0, 3);
+    		}
+    		setR(25 + rand(100), index); 				// DARK RED
+    		setG(0, index);
+    		setB(0, index);
+    	}
+    
+    	if(tempo > 60 && tempo < 120) { // light blues, light greens, yellows, pinks
+    		index = rand(0, 3)
+    		setR(100 + rand(100), index); 				// LIGHT BLUE
+    		setG(170 + rand(80), index);
+    		setB(255, index);
+    		lightFlags[index] = false;
+    
+    		while(lightFlags[index] = false) {
+    			index = rand(0, 3);
+    		}
+    		setR(70 + rand(100), index); 				// LIGHT GREEN
+    		setG(255, index);
+    		setB(70 + rand(100), index);
+    		lightFlags[index] = false;
+    
+    		while(lightFlags[index] = false) {
+    			index = rand(0, 3);
+    		}
+    		setR(255, index); 				// YELLOW
+    		setG(255, index);
+    		setB(0 + rand(100), index);
+    		lightFlags[index] = false;
+    
+    		while(lightFlags[index] = false) {
+    			index = rand(0, 3);
+    		}
+    		setR(255, index); 				// PINK
+    		setG(0 + rand(100), index);
+    		setB(188 + rand(50), index);
+    	}
+    
+    	if(tempo > 120) { // reds, oranges, yellows, pinks
+    		index = rand(0, 3)
+    		setR(255, index); 				// LIGHT RED
+    		setG(55 + rand(100), index);
+    		setB(55 + rand(100), index);
+    		lightFlags[index] = false;
+    
+    		while(lightFlags[index] = false) {
+    			index = rand(0, 3);
+    		}
+    		setR(255, index); 				// LIGHT ORANGE
+    		setG(180 + rand(40), index);
+    		setB(0 + rand(125), index);
+    		lightFlags[index] = false;
+    
+    		while(lightFlags[index] = false) {
+    			index = rand(0, 3);
+    		}
+    		setR(255, index); 				// LIGHT YELLOW
+    		setG(255, index);
+    		setB(50 + rand(100), index);
+    		lightFlags[index] = false;
+    
+    		while(lightFlags[index] = false) {
+    			index = rand(0, 3);
+    		}
+    		setR(255, index); 				// PINK
+    		setG(0 + rand(100), index);
+    		setB(188 + rand(50), index);
+    	}
+    }
 }
