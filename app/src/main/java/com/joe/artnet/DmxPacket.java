@@ -22,6 +22,15 @@ public class DmxPacket {
         lights = new ArrayList<>();
     }
 
+    public DmxPacket(DmxPacket clone) {
+        this.dmx = clone.dmx;
+        this.lights = clone.lights;
+        this.currentPacketIndex = clone.currentPacketIndex;
+        this.currentLightIndex = clone.currentLightIndex;
+
+    }
+
+
     public int addLight(DmxLight light) {
         lights.add(light);
         return currentLightIndex++;
@@ -83,6 +92,10 @@ public class DmxPacket {
         }
         currentPacketIndex = 4;
         return dmx;
+    }
+
+    public void setDmxPacket(byte[] dmx) {
+        this.dmx = dmx;
     }
 
 

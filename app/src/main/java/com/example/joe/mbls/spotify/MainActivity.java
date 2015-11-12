@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.R;
+import com.joe.artnet.DmxPacket;
+import com.joe.artnet.SimpleDmxLight;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
@@ -186,9 +188,19 @@ public class MainActivity extends Activity implements
                 spotifyApi.setAccessToken(playerConfig.oauthToken);
                 spotifyService = spotifyApi.getService();
 
-                //SimpleAudioController audioController = new SimpleAudioController();
+
+                // Default DmxPacket
+                DmxPacket dmxPacket = new DmxPacket();
+
+                // Add all lights here
+                SimpleDmxLight light = new SimpleDmxLight();
+                dmxPacket.addLight(light);
+
+
+                SimpleAudioController audioController = new SimpleAudioController(dmxPacket);
+                audioController.establishConnection();
                 Player.Builder builder = new Player.Builder(playerConfig);
-               // builder.setAudioController(audioController);
+                builder.setAudioController(audioController);
 
 
 

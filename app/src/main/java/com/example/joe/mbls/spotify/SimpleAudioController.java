@@ -3,22 +3,62 @@ package com.example.joe.mbls.spotify;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.telecom.Call;
+import android.util.Log;
 
+import com.joe.artnet.DmxPacket;
+import com.joe.artnet.ShortWrapper;
+import com.joe.artnet.SimpleDmxLight;
+import com.musicalgorithm.MusicAlgorithm;
 import com.spotify.sdk.android.player.AudioController;
 import com.spotify.sdk.android.player.AudioRingBuffer;
 
-public final class SimpleAudioController implements AudioController {
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.util.LinkedList;
+import java.util.Random;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 
+public final class SimpleAudioController implements AudioController, AudioTrack.OnPlaybackPositionUpdateListener {
+    private final DmxPacket defaultPacket;
     private final Object mMutex = new Object();
 
+    private BlockingQueue<DmxPacket> dmxPackets = new LinkedBlockingQueue<>();
+    private BlockingQueue<ShortWrapper> raw = new LinkedBlockingQueue<>();
+    private DatagramSocket socket;
+    private InetAddress inetAddress;
+    private Random r = new Random();
     private final AudioRingBuffer mAudioBuffer = new AudioRingBuffer(81920);
-
     private volatile boolean mActive = true;
 
     private volatile boolean mSuspended = true;
 
     private AudioTrack mAudioTrack;
+
+    public SimpleAudioController(DmxPacket dmxPacket) {
+        this.defaultPacket = dmxPacket;
+    }
+
+    public void establishConnection() {
+        try {
+
+            socket = new DatagramSocket(null);
+            socket.setReuseAddress(true);
+            socket.bind(new InetSocketAddress(6454));
+            inetAddress = InetAddress.getByName("255.255.255.255");
+        } catch (Exception e) {
+            System.out.print(e);
+        }
+    }
 
     @Override
     public void start() {
@@ -29,6 +69,10 @@ public final class SimpleAudioController implements AudioController {
             }
         };
         nThread.start();
+
+        final AnalysisThread analysisThread = new AnalysisThread();
+        analysisThread.start();
+
     }
 
     @Override
@@ -51,6 +95,12 @@ public final class SimpleAudioController implements AudioController {
         if (mAudioTrack == null) {
             pfCreateAudioTrack(AudioManager.STREAM_MUSIC, rate, channel);
         }
+
+
+        raw.add(new ShortWrapper(frames));
+
+
+
         return mAudioBuffer.write(frames, numberOfFrames);
 
     }
@@ -66,6 +116,7 @@ public final class SimpleAudioController implements AudioController {
             }
         }
         mAudioBuffer.clear();
+        dmxPackets.clear();
         notifyThreadResume();
     }
 
@@ -83,6 +134,16 @@ public final class SimpleAudioController implements AudioController {
             mAudioTrack.play();
         }
         notifyThreadResume();
+    }
+
+    @Override
+    public void onPeriodicNotification(AudioTrack track) {
+        Log.d("onPeriodicNotification", "Queue size = " + dmxPackets.size());
+        new SendDmxPacket().execute();
+    }
+
+    @Override
+    public void onMarkerReached(AudioTrack track) {
     }
 
 
@@ -107,6 +168,8 @@ public final class SimpleAudioController implements AudioController {
         synchronized (mMutex) {
             mAudioTrack = new AudioTrack(type, rate, outChannel, size, length,
                     AudioTrack.MODE_STREAM);
+            mAudioTrack.setPositionNotificationPeriod(8192);
+            mAudioTrack.setPlaybackPositionUpdateListener(this);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mAudioTrack.setVolume(AudioTrack.getMaxVolume());
             } else {
@@ -122,6 +185,8 @@ public final class SimpleAudioController implements AudioController {
         }
         return 0;
     }
+
+
 
     private void pfxThread() {
         final short[] pendingFrames = new short[4096];
@@ -142,6 +207,46 @@ public final class SimpleAudioController implements AudioController {
                 }
                 mAudioBuffer.remove(itemsRead);
             }
+        }
+    }
+
+    private class AnalysisThread extends Thread {
+
+
+        @Override
+        public void run() {
+            // Computations here
+            while (true) {
+                try {
+                    ShortWrapper packet = raw.take();
+
+                    //computatations
+                    float x = MusicAlgorithm.getOpacity(packet.data);
+
+                    DmxPacket result = new DmxPacket(defaultPacket);
+                    result.setRed((byte) 120);
+                    result.setBrightness((byte) x);
+                    dmxPackets.put(result);
+                } catch (InterruptedException e) {
+                    System.out.println("interrupt");
+                }
+            }
+        }
+    }
+
+    private class SendDmxPacket extends AsyncTask<Void, Void, Void> {
+
+        protected Void doInBackground(Void... packet) {
+            try {
+                Log.d("sndDmxPacket", "Sending DmxPacket ");
+                byte[] bytes = dmxPackets.take().buildDmxPacket();
+                Log.d("sndDmxPacket", "values = " + bytes[4] + " " + bytes[5] + " " + bytes[6] + " " + bytes[7]);
+                DatagramPacket udpSendPacket = new DatagramPacket(bytes, bytes.length, inetAddress, 6454);
+                socket.send(udpSendPacket);
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+            return null;
         }
     }
 }
