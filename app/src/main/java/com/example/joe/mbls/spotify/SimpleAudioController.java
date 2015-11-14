@@ -4,18 +4,11 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Build;
+import android.util.Log;
 
-import com.joe.artnet.DmxLight;
-import com.joe.artnet.DmxPacket;
-import com.joe.artnet.SimpleDmxLight;
+import com.musicalgorithm.MusicAlgorithm;
 import com.spotify.sdk.android.player.AudioController;
 import com.spotify.sdk.android.player.AudioRingBuffer;
-
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.util.Random;
 
 public final class SimpleAudioController implements AudioController {
 
@@ -61,7 +54,7 @@ public final class SimpleAudioController implements AudioController {
         if (mAudioTrack == null) {
             pfCreateAudioTrack(AudioManager.STREAM_MUSIC, rate, channel);
         }
-        sendDmxSignal();
+
         return mAudioBuffer.write(frames, numberOfFrames);
 
     }
@@ -147,6 +140,10 @@ public final class SimpleAudioController implements AudioController {
                 }
             }
             final int itemsRead = mAudioBuffer.peek(pendingFrames);
+
+            float[] metrics = MusicAlgorithm.getMetrics(pendingFrames);
+            Log.d("Metrics", metrics[0] + " , " + metrics[1] + " , " + metrics[2] + " , " + metrics[3]);
+            //here
             if (itemsRead > 0) {
                 synchronized (mMutex) {
                     pfWriteToTrack(pendingFrames, itemsRead);
@@ -156,62 +153,6 @@ public final class SimpleAudioController implements AudioController {
         }
     }
 
-    private static  void sendDmxSignal(){
-
-        DatagramSocket socket= null;
-        if (socket == null) {
-            try {
-
-                socket = new DatagramSocket(null);
-                socket.setReuseAddress(true);
-                socket.bind(new InetSocketAddress(6454));
-
-            } catch (Exception e) {
-                System.out.print(e);
-
-            }
-
-        }
-        try {
-            InetAddress inetAddress = InetAddress.getByName("255.255.255.255");
-            byte abyte[] = "1sch \r\n".getBytes();
-            DatagramPacket datagrampacket = new DatagramPacket(abyte, abyte.length, inetAddress, 6454);
-            socket.send(datagrampacket);
-            DatagramPacket datagrampacket1;
-            byte abyte1[] = new byte[1024];
-            datagrampacket1 = new DatagramPacket(abyte1, abyte1.length, inetAddress, 6454);
-            socket.setSoTimeout(100);
-            socket.receive(datagrampacket1);
-            socket.receive((datagrampacket1));
-
-            DmxPacket dmxPacket = new DmxPacket();
-            DmxLight dmxLight = new SimpleDmxLight();
-            dmxPacket.addLight(dmxLight);
-            dmxPacket.setBlue((byte) 200);
-            dmxPacket.setBrightness((byte) 100);
-
-            byte[] abyte0 = dmxPacket.buildDmxPacket();
-            DatagramPacket udpSendPacket = new DatagramPacket(abyte0, abyte0.length, datagrampacket.getAddress(), 6454);
-
-            socket.send(udpSendPacket);
-
-            Random r = new Random();
-
-            while (true) {
-                dmxPacket.setBlue((byte) r.nextInt(255));
-                dmxPacket.setRed((byte) r.nextInt(255));
-                dmxPacket.setGreen((byte) r.nextInt(255));
-                dmxPacket.setBrightness((byte) r.nextInt(255));
-                abyte0 = dmxPacket.buildDmxPacket();
-
-                udpSendPacket = new DatagramPacket(abyte0, abyte0.length, datagrampacket.getAddress(), 6454);
-                socket.send(udpSendPacket);
-            }
-        }catch (final Exception e) {
-            System.out.println(e);
-
-                }
-            }
 
 
 }

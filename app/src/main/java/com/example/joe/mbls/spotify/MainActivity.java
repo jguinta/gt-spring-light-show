@@ -186,9 +186,9 @@ public class MainActivity extends Activity implements
                 spotifyApi.setAccessToken(playerConfig.oauthToken);
                 spotifyService = spotifyApi.getService();
 
-                //SimpleAudioController audioController = new SimpleAudioController();
+                SimpleAudioController audioController = new SimpleAudioController();
                 Player.Builder builder = new Player.Builder(playerConfig);
-               // builder.setAudioController(audioController);
+                builder.setAudioController(audioController);
 
 
 

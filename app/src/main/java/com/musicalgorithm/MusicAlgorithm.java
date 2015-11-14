@@ -5,35 +5,50 @@ package com.musicalgorithm;
  */
 public class MusicAlgorithm {
 
-    public static float getAverageAmplitude(short[] inputStream) {
+    public static float[] getMetrics(short[] inputStream) {
         float[] mag = new float[inputStream.length / 2];
         float average = 0f;
+        int j=0;
         for (int i = 0; i < inputStream.length - 1; i += 2) {
-            mag[i] = (float) (Math.abs(inputStream[i]) + Math.abs(inputStream[i + 1])) / 2;
-            average += mag[i];
+            mag[j] = (float) (Math.abs(inputStream[i]) + Math.abs(inputStream[i + 1])) / 2;
+            average += mag[j];
+            j++;
         }
         average /= mag.length;
-        
-        return average;
+        float[] metrics = getColorsAndOpacity(average);
+        return metrics;
     }
-    
-    public static float setOpacity(short[] inputStream, float opacity, float average) {
-        /** Opacity should be a single number, not an array
-         * Opacity gets set to 0.5.
-         *  If the magnitude is greater than average, add some amount of opacity (the magnitude value?).
-         *  If the magnitude is less than average, remove some amount of opacity (the magnitude value?).
-         * If opacity goes above 1, set to 1.
-         * If opacity goes below 0, set to 0.1 (to avoid blackout). */
-         float mag = (Math.abs(inputStream[0]) + Math.abs(inputStream[1])) / 2;
-         mag -= average;
-         opacity += mag;
-         if(opacity <= 0) {
-             opacity = 0.1f;
-         }
-         else if(opacity > 1) {
-             opacity = 1f;
-         }
-         return opacity;    
+
+    public static float[] getColorsAndOpacity(float amplitude) {
+        float[] colors = new float[4];
+        float opacity = 10f;
+        /*if (!(amplitude == 0f)) {
+            opacity = (amplitude / 5000) * 128;
+        }*/
+        if (amplitude <= 5000) {
+            colors[0] = 0;
+            colors[1] = amplitude/5000 * 128;
+            colors[2] = 127 + amplitude/5000 * 128;
+            colors[3] = (amplitude / 5000) * 128;
+        } else if (amplitude <= 10000) {
+            colors[0] = amplitude/10000 * 128;
+            colors[1] =127 + amplitude/10000 * 128;
+            colors[2] = 255-amplitude/10000 * 128;
+            colors[3] = (amplitude / 10000) * 128;
+        } else if (amplitude <= 15000) {
+            colors[0] = 127 + amplitude/15000 * 128;
+            colors[1] =255 - amplitude/15000 * 128;
+            colors[2] = 128-amplitude/15000 * 128;
+            colors[3] = (amplitude / 15000) * 128;
+        } else {
+            colors[0] = 255;
+            colors[1] = 255;
+            colors[2] = 255;
+            colors[3] = (127 + (amplitude / 16000) * 128) > 255 ? 255 : (127 + (amplitude / 16000) * 128);
+        }
+
+        return colors;
+
     }
 
 
