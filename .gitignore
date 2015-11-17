@@ -5,3 +5,8 @@
 .DS_Store
 /build
 /captures
+*.bin
+.gradle/2.4/taskArtifacts/cache.properties.lock
+*.bin
+.idea/workspace.xml
+app/app-release.apk
