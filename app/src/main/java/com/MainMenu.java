@@ -10,6 +10,7 @@ import android.widget.Button;
 import com.example.joe.mbls.spotify.MainActivity;
 import com.joe.artnet.ConnectReceiverActivity;
 import com.kure.musicplayer.activities.ActivityMenuMain;
+import com.ringdroid.RingdroidSelectActivity;
 
 /**
  * Created by evgeniy on 9/22/15.
@@ -21,18 +22,18 @@ public class MainMenu extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
 
-        Button button = (Button) findViewById(R.id.button);
+        Button localPlayer = (Button) findViewById(R.id.localMusicplayer);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        localPlayer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ActivityMenuMain.class);
                 startActivity(intent);
             }
         });
 
-        Button button2 = (Button) findViewById(R.id.button2);
+        Button spotifyPlayer = (Button) findViewById(R.id.spotifyPlayer);
 
-        button2.setOnClickListener(new View.OnClickListener() {
+        spotifyPlayer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
@@ -44,6 +45,15 @@ public class MainMenu extends Activity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ConnectReceiverActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button googlePlayer = (Button) findViewById(R.id.googlePlayer);
+        googlePlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RingdroidSelectActivity.class);
                 startActivity(intent);
             }
         });

@@ -25,7 +25,7 @@
         android:layout_width="245dp"
         android:layout_height="wrap_content"
         android:text="Local Music"
-        android:id="@+id/button"
+        android:id="@+id/localMusicplayer"
         android:layout_gravity="center_horizontal" />
 
     <Button
@@ -33,7 +33,7 @@
         android:layout_width="245dp"
         android:layout_height="wrap_content"
         android:text="Spotify"
-        android:id="@+id/button2"
+        android:id="@+id/spotifyPlayer"
         android:layout_gravity="center_horizontal" />
 
     <Button
@@ -45,10 +45,10 @@
         android:layout_gravity="center_horizontal" />
 
     <Button
-        android:drawableLeft="@drawable/ic_settings"
+        android:drawableLeft="@drawable/ringdroidlogo"
         android:layout_width="245dp"
         android:layout_height="wrap_content"
-        android:text="Settings"
-        android:id="@+id/button3"
+        android:text="RingoDroid"
+        android:id="@+id/googlePlayer"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>
