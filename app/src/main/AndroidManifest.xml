@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com" >
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -10,8 +16,12 @@
     <!-- So we can play songs while the device is locked -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+
     <!-- So we can save new Playlists on the disc -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <supports-screens android:anyDensity="true" />
+
     <application
         android:name=".example.joe.mbls.spotify.SpotifyApplication"
         android:allowBackup="true"
@@ -24,8 +34,14 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.GET_CONTENT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+                <data android:mimeType="audio/*" />
             </intent-filter>
 
         </activity>
@@ -145,6 +161,36 @@
             />
 
 
+        <activity android:name=".ringdroid.RingdroidSelectActivity"
+            android:label="@string/main_activity_label">
+            <intent-filter>
+                <action android:name="android.intent.action.GET_CONTENT" />
+                <category android:name="android.intent.category.OPENABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="*/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="*/*" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ringdroid.RingdroidEditActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="adjustResize"
+            android:hardwareAccelerated="true">
+            <intent-filter android:label="@string/edit_intent">
+                <action android:name="android.intent.action.EDIT" />
+                <data android:mimeType="audio/*" />
+            </intent-filter>
+        </activity>
+
+        <!-- Activity for choosing a contact to assign a ringtone to. -->
+        <activity android:name=".ringdroid.ChooseContactActivity"
+            android:configChanges="orientation|keyboardHidden">
+        </activity>
+
         <service android:name=".kure.musicplayer.services.ServicePlayMusic" />
         <service android:name=".kure.musicplayer.services.ServiceScrobbleMusic" />
 
@@ -163,6 +209,7 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
+
 
         // Needed for LoginActivity to work
         <activity
