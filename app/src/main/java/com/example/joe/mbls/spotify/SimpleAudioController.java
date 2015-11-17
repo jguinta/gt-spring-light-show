@@ -5,12 +5,10 @@ import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.telecom.Call;
 import android.util.Log;
 
 import com.joe.artnet.DmxPacket;
 import com.joe.artnet.ShortWrapper;
-import com.joe.artnet.SimpleDmxLight;
 import com.musicalgorithm.MusicAlgorithm;
 import com.spotify.sdk.android.player.AudioController;
 import com.spotify.sdk.android.player.AudioRingBuffer;
@@ -19,13 +17,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.util.LinkedList;
 import java.util.Random;
-import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public final class SimpleAudioController implements AudioController, AudioTrack.OnPlaybackPositionUpdateListener {
@@ -43,6 +36,8 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
     private volatile boolean mSuspended = true;
 
     private AudioTrack mAudioTrack;
+
+    private int framesProcessed = 0;
 
     public SimpleAudioController(DmxPacket dmxPacket) {
         this.defaultPacket = dmxPacket;
@@ -97,7 +92,7 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
         }
 
 
-        raw.add(new ShortWrapper(frames));
+       // raw.add(new ShortWrapper(frames, numberOfFrames));
 
 
 
@@ -138,8 +133,8 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
 
     @Override
     public void onPeriodicNotification(AudioTrack track) {
-        Log.d("onPeriodicNotification", "Queue size = " + dmxPackets.size());
-        new SendDmxPacket().execute();
+       // Log.d("onPeriodicNotification", "Queue size = " + dmxPackets.size());
+       // new SendDmxPacket().execute();
     }
 
     @Override
@@ -201,7 +196,21 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
                 }
             }
             final int itemsRead = mAudioBuffer.peek(pendingFrames);
+            if (itemsRead != 0 && itemsRead != 4096) Log.d("SAC", "ITEMS READ: " + itemsRead);
             if (itemsRead > 0) {
+                float[] x = MusicAlgorithm.getMetrics(pendingFrames);
+
+                DmxPacket result = new DmxPacket(defaultPacket);
+                result.setRed((byte) x[0]);
+                result.setGreen((byte) x[1]);
+                result.setBlue((byte) x[2]);
+                result.setBrightness((byte) x[3]);
+                try {
+                   dmxPackets.put(result);
+               } catch (Exception e) {
+                   System.out.print("interrupt");
+               }
+                new SendDmxPacket().execute();
                 synchronized (mMutex) {
                     pfWriteToTrack(pendingFrames, itemsRead);
                 }
@@ -220,13 +229,16 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
                 try {
                     ShortWrapper packet = raw.take();
 
-                    //computatations
-                    float x = MusicAlgorithm.getOpacity(packet.data);
+                    // Computations here
+                    float[] x = MusicAlgorithm.getMetrics(packet.data);
 
                     DmxPacket result = new DmxPacket(defaultPacket);
-                    result.setBlue((byte) 120);
-                    result.setBrightness((byte) x);
-                    dmxPackets.put(result);
+                    result.setRed((byte) x[0]);
+                    result.setGreen((byte) x[1]);
+                    result.setBlue((byte) x[2]);
+                    result.setBrightness((byte) x[3]);
+                  //  dmxPackets.put(result);
+                    framesProcessed += packet.numFrames;
                 } catch (InterruptedException e) {
                     System.out.println("interrupt");
                 }
@@ -238,9 +250,9 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
 
         protected Void doInBackground(Void... packet) {
             try {
-                Log.d("sndDmxPacket", "Sending DmxPacket ");
+             //   Log.d("sndDmxPacket", "Sending DmxPacket ");
                 byte[] bytes = dmxPackets.take().buildDmxPacket();
-                Log.d("sndDmxPacket", "values = " + bytes[4] + " " + bytes[5] + " " + bytes[6] + " " + bytes[7]);
+             //  Log.d("sndDmxPacket", "values = " + bytes[4] + " " + bytes[5] + " " + bytes[6] + " " + bytes[7]);
                 DatagramPacket udpSendPacket = new DatagramPacket(bytes, bytes.length, inetAddress, 6454);
                 socket.send(udpSendPacket);
             } catch (Exception e) {
