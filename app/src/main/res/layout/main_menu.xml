@@ -20,12 +20,11 @@
         android:layout_marginTop="50dp" />
 
     <Button
-        android:layout_marginTop="100dp"
-        android:drawableLeft="@drawable/ic_launcher"
+        android:drawableLeft="@drawable/ringdroidlogo"
         android:layout_width="245dp"
         android:layout_height="wrap_content"
-        android:text="Local Music"
-        android:id="@+id/localMusicplayer"
+        android:text="RingoDroid"
+        android:id="@+id/googlePlayer"
         android:layout_gravity="center_horizontal" />
 
     <Button
@@ -44,11 +43,5 @@
         android:id="@+id/artnet_connect_button"
         android:layout_gravity="center_horizontal" />
 
-    <Button
-        android:drawableLeft="@drawable/ringdroidlogo"
-        android:layout_width="245dp"
-        android:layout_height="wrap_content"
-        android:text="RingoDroid"
-        android:id="@+id/googlePlayer"
-        android:layout_gravity="center_horizontal" />
+
 </LinearLayout>

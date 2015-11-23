@@ -32,33 +32,11 @@
        android:layout_width="fill_parent"
        android:layout_height="fill_parent" />
 
-      <com.ringdroid.MarkerView
-       android:id="@+id/startmarker"
-       android:nextFocusDown="@+id/endmarker"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:src="@drawable/marker_left"
-       android:contentDescription="@string/start_marker" />
 
-      <com.ringdroid.MarkerView
-       android:id="@+id/endmarker"
-       android:nextFocusUp="@+id/startmarker"
-       android:nextFocusDown="@+id/info"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:src="@drawable/marker_right"
-       android:contentDescription="@string/end_marker" />
 
     </RelativeLayout>
 
-    <TextView
-     android:id="@+id/info"
-     android:nextFocusUp="@+id/endmarker"
-     android:nextFocusDown="@+id/play"
-     android:layout_width="fill_parent"
-     android:layout_height="wrap_content"
-     style="@style/AudioFileInfoOverlayText"
-     android:gravity="center" />
+
 
     <LinearLayout
      style="@style/ToolbarBackground"
@@ -66,56 +44,7 @@
      android:layout_height="68dip"
      android:gravity="center">
 
-      <TextView
-       android:id="@+id/mark_start"
-       android:nextFocusUp="@+id/info"
-       android:text="@string/start_label"
-       android:textColor="#ffffffff"
-       android:textSize="14sp"
-       android:textStyle="bold"
-       android:labelFor="@+id/starttext"
-       android:clickable="true"
-       android:gravity="center"
-       android:layout_marginLeft="10dip"
-       android:layout_width="wrap_content" 
-       android:layout_height="31dip" />
 
-      <EditText
-       android:id="@+id/starttext"
-       android:nextFocusLeft="@+id/zoom_out"
-       android:nextFocusRight="@+id/endtext"
-       android:textSize="16sp"
-       android:inputType="number|numberDecimal"
-       android:layout_width="70dip"
-       android:layout_height="31dip"
-       android:layout_marginLeft="10dip"
-       android:layout_marginRight="30dip"
-       android:gravity="center" />
-
-      <TextView
-       android:id="@+id/mark_end"
-       android:nextFocusUp="@+id/info"
-       android:text="@string/end_label"
-       android:textColor="#ffffffff"
-       android:textSize="14sp"
-       android:textStyle="bold"
-       android:labelFor="@+id/endtext"
-       android:clickable="true"
-       android:gravity="center"
-       android:layout_width="wrap_content" 
-       android:layout_height="31dip" />
-
-      <EditText
-       android:id="@+id/endtext"
-       android:nextFocusLeft="@+id/starttext"
-       android:nextFocusRight="@+id/save"
-       android:textSize="16sp"
-       android:inputType="number|numberDecimal"
-       android:layout_width="70dip"
-       android:layout_height="31dip"
-       android:layout_marginLeft="10dip"
-       android:layout_marginRight="50dip"
-       android:gravity="center" />
 
       <ImageButton
        android:id="@+id/rew"

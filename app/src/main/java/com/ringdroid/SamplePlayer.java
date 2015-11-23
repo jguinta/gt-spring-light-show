@@ -19,6 +19,7 @@ package com.ringdroid;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.util.Log;
 
 import com.ringdroid.soundfile.SoundFile;
 
@@ -64,6 +65,8 @@ class SamplePlayer {
                 mBuffer.length * 2,
                 AudioTrack.MODE_STREAM);
         // Check when player played all the given data and notify user if mListener is set.
+
+
         mAudioTrack.setNotificationMarkerPosition(mNumSamples - 1);  // Set the marker to the end.
         mAudioTrack.setPlaybackPositionUpdateListener(
                 new AudioTrack.OnPlaybackPositionUpdateListener() {
@@ -106,6 +109,9 @@ class SamplePlayer {
         mKeepPlaying = true;
         mAudioTrack.flush();
         mAudioTrack.play();
+        for(int i=0; i< mBuffer.length;i++){
+            Log.d("Current value", Short.toString(mBuffer[i]));
+        }
         // Setting thread feeding the audio samples to the audio hardware.
         // (Assumes mChannels = 1 or 2).
         mPlayThread = new Thread () {
@@ -124,6 +130,7 @@ class SamplePlayer {
                         mSamples.get(mBuffer, 0, numSamplesLeft);
                     }
                     // TODO(nfaralli): use the write method that takes a ByteBuffer as argument.
+                    //we can write/read  here
                     mAudioTrack.write(mBuffer, 0, mBuffer.length);
                 }
             }
@@ -134,7 +141,7 @@ class SamplePlayer {
     public void pause() {
         if (isPlaying()) {
             mAudioTrack.pause();
-            // mAudioTrack.write() should block if it cannot write.
+            mAudioTrack.flush();// should block if it cannot write.
         }
     }
 

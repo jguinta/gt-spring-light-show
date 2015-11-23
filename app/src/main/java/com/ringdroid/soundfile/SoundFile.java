@@ -16,18 +16,6 @@
 
 package com.ringdroid.soundfile;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.ShortBuffer;
-import java.util.Arrays;
-
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaCodec;
@@ -36,6 +24,18 @@ import android.media.MediaFormat;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.Log;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.ShortBuffer;
+import java.util.Arrays;
 
 public class SoundFile {
     private ProgressListener mProgressListener = null;
@@ -82,7 +82,7 @@ public class SoundFile {
 
     // TODO(nfaralli): what is the real list of supported extensions? Is it device dependent?
     public static String[] getSupportedExtensions() {
-        return new String[] {"mp3", "wav", "3gpp", "3gp", "amr", "aac", "m4a", "ogg"};
+        return new String[] {"mp3"};
     }
 
     public static boolean isFilenameSupported(String filename) {

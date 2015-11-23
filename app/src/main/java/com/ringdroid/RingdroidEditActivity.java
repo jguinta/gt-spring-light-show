@@ -42,7 +42,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,11 +79,11 @@ public class RingdroidEditActivity extends Activity
     private int mNewFileKind;
     private boolean mWasGetContentIntent;
     private WaveformView mWaveformView;
-    private MarkerView mStartMarker;
+    /*private MarkerView mStartMarker;
     private MarkerView mEndMarker;
     private TextView mStartText;
     private TextView mEndText;
-    private TextView mInfo;
+    private TextView mInfo;*/
     private String mInfoContent;
     private ImageButton mPlayButton;
     private ImageButton mRewindButton;
@@ -245,7 +244,7 @@ public class RingdroidEditActivity extends Activity
         super.onConfigurationChanged(newConfig);
 
         loadGui();
-
+        /*
         mHandler.postDelayed(new Runnable() {
                 public void run() {
                     mStartMarker.requestFocus();
@@ -256,7 +255,7 @@ public class RingdroidEditActivity extends Activity
 
                     updateDisplay();
                 }
-            }, 500);
+            }, 500);*/
     }
 
     @Override
@@ -402,31 +401,31 @@ public class RingdroidEditActivity extends Activity
     public void markerTouchMove(MarkerView marker, float x) {
         float delta = x - mTouchStart;
 
-        if (marker == mStartMarker) {
+        /*if (marker == mStartMarker) {
             mStartPos = trap((int)(mTouchInitialStartPos + delta));
             mEndPos = trap((int)(mTouchInitialEndPos + delta));
         } else {
             mEndPos = trap((int)(mTouchInitialEndPos + delta));
             if (mEndPos < mStartPos)
                 mEndPos = mStartPos;
-        }
+        }*/
 
         updateDisplay();
     }
 
     public void markerTouchEnd(MarkerView marker) {
         mTouchDragging = false;
-        if (marker == mStartMarker) {
+        /*if (marker == mStartMarker) {
             setOffsetGoalStart();
         } else {
             setOffsetGoalEnd();
-        }
+        }*/
     }
 
     public void markerLeft(MarkerView marker, int velocity) {
         mKeyDown = true;
 
-        if (marker == mStartMarker) {
+        /*if (marker == mStartMarker) {
             int saveStart = mStartPos;
             mStartPos = trap(mStartPos - velocity);
             mEndPos = trap(mEndPos - (saveStart - mStartPos));
@@ -442,7 +441,7 @@ public class RingdroidEditActivity extends Activity
             }
 
             setOffsetGoalEnd();
-        }
+        }*/
 
         updateDisplay();
     }
@@ -450,7 +449,7 @@ public class RingdroidEditActivity extends Activity
     public void markerRight(MarkerView marker, int velocity) {
         mKeyDown = true;
 
-        if (marker == mStartMarker) {
+        /*if (marker == mStartMarker) {
             int saveStart = mStartPos;
             mStartPos += velocity;
             if (mStartPos > mMaxPos)
@@ -469,7 +468,7 @@ public class RingdroidEditActivity extends Activity
 
             setOffsetGoalEnd();
         }
-
+        */
         updateDisplay();
     }
 
@@ -483,11 +482,11 @@ public class RingdroidEditActivity extends Activity
 
     public void markerFocus(MarkerView marker) {
         mKeyDown = false;
-        if (marker == mStartMarker) {
+        /*if (marker == mStartMarker) {
             setOffsetGoalStartNoUpdate();
         } else {
             setOffsetGoalEndNoUpdate();
-        }
+        }*/
 
         // Delay updaing the display because if this focus was in
         // response to a touch event, we want to receive the touch
@@ -541,10 +540,10 @@ public class RingdroidEditActivity extends Activity
         mMarkerTopOffset = (int)(10 * mDensity);
         mMarkerBottomOffset = (int)(10 * mDensity);
 
-        mStartText = (TextView)findViewById(R.id.starttext);
+        /*mStartText = (TextView)findViewById(R.id.starttext);
         mStartText.addTextChangedListener(mTextWatcher);
         mEndText = (TextView)findViewById(R.id.endtext);
-        mEndText.addTextChangedListener(mTextWatcher);
+        mEndText.addTextChangedListener(mTextWatcher);*/
 
         mPlayButton = (ImageButton)findViewById(R.id.play);
         mPlayButton.setOnClickListener(mPlayListener);
@@ -553,18 +552,19 @@ public class RingdroidEditActivity extends Activity
         mFfwdButton = (ImageButton)findViewById(R.id.ffwd);
         mFfwdButton.setOnClickListener(mFfwdListener);
 
+        /*
         TextView markStartButton = (TextView) findViewById(R.id.mark_start);
         markStartButton.setOnClickListener(mMarkStartListener);
         TextView markEndButton = (TextView) findViewById(R.id.mark_end);
-        markEndButton.setOnClickListener(mMarkEndListener);
+        markEndButton.setOnClickListener(mMarkEndListener);*/
 
         enableDisableButtons();
 
         mWaveformView = (WaveformView)findViewById(R.id.waveform);
         mWaveformView.setListener(this);
 
-        mInfo = (TextView)findViewById(R.id.info);
-        mInfo.setText(mCaption);
+        /*mInfo = (TextView)findViewById(R.id.info);
+        mInfo.setText(mCaption);*/
 
         mMaxPos = 0;
         mLastDisplayedStartPos = -1;
@@ -576,18 +576,18 @@ public class RingdroidEditActivity extends Activity
             mMaxPos = mWaveformView.maxPos();
         }
 
-        mStartMarker = (MarkerView)findViewById(R.id.startmarker);
+        /*mStartMarker = (MarkerView)findViewById(R.id.startmarker);
         mStartMarker.setListener(this);
         mStartMarker.setAlpha(1f);
         mStartMarker.setFocusable(true);
-        mStartMarker.setFocusableInTouchMode(true);
+        mStartMarker.setFocusableInTouchMode(true);*/
         mStartVisible = true;
 
-        mEndMarker = (MarkerView)findViewById(R.id.endmarker);
+        /*mEndMarker = (MarkerView)findViewById(R.id.endmarker);
         mEndMarker.setListener(this);
         mEndMarker.setAlpha(1f);
         mEndMarker.setFocusable(true);
-        mEndMarker.setFocusableInTouchMode(true);
+        mEndMarker.setFocusableInTouchMode(true);*/
         mEndVisible = true;
 
         updateDisplay();
@@ -671,7 +671,7 @@ public class RingdroidEditActivity extends Activity
                     mInfoContent = e.toString();
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            mInfo.setText(mInfoContent);
+                            //mInfo.setText(mInfoContent);
                         }
                     });
 
@@ -777,7 +777,7 @@ public class RingdroidEditActivity extends Activity
                     mInfoContent = e.toString();
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            mInfo.setText(mInfoContent);
+                            //mInfo.setText(mInfoContent);
                         }
                     });
 
@@ -828,7 +828,7 @@ public class RingdroidEditActivity extends Activity
             mSoundFile.getAvgBitrateKbps() + " kbps, " +
             formatTime(mMaxPos) + " " +
             getResources().getString(R.string.time_seconds);
-        mInfo.setText(mCaption);
+        //mInfo.setText(mCaption);
 
         updateDisplay();
     }
@@ -886,10 +886,10 @@ public class RingdroidEditActivity extends Activity
             }
         }
 
-        mWaveformView.setParameters(mStartPos, mEndPos, mOffset);
+        mWaveformView.setParameters(mStartPos, mMaxPos, mOffset);
         mWaveformView.invalidate();
 
-        mStartMarker.setContentDescription(
+        /*mStartMarker.setContentDescription(
             getResources().getText(R.string.start_marker) + " " +
             formatTime(mStartPos));
         mEndMarker.setContentDescription(
@@ -952,15 +952,15 @@ public class RingdroidEditActivity extends Activity
             mWaveformView.getMeasuredHeight() - mEndMarker.getHeight() - mMarkerBottomOffset,
             -mStartMarker.getWidth(),
             -mStartMarker.getHeight());
-        mEndMarker.setLayoutParams(params);
+        mEndMarker.setLayoutParams(params);*/
     }
 
     private Runnable mTimerRunnable = new Runnable() {
             public void run() {
                 // Updating an EditText is slow on Android.  Make sure
                 // we only do the update if the text has actually changed.
-                if (mStartPos != mLastDisplayedStartPos &&
-                    !mStartText.hasFocus()) {
+               /* if (mStartPos != mLastDisplayedStartPos &&
+                   !mStartText.hasFocus()) {
                     mStartText.setText(formatTime(mStartPos));
                     mLastDisplayedStartPos = mStartPos;
                 }
@@ -970,7 +970,7 @@ public class RingdroidEditActivity extends Activity
                     mEndText.setText(formatTime(mEndPos));
                     mLastDisplayedEndPos = mEndPos;
                 }
-
+                */
                 mHandler.postDelayed(mTimerRunnable, 100);
             }
         };
@@ -1079,13 +1079,13 @@ public class RingdroidEditActivity extends Activity
 
         try {
             mPlayStartMsec = mWaveformView.pixelsToMillisecs(startPosition);
-            if (startPosition < mStartPos) {
+            /*if (startPosition < mStartPos) {
                 mPlayEndMsec = mWaveformView.pixelsToMillisecs(mStartPos);
-            } else if (startPosition > mEndPos) {
+            } else if (startPosition > mEndPos) {*/
                 mPlayEndMsec = mWaveformView.pixelsToMillisecs(mMaxPos);
-            } else {
+            /*} else {
                 mPlayEndMsec = mWaveformView.pixelsToMillisecs(mEndPos);
-            }
+            }*/
             mPlayer.setOnCompletionListener(new SamplePlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion() {
@@ -1279,7 +1279,7 @@ public class RingdroidEditActivity extends Activity
                         mInfoContent = e.toString();
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                mInfo.setText(mInfoContent);
+                                //mInfo.setText(mInfoContent);
                             }
                         });
 
@@ -1322,7 +1322,7 @@ public class RingdroidEditActivity extends Activity
                     mInfoContent = e.toString();
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            mInfo.setText(mInfoContent);
+                            //mInfo.setText(mInfoContent);
                         }
                     });
 
@@ -1530,8 +1530,8 @@ public class RingdroidEditActivity extends Activity
                         newPos = mPlayStartMsec;
                     mPlayer.seekTo(newPos);
                 } else {
-                    mStartMarker.requestFocus();
-                    markerFocus(mStartMarker);
+                    /*mStartMarker.requestFocus();
+                    markerFocus(mStartMarker);*/
                 }
             }
         };
@@ -1544,8 +1544,8 @@ public class RingdroidEditActivity extends Activity
                         newPos = mPlayEndMsec;
                     mPlayer.seekTo(newPos);
                 } else {
-                    mEndMarker.requestFocus();
-                    markerFocus(mEndMarker);
+                    /*mEndMarker.requestFocus();
+                    markerFocus(mEndMarker);*/
                 }
             }
         };
@@ -1581,7 +1581,7 @@ public class RingdroidEditActivity extends Activity
             }
 
             public void afterTextChanged(Editable s) {
-                if (mStartText.hasFocus()) {
+                /*if (mStartText.hasFocus()) {
                     try {
                         mStartPos = mWaveformView.secondsToPixels(
                             Double.parseDouble(
@@ -1598,7 +1598,7 @@ public class RingdroidEditActivity extends Activity
                         updateDisplay();
                     } catch (NumberFormatException e) {
                     }
-                }
+                }*/
             }
         };
 

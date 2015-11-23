@@ -142,7 +142,7 @@ public final class SimpleAudioController implements AudioController {
             final int itemsRead = mAudioBuffer.peek(pendingFrames);
 
             float[] metrics = MusicAlgorithm.getMetrics(pendingFrames);
-            Log.d("Metrics", metrics[0] + " , " + metrics[1] + " , " + metrics[2] + " , " + metrics[3]);
+            Log.d("Metrics", metrics[0] + " , " + metrics[1] + " , " + metrics[2] + " , " + metrics[3]+ ","+ metrics[4]);
             //here
             if (itemsRead > 0) {
                 synchronized (mMutex) {
