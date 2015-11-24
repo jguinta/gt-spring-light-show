@@ -1,7 +1,5 @@
 package com.musicalgorithm;
 
-import ddf.minim.analysis.BeatDetect;
-
 /**
  * Created by yvinogradov on 11/4/2015.
  */
@@ -9,22 +7,16 @@ public class MusicAlgorithm {
 
     public static float[] getMetrics(short[] inputStream) {
         float[] mag = new float[inputStream.length / 2];
-        float[] floatStream = new float[inputStream.length];
         float average = 0f;
         int j = 0;
         for (int i = 0; i < inputStream.length - 1; i += 2) {
             mag[j] = (float) (Math.abs(inputStream[i]) + Math.abs(inputStream[i + 1])) / 2;
-            floatStream[i] = (float) inputStream[i];
-            floatStream[i + 1] = (float) inputStream[i + 1];
             average += mag[j];
             j++;
         }
-        BeatDetect beatDetect = new BeatDetect();
-        beatDetect.detect(floatStream);
-
         average /= mag.length;
         float[] metrics = getColorsAndOpacity(average);
-        metrics[4] = beatDetect.isOnset() ? 1f : 0f;
+
         return metrics;
     }
 
