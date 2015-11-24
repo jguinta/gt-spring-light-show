@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.joe.mbls.spotify.MainActivity;
-import com.joe.artnet.ConnectReceiverActivity;
 import com.ringdroid.RingdroidSelectActivity;
 
 /**
@@ -30,14 +29,14 @@ public class MainMenu extends Activity{
             }
         });
 
-        Button artnetButton = (Button) findViewById(R.id.artnet_connect_button);
+        /*Button artnetButton = (Button) findViewById(R.id.artnet_connect_button);
         artnetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ConnectReceiverActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         Button googlePlayer = (Button) findViewById(R.id.googlePlayer);
         googlePlayer.setOnClickListener(new View.OnClickListener() {
