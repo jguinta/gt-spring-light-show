@@ -13,10 +13,12 @@ import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.Spotify;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.PlaylistSimple;
+import kaaes.spotify.webapi.android.models.SavedTrack;
 
 public class SpotifyDisplayMyPlaylists extends Activity {
 
@@ -85,8 +87,22 @@ public class SpotifyDisplayMyPlaylists extends Activity {
 
         protected String doInBackground(Void... urls) {
 
+            HashMap<String, Object> map = new HashMap();
+            int i = 0;
+            map.put("limit", 50);
+            map.put("offset", i);
+
+
             Pager<PlaylistSimple> playlists = spotifyService.getPlaylists(userId);
             items.addAll(playlists.items);
+
+            while (playlists.next != null) {
+                i += 50;
+                map.put("offset", i);
+                playlists = spotifyService.getPlaylists(userId, map);
+                items.addAll(playlists.items);
+            }
+
             return "success";
         }
 

@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.R;
+import com.joe.artnet.DmxPacket;
+import com.joe.artnet.SimpleDmxLight;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
@@ -31,6 +33,8 @@ public class MainActivity extends Activity implements
     private static final String CLIENT_ID = "7229dfb6591f476bacb0f4cd936c7061";
     // TODO: Replace with your redirect URI
     private static final String REDIRECT_URI = "spring-light-show-login://callback";
+
+    private static final int PLAY_SONG_RESULT = 1;
 
     private Player mPlayer;
     private SpotifyService spotifyService;
@@ -121,7 +125,7 @@ public class MainActivity extends Activity implements
         btnSkipPrevious.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPlayer.skipToNext();
+                mPlayer.skipToPrevious();
             }
         });
 
@@ -186,7 +190,17 @@ public class MainActivity extends Activity implements
                 spotifyApi.setAccessToken(playerConfig.oauthToken);
                 spotifyService = spotifyApi.getService();
 
-                SimpleAudioController audioController = new SimpleAudioController();
+
+                // Default DmxPacket
+                DmxPacket dmxPacket = new DmxPacket();
+
+                // Add all lights here
+                SimpleDmxLight light = new SimpleDmxLight();
+                dmxPacket.addLight(light);
+
+
+                SimpleAudioController audioController = new SimpleAudioController(dmxPacket);
+                audioController.establishConnection();
                 Player.Builder builder = new Player.Builder(playerConfig);
                 builder.setAudioController(audioController);
 
@@ -244,6 +258,10 @@ public class MainActivity extends Activity implements
     @Override
     public void onPlaybackEvent(EventType eventType, PlayerState playerState) {
         Log.d("MainActivity", "Playback event received: " + eventType.name());
+        if (eventType.name().equals("PLAY")) {
+            btnPlayPause.setTag("pause");
+            btnPlayPause.setImageResource(R.drawable.pause);
+        }
     }
 
 
@@ -251,6 +269,7 @@ public class MainActivity extends Activity implements
     public void onPlaybackError(ErrorType errorType, String errorDetails) {
         Log.d("MainActivity", "Playback error received: " + errorType.name());
     }
+
 
     @Override
     protected void onDestroy() {

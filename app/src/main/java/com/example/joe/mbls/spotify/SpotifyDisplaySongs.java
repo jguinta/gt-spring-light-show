@@ -9,15 +9,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.R;
 import com.spotify.sdk.android.player.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;
+import kaaes.spotify.webapi.android.models.PlaylistSimple;
 import kaaes.spotify.webapi.android.models.PlaylistTrack;
 import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.TrackSimple;
@@ -30,6 +33,7 @@ public class SpotifyDisplaySongs extends Activity  {
     private ArrayList<TrackSimple> tracks = new ArrayList<TrackSimple>();
     private Player mPlayer;
     private String userId;
+    private ImageButton btnPlayPause;
 
     // Request code that will be used to verify if the result comes from correct activity
     // Can be any integer
@@ -82,7 +86,8 @@ public class SpotifyDisplaySongs extends Activity  {
                 mPlayer.queue(track.uri);
                 return true;
             case R.id.track_play_now:
-                mPlayer.play(track.uri);
+                mPlayer.clearQueue();
+                mPlayer.queue(track.uri);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -113,11 +118,24 @@ public class SpotifyDisplaySongs extends Activity  {
         }
 
         protected String doInBackground(Void... urls) {
+            HashMap<String, Object> map = new HashMap();
+            int i = 0;
+            map.put("limit", 50);
+            map.put("offset", i);
+
 
             Log.d("display songs", "getting album tracks for " + album);
             Pager<Track> tracksPager = spotifyService.getAlbumTracks(album);
             //tracks = new ArrayList<Track>();
             tracks.addAll(tracksPager.items);
+
+            while (tracksPager.next != null) {
+                i += 50;
+                map.put("offset", i);
+                tracksPager = spotifyService.getAlbumTracks(album, map);
+                tracks.addAll(tracksPager.items);
+            }
+
             return "success";
         }
 
@@ -147,11 +165,26 @@ public class SpotifyDisplaySongs extends Activity  {
 
         protected String doInBackground(Void... urls) {
 
+            HashMap<String, Object> map = new HashMap();
+            int i = 0;
+            map.put("limit", 50);
+            map.put("offset", i);
+
 
             Pager<PlaylistTrack> tracksPager = spotifyService.getPlaylistTracks(owner, playlist);
             for (PlaylistTrack playlistTrack: tracksPager.items) {
                 tracks.add(playlistTrack.track);
             }
+
+            while (tracksPager.next != null) {
+                i += 50;
+                map.put("offset", i);
+                tracksPager = spotifyService.getPlaylistTracks(owner, playlist, map);
+                for (PlaylistTrack playlistTrack: tracksPager.items) {
+                    tracks.add(playlistTrack.track);
+                }
+            }
+
             return "success";
         }
 

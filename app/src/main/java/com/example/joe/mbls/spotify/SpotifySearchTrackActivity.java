@@ -53,7 +53,7 @@ public class SpotifySearchTrackActivity extends Activity implements
         registerForContextMenu(listView);
 
 
-        adapter = new SpotifyArrayAdapter<Track>(this, R.layout.track_row, tracks);
+        adapter = new SpotifyArrayAdapter<>(this, R.layout.track_row, tracks);
         listView.setAdapter(adapter);
 
         Button queryButton = (Button) findViewById(R.id.queryButton);
@@ -135,7 +135,6 @@ public class SpotifySearchTrackActivity extends Activity implements
 
 
             TracksPager tracksPager = spotifyService.searchTracks(song);
-            //tracks = new ArrayList<Track>();
             tracks.addAll(tracksPager.tracks.items);
             return "success";
         }

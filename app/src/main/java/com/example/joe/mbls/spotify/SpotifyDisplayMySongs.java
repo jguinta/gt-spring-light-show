@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.R;
@@ -18,10 +19,12 @@ import com.spotify.sdk.android.player.PlayerState;
 import com.spotify.sdk.android.player.Spotify;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.SavedTrack;
+import retrofit.http.QueryMap;
 
 public class SpotifyDisplayMySongs extends Activity implements
         PlayerNotificationCallback {
@@ -31,6 +34,7 @@ public class SpotifyDisplayMySongs extends Activity implements
     private SpotifyArrayAdapter adapter;
     private ArrayList<SavedTrack> tracks = new ArrayList<SavedTrack>();
     private Player mPlayer;
+    private ImageButton btnPlayPause;
 
     // Request code that will be used to verify if the result comes from correct activity
     // Can be any integer
@@ -52,7 +56,7 @@ public class SpotifyDisplayMySongs extends Activity implements
         registerForContextMenu(listView);
 
 
-        adapter = new SpotifyArrayAdapter<SavedTrack>(this, R.layout.track_row, tracks);
+        adapter = new SpotifyArrayAdapter<>(this, R.layout.track_row, tracks);
         listView.setAdapter(adapter);
 
         new RetrieveMySongsTask().execute();
@@ -73,10 +77,13 @@ public class SpotifyDisplayMySongs extends Activity implements
         switch(item.getItemId()) {
             case R.id.add_track_to_playlist:
                 mPlayer.queue(track.track.uri);
+                for (SavedTrack track1: tracks) Log.d("MYTRACKS BRO", track1.track.name);
                 Log.d("SpotifyDisplayMySongs", "Adding song to queue: " + track.track.id);
                 return true;
             case R.id.track_play_now:
-                mPlayer.play(track.track.uri);
+                mPlayer.clearQueue();
+                mPlayer.skipToNext();
+                mPlayer.queue(track.track.uri);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -103,8 +110,6 @@ public class SpotifyDisplayMySongs extends Activity implements
 
 
     class RetrieveMySongsTask extends AsyncTask<Void, Void, String> {
-        private String API_URL = "https://api.spotify.com/v1/search";
-        private Exception exception;
 
         protected void onPreExecute() {
             findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
@@ -113,8 +118,19 @@ public class SpotifyDisplayMySongs extends Activity implements
 
         protected String doInBackground(Void... urls) {
 
-            Pager<SavedTrack> tracksPager = spotifyService.getMySavedTracks();
+            HashMap<String, Object> map = new HashMap();
+            int i = 0;
+            map.put("limit", 50);
+            map.put("offset", i);
+            Pager<SavedTrack> tracksPager = spotifyService.getMySavedTracks(map);
             tracks.addAll(tracksPager.items);
+            while (tracksPager.next != null) {
+
+                map.put("offset", i += 50);
+                tracksPager = spotifyService.getMySavedTracks(map);
+                tracks.addAll(tracksPager.items);
+            }
+
             return "success";
         }
 
