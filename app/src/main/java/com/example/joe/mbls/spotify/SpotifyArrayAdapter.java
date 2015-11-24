@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.R;
+import com.kure.musicplayer.model.Playlist;
 
 import java.util.List;
 
@@ -37,25 +38,37 @@ public class SpotifyArrayAdapter<T> extends ArrayAdapter<T> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View rowView = inflater.inflate(R.layout.track_row, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.rowTextView);
+        TextView title = (TextView) rowView.findViewById(R.id.track_row_title);
+        TextView sub1 = (TextView) rowView.findViewById(R.id.track_row_sub1);
+        TextView sub2 = (TextView) rowView.findViewById(R.id.track_row_sub2);
 
-        // Change icon based on name
         T item = getItem(position);
 
         if (item instanceof Track) {
-            textView.setText(((Track) item).name);
+            title.setText(((Track) item).name);
+            if (((Track) item).artists != null) sub1.setText(((Track) item).artists.get(0).name);
+            if (((Track) item).album != null) sub2.setText(((Track) item).album.name);
         } else if (item instanceof SavedTrack) {
-            textView.setText(((SavedTrack) item).track.name);
+            title.setText(((SavedTrack) item).track.name);
+            if (((SavedTrack) item).track.artists != null && ((SavedTrack) item).track.artists.size() > 0)
+            sub1.setText(((SavedTrack) item).track.artists.get(0).name);
+            if (((SavedTrack) item).track.album != null) sub2.setText(((SavedTrack) item).track.album.name);
         } else if (item instanceof Artist) {
-            textView.setText(((Artist) item).name);
+            title.setText(((Artist) item).name);
         } else if (item instanceof Album) {
-            textView.setText(((Album) item).name);
+            title.setText(((Album) item).name);
+            if (((Album) item).artists != null && ((Album) item).artists.size() > 0)
+                 sub1.setText(((Album) item).artists.get(0).name);
+            sub2.setText(((Album) item).release_date);
         } else if (item instanceof PlaylistSimple) {
-            textView.setText(((PlaylistSimple) item).name);
+            title.setText(((PlaylistSimple) item).name);
+            sub1.setText(((PlaylistSimple) item).owner.display_name);
         } else if (item instanceof TrackSimple) {
-            textView.setText(((TrackSimple) item).name);
+            title.setText(((TrackSimple) item).name);
+            if (((TrackSimple) item).artists != null && ((TrackSimple) item).artists.size() > 0)
+             sub1.setText(((TrackSimple) item).artists.get(0).name);
         } else if (item instanceof String) {
-            textView.setText((String) item);
+            title.setText((String) item);
         }
 
         return rowView;

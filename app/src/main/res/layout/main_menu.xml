@@ -20,7 +20,7 @@
         android:layout_marginTop="50dp" />
 
     <Button
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="5dp"
         android:drawableLeft="@drawable/ic_launcher"
         android:layout_width="245dp"
         android:layout_height="wrap_content"
@@ -34,7 +34,8 @@
         android:layout_height="wrap_content"
         android:text="Spotify"
         android:id="@+id/spotifyPlayer"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp" />
 
     <Button
         android:drawableLeft="@drawable/ic_spotify"
@@ -42,7 +43,8 @@
         android:layout_height="wrap_content"
         android:text="Artnet"
         android:id="@+id/artnet_connect_button"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp" />
 
     <Button
         android:drawableLeft="@drawable/ringdroidlogo"
@@ -50,5 +52,6 @@
         android:layout_height="wrap_content"
         android:text="RingoDroid"
         android:id="@+id/googlePlayer"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp" />
 </LinearLayout>

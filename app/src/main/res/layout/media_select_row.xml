@@ -80,7 +80,7 @@
 
     <ImageView android:id="@+id/row_options_button"
         android:src="@drawable/navigation_expand"
-        android:background="@drawable/button_options_bkgnd" 
+        android:background="#CAFF54"
         android:gravity="center_vertical"
         android:scaleType="center"
         android:layout_height="fill_parent"

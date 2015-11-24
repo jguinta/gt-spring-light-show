@@ -59,7 +59,7 @@ public class ConnectReceiverActivity extends Activity implements ArtNetDiscovery
 
         nodeIds.add("hi");
 
-        adapter = new ArrayAdapter<String>(this, R.layout.track_row, R.id.rowTextView, nodeIds);
+        adapter = new ArrayAdapter<>(this, R.layout.track_row, nodeIds);
         listView.setAdapter(adapter);
 
         new SearchAndSendArtnet().execute();

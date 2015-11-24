@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#000000">
 
       <ListView
           android:id="@+id/activity_now_playing_song_list"
@@ -30,19 +31,25 @@
                   android:id="@+id/activity_now_playing_skip_previous"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:src="@drawable/skip" />
+                  android:src="@drawable/skip"
+                  android:background="#CAFF54"
+                  android:layout_margin="5dp" />
               
               <ImageButton
                   android:id="@+id/activity_now_playing_play"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:src="@drawable/play" />
+                  android:src="@drawable/play"
+                  android:background="#CAFF54"
+                  android:layout_margin="5dp" />
               
               <ImageButton
                   android:id="@+id/activity_now_playing_skip_next"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:src="@drawable/skip" />
+                  android:src="@drawable/skip"
+                  android:background="#CAFF54"
+                  android:layout_margin="5dp" />
               
           </LinearLayout>
           

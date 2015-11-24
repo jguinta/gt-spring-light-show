@@ -34,6 +34,8 @@ public class MainActivity extends Activity implements
     // TODO: Replace with your redirect URI
     private static final String REDIRECT_URI = "spring-light-show-login://callback";
 
+    private static final int PLAY_SONG_RESULT = 1;
+
     private Player mPlayer;
     private SpotifyService spotifyService;
     private SpotifyApi spotifyApi;
@@ -123,7 +125,7 @@ public class MainActivity extends Activity implements
         btnSkipPrevious.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPlayer.skipToNext();
+                mPlayer.skipToPrevious();
             }
         });
 
@@ -256,6 +258,10 @@ public class MainActivity extends Activity implements
     @Override
     public void onPlaybackEvent(EventType eventType, PlayerState playerState) {
         Log.d("MainActivity", "Playback event received: " + eventType.name());
+        if (eventType.name().equals("PLAY")) {
+            btnPlayPause.setTag("pause");
+            btnPlayPause.setImageResource(R.drawable.pause);
+        }
     }
 
 
@@ -263,6 +269,7 @@ public class MainActivity extends Activity implements
     public void onPlaybackError(ErrorType errorType, String errorDetails) {
         Log.d("MainActivity", "Playback error received: " + errorType.name());
     }
+
 
     @Override
     protected void onDestroy() {
