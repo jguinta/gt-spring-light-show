@@ -60,105 +60,7 @@
         <activity android:name=".example.joe.mbls.spotify.SpotifyDisplaySongs"/>
         <activity android:name=".joe.artnet.ConnectReceiverActivity"/>
 
-        //Music Player
 
-        <activity
-            android:name=".kure.musicplayer.activities.ActivityMenuMain"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" >
-
-
-        </activity>
-
-        <activity
-            android:name=".kure.musicplayer.activities.ActivityMenuMusic"
-            android:label="@string/menu_main_music"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".kure.musicplayer.activities.ActivityMenuMain"
-            />
-
-        <activity
-            android:name=".kure.musicplayer.activities.ActivityMenuSettings"
-            android:label="@string/settings"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".kure.musicplayer.activities.ActivityMenuMain"
-            />
-
-        <activity
-            android:name=".kure.musicplayer.activities.ActivityMenuArtist"
-            android:label="@string/menu_music_artists"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".kure.musicplayer.activities.ActivityMenuMusic"
-            />
-
-        <activity
-            android:name=".kure.musicplayer.activities.ActivityMenuAlbum"
-            android:label="@string/menu_music_albums"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".kure.musicplayer.activities.ActivityMenuMusic"
-            />
-
-        <activity
-            android:name=".kure.musicplayer.activities.ActivityMenuGenre"
-            android:label="@string/menu_music_genres"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".kure.musicplayer.activities.ActivityMenuMusic"
-            />
-
-        <activity
-            android:name=".kure.musicplayer.activities.ActivityMenuYear"
-            android:label="@string/menu_music_years"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:parentActivityName="com.kure.musicplayer.activities.ActivityMenuMusic"
-            />
-
-        <activity
-            android:name=".kure.musicplayer.activities.ActivityMenuPlaylist"
-            android:label="@string/menu_music_playlists"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".kure.musicplayer.activities.ActivityMenuMusic"
-            />
-
-        <activity
-            android:name=".kure.musicplayer.activities.ActivityListSongs"
-            android:label="@string/songs"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
-
-        <activity
-            android:name=".kure.musicplayer.activities.XXX"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            />
-
-        <activity
-            android:name=".kure.musicplayer.activities.ActivityListAlbums"
-            android:label="@string/songs"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
-
-        <activity
-            android:name=".kure.musicplayer.activities.ActivityNowPlaying"
-            android:label="@string/now_playing"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
-
-        <activity
-            android:name=".kure.musicplayer.activities.ActivityQuit"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
 
 
         <activity android:name=".ringdroid.RingdroidSelectActivity"
@@ -191,24 +93,6 @@
             android:configChanges="orientation|keyboardHidden">
         </activity>
 
-        <service android:name=".kure.musicplayer.services.ServicePlayMusic" />
-        <service android:name=".kure.musicplayer.services.ServiceScrobbleMusic" />
-
-
-        <receiver android:name=".kure.musicplayer.NotificationMusic$NotificationPlayButtonHandler" />
-        <receiver android:name=".kure.musicplayer.NotificationMusic$NotificationSkipButtonHandler" />
-
-
-        <receiver android:name=".kure.musicplayer.services.ServicePlayMusic$ExternalBroadcastReceiver" >
-            <intent-filter>
-
-                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
-            </intent-filter>
-        </receiver>
 
 
         // Needed for LoginActivity to work

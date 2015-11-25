@@ -93,19 +93,19 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="spotify-web-api-android-0.1.1-" level="project" />
-    <orderEntry type="library" exported="" name="okio-1.2.0" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
-    <orderEntry type="library" exported="" name="okhttp-2.2.0" level="project" />
-    <orderEntry type="library" exported="" name="TarsosDSP-Android-2.3" level="project" />
-    <orderEntry type="library" exported="" name="retrofit-1.9.0" level="project" />
-    <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
-    <orderEntry type="library" exported="" name="minim" level="project" />
-    <orderEntry type="library" exported="" name="artnet4j-0001" level="project" />
-    <orderEntry type="library" exported="" name="appcompat-v7-21.0.3" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
-    <orderEntry type="library" exported="" name="processing-android-core" level="project" />
     <orderEntry type="library" exported="" name="spotify-player-1.0.0-beta10" level="project" />
+    <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
+    <orderEntry type="library" exported="" name="processing-android-core" level="project" />
+    <orderEntry type="library" exported="" name="spotify-web-api-android-0.1.1-" level="project" />
+    <orderEntry type="library" exported="" name="minim" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="spotify-auth-1.0.0-beta10" level="project" />
+    <orderEntry type="library" exported="" name="retrofit-1.9.0" level="project" />
+    <orderEntry type="library" exported="" name="appcompat-v7-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="artnet4j-0001" level="project" />
+    <orderEntry type="library" exported="" name="TarsosDSP-Android-2.3" level="project" />
+    <orderEntry type="library" exported="" name="okhttp-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="okio-1.2.0" level="project" />
   </component>
 </module>

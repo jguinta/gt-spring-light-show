@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.R;
-import com.kure.musicplayer.model.Playlist;
+
 
 import java.util.List;
 
