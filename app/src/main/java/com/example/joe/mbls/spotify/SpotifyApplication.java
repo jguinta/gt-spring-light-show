@@ -12,9 +12,9 @@ import kaaes.spotify.webapi.android.SpotifyService;
  */
 public class SpotifyApplication extends Application {
 
-    private SpotifyService spotifyService;
-    private Player mPlayer;
-    private String userId;
+    private SpotifyService spotifyService = null;
+    private Player mPlayer  = null;
+    private String userId  = null;
 
     public void setSpotifyService(SpotifyService spotifyService) {
         this.spotifyService = spotifyService;

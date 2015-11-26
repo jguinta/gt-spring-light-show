@@ -1,10 +1,15 @@
 package com.example.joe.mbls.spotify;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.MainMenu;
 import com.R;
 import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerNotificationCallback;
@@ -26,7 +32,7 @@ import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.TracksPager;
 
-public class SpotifySearchTrackActivity extends Activity implements
+public class SpotifySearchTrackActivity extends AppCompatActivity implements
         PlayerNotificationCallback, OnClickListener {
 
     private SpotifyService spotifyService;
@@ -43,6 +49,15 @@ public class SpotifySearchTrackActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_track);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+
+        setSupportActionBar(myToolbar);
+
+        // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar();
+        // Enable the Up button
+        ab.setDisplayHomeAsUpEnabled(true);
 
         SpotifyApplication spotifyApplication = ((SpotifyApplication) getApplicationContext());
         spotifyService = spotifyApplication.getSpotifyService();
@@ -64,6 +79,29 @@ public class SpotifySearchTrackActivity extends Activity implements
 
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar_spotify_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_home:
+                Intent intent = new Intent(this, MainMenu.class);
+              //  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                return true;
+            case R.id.spotify_go_home:
+                startActivity(new Intent(this, MainActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
@@ -79,7 +117,9 @@ public class SpotifySearchTrackActivity extends Activity implements
                 mPlayer.queue(track.uri);
                 return true;
             case R.id.track_play_now:
-                mPlayer.play(track.uri);
+                mPlayer.clearQueue();
+                mPlayer.skipToNext();
+                mPlayer.queue(track.uri);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -108,11 +148,7 @@ public class SpotifySearchTrackActivity extends Activity implements
         Log.d("MainActivity", "Playback error received: " + errorType.name());
     }
 
-    @Override
-    protected void onDestroy() {
-        Spotify.destroyPlayer(this);
-        super.onDestroy();
-    }
+
 
 
     class RetrieveSongTask extends AsyncTask<Void, Void, String> {

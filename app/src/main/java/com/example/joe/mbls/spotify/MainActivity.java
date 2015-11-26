@@ -4,41 +4,30 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.MainMenu;
 import com.R;
-import com.joe.artnet.DmxPacket;
-import com.joe.artnet.SimpleDmxLight;
-import com.spotify.sdk.android.authentication.AuthenticationClient;
-import com.spotify.sdk.android.authentication.AuthenticationRequest;
-import com.spotify.sdk.android.authentication.AuthenticationResponse;
-import com.spotify.sdk.android.player.Config;
-import com.spotify.sdk.android.player.ConnectionStateCallback;
 import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerNotificationCallback;
 import com.spotify.sdk.android.player.PlayerState;
-import com.spotify.sdk.android.player.Spotify;
+import com.spotify.sdk.android.player.PlayerStateCallback;
 
-import kaaes.spotify.webapi.android.SpotifyApi;
-import kaaes.spotify.webapi.android.SpotifyService;
+public class MainActivity extends AppCompatActivity implements PlayerNotificationCallback {
 
-public class MainActivity extends Activity implements
-        PlayerNotificationCallback, ConnectionStateCallback {
 
-    // TODO: Replace with your client ID
-    private static final String CLIENT_ID = "7229dfb6591f476bacb0f4cd936c7061";
-    // TODO: Replace with your redirect URI
-    private static final String REDIRECT_URI = "spring-light-show-login://callback";
-
-    private static final int PLAY_SONG_RESULT = 1;
 
     private Player mPlayer;
-    private SpotifyService spotifyService;
-    private SpotifyApi spotifyApi;
 
     private Button btnSearchTracks;
     private Button btnSearchArtists;
@@ -50,14 +39,26 @@ public class MainActivity extends Activity implements
     private ImageButton btnShuffle;
     private ImageButton btnRepeat;
 
-    // Request code that will be used to verify if the result comes from correct activity
-    // Can be any integer
-    private static final int REQUEST_CODE = 1337;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+
+        setSupportActionBar(myToolbar);
+
+        // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar();
+
+        // Enable the Up button
+        ab.setDisplayHomeAsUpEnabled(true);
+
+
+        mPlayer = ((SpotifyApplication) getApplication()).getPlayer();
+        mPlayer.addPlayerNotificationCallback(this);
+
 
         btnSearchTracks = (Button) findViewById(R.id.search_tracks);
         btnSearchTracks.setOnClickListener(new OnClickListener() {
@@ -166,128 +167,45 @@ public class MainActivity extends Activity implements
             }
         });
 
-        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
-                AuthenticationResponse.Type.TOKEN,
-                REDIRECT_URI);
-        builder.setScopes(new String[]{"user-read-private", "user-library-read", "playlist-read-private", "streaming"});
-        AuthenticationRequest request = builder.build();
 
-        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
-
-
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-
-        // Check if result comes from the correct activity
-        if (requestCode == REQUEST_CODE) {
-            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
-            if (response.getType() == AuthenticationResponse.Type.TOKEN) {
-                Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
-                SpotifyApplication spotifyApplication = ((SpotifyApplication)getApplicationContext());
-                spotifyApi = new SpotifyApi();
-                spotifyApi.setAccessToken(playerConfig.oauthToken);
-                spotifyService = spotifyApi.getService();
-
-
-                // Default DmxPacket
-                DmxPacket dmxPacket = new DmxPacket();
-
-                // Add all lights here
-                SimpleDmxLight light = new SimpleDmxLight();
-                dmxPacket.addLight(light);
-
-
-                SimpleAudioController audioController = new SimpleAudioController(dmxPacket);
-                audioController.establishConnection();
-                Player.Builder builder = new Player.Builder(playerConfig);
-                builder.setAudioController(audioController);
-
-
-
-               // mPlayer = Spotify.getPlayer(playerConfig, this, new Player.InitializationObserver() {
-                mPlayer = Spotify.getPlayer(builder, this, new Player.InitializationObserver() {
-                    @Override
-                    public void onInitialized(Player player) {
-                        mPlayer.addConnectionStateCallback(MainActivity.this);
-                        mPlayer.addPlayerNotificationCallback(MainActivity.this);
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        Log.e("MainActivity", "Could not initialize player: " + throwable.getMessage());
-                    }
-                });
-
-                spotifyApplication.setPlayer(mPlayer);
-                spotifyApplication.setSpotifyService(spotifyService);
-                new RetrieveUserIdTask().execute();
-
-
-            }
-        }
-    }
-
-
-    @Override
-    public void onLoggedIn() {
-        Log.d("MainActivity", "User logged in");
     }
 
     @Override
-    public void onLoggedOut() {
-        Log.d("MainActivity", "User logged out");
-    }
-
-    @Override
-    public void onLoginFailed(Throwable error) {
-        Log.d("MainActivity", "Login failed");
-    }
-
-    @Override
-    public void onTemporaryError() {
-        Log.d("MainActivity", "Temporary error occurred");
-    }
-
-    @Override
-    public void onConnectionMessage(String message) {
-        Log.d("MainActivity", "Received connection message: " + message);
-    }
-
-    @Override
-    public void onPlaybackEvent(EventType eventType, PlayerState playerState) {
-        Log.d("MainActivity", "Playback event received: " + eventType.name());
-        if (eventType.name().equals("PLAY")) {
+    public void onPlaybackEvent(PlayerNotificationCallback.EventType eventType, PlayerState playerState) {
+        if (playerState.playing) {
             btnPlayPause.setTag("pause");
             btnPlayPause.setImageResource(R.drawable.pause);
         }
+
     }
 
 
     @Override
-    public void onPlaybackError(ErrorType errorType, String errorDetails) {
+    public void onPlaybackError(PlayerNotificationCallback.ErrorType errorType, String errorDetails) {
         Log.d("MainActivity", "Playback error received: " + errorType.name());
     }
 
 
     @Override
-    protected void onDestroy() {
-        Spotify.destroyPlayer(this);
-        super.onDestroy();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar_spotify_main, menu);
+        return true;
     }
 
-
-    class RetrieveUserIdTask extends AsyncTask<Void, Void, String> {
-
-
-
-        protected String doInBackground(Void... urls) {
-            ((SpotifyApplication) getApplicationContext()).setUserId(spotifyService.getMe().id);
-            return null;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_home:
+                Intent intent = new Intent(this, MainMenu.class);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                return true;
+            case R.id.spotify_go_home:
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-
     }
+
 
 }
