@@ -4,10 +4,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.MainMenu;
 import com.R;
 import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.Spotify;
@@ -20,7 +28,7 @@ import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.PlaylistSimple;
 import kaaes.spotify.webapi.android.models.SavedTrack;
 
-public class SpotifyDisplayMyPlaylists extends Activity {
+public class SpotifyDisplayMyPlaylists extends AppCompatActivity {
 
     private SpotifyService spotifyService;
     private ListView listView;
@@ -40,13 +48,20 @@ public class SpotifyDisplayMyPlaylists extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_items_list);
 
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+
+        setSupportActionBar(myToolbar);
+
+        // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar();
+        // Enable the Up button
+        ab.setDisplayHomeAsUpEnabled(true);
         SpotifyApplication spotifyApplication = ((SpotifyApplication) getApplicationContext());
         spotifyService = spotifyApplication.getSpotifyService();
         mPlayer = spotifyApplication.getPlayer();
         userId = spotifyApplication.getUserId();
 
         listView = (ListView) findViewById(R.id.responseView);
-
         registerForContextMenu(listView);
 
 
@@ -56,7 +71,7 @@ public class SpotifyDisplayMyPlaylists extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PlaylistSimple playlist = (PlaylistSimple) adapter.getItem(position);
-                Intent intent = new Intent(getApplicationContext(), SpotifyDisplaySongs.class);
+                Intent intent = new Intent(getApplicationContext(), SpotifyDisplayMyPlaylistSongs.class);
                 intent.putExtra("playlist_owner", playlist.owner.id);
                 intent.putExtra("playlist", playlist.id);
                 startActivity(intent);
@@ -67,13 +82,29 @@ public class SpotifyDisplayMyPlaylists extends Activity {
         new RetrieveMyPlaylistsTask().execute();
     }
 
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar_spotify_main, menu);
+        return true;
+    }
 
     @Override
-    protected void onDestroy() {
-        Spotify.destroyPlayer(this);
-        super.onDestroy();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_home:
+                Intent intent = new Intent(this, MainMenu.class);
+             //   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                return true;
+            case R.id.spotify_go_home:
+                startActivity(new Intent(this, MainActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
+
 
 
     class RetrieveMyPlaylistsTask extends AsyncTask<Void, Void, String> {

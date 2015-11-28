@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.example.joe.musicdrivenbackyardlightshow"
         minSdkVersion 18
-        targetSdkVersion 23
+        targetSdkVersion 18
         versionCode 1
         versionName "1.0"
     }
@@ -37,9 +37,8 @@ dependencies {
     // This library handles music playback
     compile 'com.spotify.sdk:spotify-player:1.0.0-beta10@aar'
 
-    // All other dependencies for your app should also be here:
-    compile 'com.android.support:appcompat-v7:21.0.3'
 
+    compile "com.android.support:appcompat-v7:22.1.0"
 
     compile(name:'spotify-web-api-android-0.1.1', ext:'aar')
 
