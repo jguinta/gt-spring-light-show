@@ -664,6 +664,8 @@ public class RingdroidEditActivity extends Activity
                         mHandler.post(runnable);
                         return;
                     }
+                    //TODO: Make sure DMX works(Establish Connection with Router)
+                    mPlayer.establishConnection();
                     mPlayer = new SamplePlayer(mSoundFile);
                 } catch (final Exception e) {
                     mProgressDialog.dismiss();
@@ -1086,6 +1088,8 @@ public class RingdroidEditActivity extends Activity
             /*} else {
                 mPlayEndMsec = mWaveformView.pixelsToMillisecs(mEndPos);
             }*/
+            //TODO: figure out which one works
+            mPlayer.establishConnection();
             mPlayer.setOnCompletionListener(new SamplePlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion() {
