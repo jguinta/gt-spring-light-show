@@ -1,6 +1,5 @@
 package com.example.joe.mbls.spotify;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -50,6 +49,7 @@ public class SpotifySearchArtistActivity extends AppCompatActivity implements On
 
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
+        ab.setTitle("Search Artists");
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
 
@@ -67,6 +67,7 @@ public class SpotifySearchArtistActivity extends AppCompatActivity implements On
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Artist artist = (Artist) parent.getItemAtPosition(position);
                 Intent artistIntent = new Intent(getApplicationContext(), SpotifyDisplayAlbums.class);
+                artistIntent.putExtra("artist_name", artist.name);
                 artistIntent.putExtra("artist", artist.id);
                 startActivity(artistIntent);
 
@@ -107,7 +108,7 @@ public class SpotifySearchArtistActivity extends AppCompatActivity implements On
                 startActivity(intent);
                 return true;
             case R.id.spotify_go_home:
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, SpotifyMain.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

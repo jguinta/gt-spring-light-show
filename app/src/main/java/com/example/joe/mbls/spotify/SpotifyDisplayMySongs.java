@@ -1,13 +1,11 @@
 package com.example.joe.mbls.spotify;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,9 +18,6 @@ import android.widget.ListView;
 import com.MainMenu;
 import com.R;
 import com.spotify.sdk.android.player.Player;
-import com.spotify.sdk.android.player.PlayerNotificationCallback;
-import com.spotify.sdk.android.player.PlayerState;
-import com.spotify.sdk.android.player.Spotify;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +25,6 @@ import java.util.HashMap;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.SavedTrack;
-import retrofit.http.QueryMap;
 
 public class SpotifyDisplayMySongs extends AppCompatActivity {
 
@@ -58,6 +52,7 @@ public class SpotifyDisplayMySongs extends AppCompatActivity {
 
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
+        ab.setTitle("My Songs");
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
 
@@ -92,7 +87,7 @@ public class SpotifyDisplayMySongs extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.spotify_go_home:
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, SpotifyMain.class));
             default:
                 return super.onOptionsItemSelected(item);
         }

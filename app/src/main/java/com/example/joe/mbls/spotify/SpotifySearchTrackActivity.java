@@ -1,6 +1,5 @@
 package com.example.joe.mbls.spotify;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,7 +23,6 @@ import com.R;
 import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerNotificationCallback;
 import com.spotify.sdk.android.player.PlayerState;
-import com.spotify.sdk.android.player.Spotify;
 
 import java.util.ArrayList;
 
@@ -56,6 +54,7 @@ public class SpotifySearchTrackActivity extends AppCompatActivity implements
 
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
+        ab.setTitle("Search Tracks");
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
 
@@ -94,7 +93,7 @@ public class SpotifySearchTrackActivity extends AppCompatActivity implements
                 startActivity(intent);
                 return true;
             case R.id.spotify_go_home:
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, SpotifyMain.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -140,12 +139,12 @@ public class SpotifySearchTrackActivity extends AppCompatActivity implements
 
     @Override
     public void onPlaybackEvent(EventType eventType, PlayerState playerState) {
-        Log.d("MainActivity", "Playback event received: " + eventType.name());
+        Log.d("SpotifyMain", "Playback event received: " + eventType.name());
     }
 
     @Override
     public void onPlaybackError(ErrorType errorType, String errorDetails) {
-        Log.d("MainActivity", "Playback error received: " + errorType.name());
+        Log.d("SpotifyMain", "Playback error received: " + errorType.name());
     }
 
 

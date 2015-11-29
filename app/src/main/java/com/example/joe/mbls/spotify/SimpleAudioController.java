@@ -65,8 +65,8 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
         };
         nThread.start();
 
-        final AnalysisThread analysisThread = new AnalysisThread();
-        analysisThread.start();
+        //final AnalysisThread analysisThread = new AnalysisThread();
+        //analysisThread.start();
 
     }
 
@@ -92,7 +92,7 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
         }
 
 
-        raw.add(new ShortWrapper(frames, numberOfFrames));
+       // raw.add(new ShortWrapper(frames, numberOfFrames));
 
 
 
@@ -198,7 +198,7 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
             final int itemsRead = mAudioBuffer.peek(pendingFrames);
             if (itemsRead != 0 && itemsRead != 4096) Log.d("SAC", "ITEMS READ: " + itemsRead);
             if (itemsRead > 0) {
-               /* float[] x = MusicAlgorithm.getMetrics(pendingFrames);
+                float[] x = MusicAlgorithm.getMetrics(pendingFrames);
 
                 DmxPacket result = new DmxPacket(defaultPacket);
                 result.setRed((byte) x[0]);
@@ -209,7 +209,7 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
                    dmxPackets.put(result);
                } catch (Exception e) {
                    System.out.print("interrupt");
-               }*/
+               }
                 new SendDmxPacket().execute();
                 synchronized (mMutex) {
                     pfWriteToTrack(pendingFrames, itemsRead);

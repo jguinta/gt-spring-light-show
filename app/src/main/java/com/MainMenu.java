@@ -9,11 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.joe.mbls.spotify.MainActivity;
+import com.example.joe.mbls.spotify.SpotifyMain;
 import com.example.joe.mbls.spotify.SimpleAudioController;
 import com.example.joe.mbls.spotify.SpotifyApplication;
 import com.joe.artnet.DmxPacket;
 import com.joe.artnet.SimpleDmxLight;
+import com.joe.artnet.StripLight;
 import com.ringdroid.RingdroidSelectActivity;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
@@ -67,7 +68,7 @@ public class MainMenu extends Activity implements
 
                     AuthenticationClient.openLoginActivity(MainMenu.this, REQUEST_CODE, request);
                 } else {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), SpotifyMain.class);
                     startActivity(intent);
                 }
 
@@ -109,6 +110,9 @@ public class MainMenu extends Activity implements
                 SimpleDmxLight light = new SimpleDmxLight();
                 dmxPacket.addLight(light);
 
+                StripLight stripLight = new StripLight();
+                dmxPacket.addLight(stripLight);
+
 
                 SimpleAudioController audioController = new SimpleAudioController(dmxPacket);
                 audioController.establishConnection();
@@ -127,7 +131,7 @@ public class MainMenu extends Activity implements
 
                     @Override
                     public void onError(Throwable throwable) {
-                        Log.e("MainActivity", "Could not initialize player: " + throwable.getMessage());
+                        Log.e("SpotifyMain", "Could not initialize player: " + throwable.getMessage());
                     }
                 });
 
@@ -135,7 +139,7 @@ public class MainMenu extends Activity implements
                 spotifyApplication.setSpotifyService(spotifyService);
                 new RetrieveUserIdTask().execute();
 
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), SpotifyMain.class));
 
 
             }
@@ -147,27 +151,27 @@ public class MainMenu extends Activity implements
 
     @Override
     public void onLoggedIn() {
-        Log.d("MainActivity", "User logged in");
+        Log.d("SpotifyMain", "User logged in");
     }
 
     @Override
     public void onLoggedOut() {
-        Log.d("MainActivity", "User logged out");
+        Log.d("SpotifyMain", "User logged out");
     }
 
     @Override
     public void onLoginFailed(Throwable error) {
-        Log.d("MainActivity", "Login failed");
+        Log.d("SpotifyMain", "Login failed");
     }
 
     @Override
     public void onTemporaryError() {
-        Log.d("MainActivity", "Temporary error occurred");
+        Log.d("SpotifyMain", "Temporary error occurred");
     }
 
     @Override
     public void onConnectionMessage(String message) {
-        Log.d("MainActivity", "Received connection message: " + message);
+        Log.d("SpotifyMain", "Received connection message: " + message);
     }
 
     @Override
@@ -178,7 +182,7 @@ public class MainMenu extends Activity implements
 
     @Override
     public void onPlaybackError(PlayerNotificationCallback.ErrorType errorType, String errorDetails) {
-        Log.d("MainActivity", "Playback error received: " + errorType.name());
+        Log.d("SpotifyMain", "Playback error received: " + errorType.name());
     }
 
 

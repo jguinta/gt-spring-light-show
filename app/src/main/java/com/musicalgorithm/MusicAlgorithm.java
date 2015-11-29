@@ -1,5 +1,7 @@
 package com.musicalgorithm;
 
+import android.util.Log;
+
 /**
  * Created by yvinogradov on 11/4/2015.
  */
@@ -18,7 +20,29 @@ public class MusicAlgorithm {
         float[] metrics = getColorsAndOpacity(average);
 
         return metrics;
-    }
+    }/*
+
+    public static float[] getMetrics(short[] inputStream) {
+        int lastBeat = 0;
+        double bpm;
+        float[] mag = new float[inputStream.length / 2];
+        float average = 0f;
+        int j = 0;
+        for (int i = 0; i < inputStream.length - 1; i += 2) {
+            mag[j] = (float) (Math.abs(inputStream[i]) + Math.abs(inputStream[i + 1])) / 2;
+            if((j > 0) && (mag[j] - mag[j - 1]) > 8000) {
+                bpm = 60 / ((double) ((j - lastBeat) / 44100));
+                lastBeat = j;
+                Log.e("MUSICALGORITHM", "Last beat was sample " + lastBeat + " and bpm is " + bpm);
+            }
+            average += mag[j];
+            j++;
+        }
+        average /= mag.length;
+        float[] metrics = getColorsAndOpacity(average);
+
+        return metrics;
+    }*/
 
     public static float[] getColorsAndOpacity(float amplitude) {
         float[] colors = new float[5];
@@ -83,11 +107,11 @@ public class MusicAlgorithm {
             colors[0] = 255 * amplitude / 14000;
             colors[1] = 228 * amplitude / 14000;
             colors[2] = 140 * amplitude / 14000;
-        } else if (amplitude <= 15000) {
+        } /*else if (amplitude <= 15000) {
             colors[0] = 255 * amplitude / 15000;
             colors[1] = 140 * amplitude / 15000;
             colors[2] = 140 * amplitude/15000;
-        } else {
+        } */else {
             colors[0] = 255;
             colors[1] = 255;
             colors[2] = 255;

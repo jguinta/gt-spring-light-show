@@ -1,8 +1,6 @@
 package com.example.joe.mbls.spotify;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +21,7 @@ import com.spotify.sdk.android.player.PlayerNotificationCallback;
 import com.spotify.sdk.android.player.PlayerState;
 import com.spotify.sdk.android.player.PlayerStateCallback;
 
-public class MainActivity extends AppCompatActivity implements PlayerNotificationCallback {
+public class SpotifyMain extends AppCompatActivity implements PlayerNotificationCallback, PlayerStateCallback {
 
 
 
@@ -35,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements PlayerNotificatio
     private Button btnMyPlaylists;
     private ImageButton btnPlayPause;
     private ImageButton btnSkipNext;
-    private ImageButton btnSkipPrevious;
     private ImageButton btnShuffle;
     private ImageButton btnRepeat;
 
@@ -51,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements PlayerNotificatio
 
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
+        ab.setTitle("Spotify Home");
 
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
@@ -97,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements PlayerNotificatio
         });
 
         btnPlayPause = (ImageButton) findViewById(R.id.activity_now_playing_play);
-        btnPlayPause.setTag("pause");
+        btnPlayPause.setTag("play");
         btnPlayPause.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements PlayerNotificatio
             }
 
         });
+        mPlayer.getPlayerState(this);
 
         btnSkipNext = (ImageButton) findViewById(R.id.activity_now_playing_skip_next);
         btnSkipNext.setOnClickListener(new OnClickListener() {
@@ -122,13 +121,6 @@ public class MainActivity extends AppCompatActivity implements PlayerNotificatio
             }
         });
 
-        btnSkipPrevious = (ImageButton) findViewById(R.id.activity_now_playing_skip_previous);
-        btnSkipPrevious.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPlayer.skipToPrevious();
-            }
-        });
 
         btnRepeat = (ImageButton) findViewById(R.id.activity_now_playing_repeat);
         btnRepeat.setTag("false");
@@ -148,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements PlayerNotificatio
 
             }
         });
+
 
         btnShuffle = (ImageButton) findViewById(R.id.activity_now_playing_shuffle);
         btnShuffle.setTag("false");
@@ -182,9 +175,16 @@ public class MainActivity extends AppCompatActivity implements PlayerNotificatio
 
     @Override
     public void onPlaybackError(PlayerNotificationCallback.ErrorType errorType, String errorDetails) {
-        Log.d("MainActivity", "Playback error received: " + errorType.name());
+        Log.d("SpotifyMain", "Playback error received: " + errorType.name());
     }
 
+    @Override
+    public void onPlayerState(PlayerState state) {
+        if (state.playing) {
+            btnPlayPause.setTag("pause");
+            btnPlayPause.setImageResource(R.drawable.pause);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
