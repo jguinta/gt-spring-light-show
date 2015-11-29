@@ -19,11 +19,22 @@ package com.ringdroid;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.os.AsyncTask;
 import android.util.Log;
 
+import com.joe.artnet.DmxPacket;
+import com.joe.artnet.ShortWrapper;
+import com.joe.artnet.SimpleDmxLight;
+import com.musicalgorithm.MusicAlgorithm;
 import com.ringdroid.soundfile.SoundFile;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.nio.ShortBuffer;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 class SamplePlayer {
     public interface OnCompletionListener {
@@ -40,13 +51,23 @@ class SamplePlayer {
     private Thread mPlayThread;
     private boolean mKeepPlaying;
     private OnCompletionListener mListener;
+    //DMX packet stuff
+    private DatagramSocket socket;
+    private  DmxPacket defaultPacket= new DmxPacket();
+    private BlockingQueue<DmxPacket> dmxPackets = new LinkedBlockingQueue<>();
+    private BlockingQueue<ShortWrapper> raw = new LinkedBlockingQueue<>();
+    private InetAddress inetAddress;
 
-    public SamplePlayer(ShortBuffer samples, int sampleRate, int channels, int numSamples) {
+    public SamplePlayer(ShortBuffer samples, int sampleRate, int channels, int numSamples ) {
         mSamples = samples;
         mSampleRate = sampleRate;
         mChannels = channels;
         mNumSamples = numSamples;
         mPlaybackStart = 0;
+
+        //TODO: this feels hacky
+        SimpleDmxLight light = new SimpleDmxLight();
+        defaultPacket.addLight(light);
 
         int bufferSize = AudioTrack.getMinBufferSize(
                 mSampleRate,
@@ -85,6 +106,18 @@ class SamplePlayer {
         mKeepPlaying = true;
         mListener = null;
     }
+    //DMX Connection
+    public void establishConnection() {
+        try {
+
+            socket = new DatagramSocket(null);
+            socket.setReuseAddress(true);
+            socket.bind(new InetSocketAddress(6454));
+            inetAddress = InetAddress.getByName("255.255.255.255");
+        } catch (Exception e) {
+            System.out.print(e);
+        }
+    }
 
     public SamplePlayer(SoundFile sf) {
         this(sf.getSamples(), sf.getSampleRate(), sf.getChannels(), sf.getNumSamples());
@@ -109,9 +142,7 @@ class SamplePlayer {
         mKeepPlaying = true;
         mAudioTrack.flush();
         mAudioTrack.play();
-        for(int i=0; i< mBuffer.length;i++){
-            Log.d("Current value", Short.toString(mBuffer[i]));
-        }
+
         // Setting thread feeding the audio samples to the audio hardware.
         // (Assumes mChannels = 1 or 2).
         mPlayThread = new Thread () {
@@ -129,6 +160,22 @@ class SamplePlayer {
                         }
                         mSamples.get(mBuffer, 0, numSamplesLeft);
                     }
+                    // Computations here
+                    float[] x = MusicAlgorithm.getMetrics(mBuffer);
+
+                    Log.d("Sample Player Values", x[0] + ", " +x[1] + ", "+ x[2] + ", " +x[3]);
+                    DmxPacket result = new DmxPacket(defaultPacket);
+                    result.setRed((byte) x[0]);
+                    result.setGreen((byte) x[1]);
+                    result.setBlue((byte) x[2]);
+                    result.setBrightness((byte) x[3]);
+
+                    try {
+                        dmxPackets.put(result);
+                    } catch (InterruptedException e) {
+                        System.out.println("broke here");
+                    }
+                    new SendDmxPacket().execute();
                     // TODO(nfaralli): use the write method that takes a ByteBuffer as argument.
                     //we can write/read  here
                     mAudioTrack.write(mBuffer, 0, mBuffer.length);
@@ -136,6 +183,22 @@ class SamplePlayer {
             }
         };
         mPlayThread.start();
+    }
+
+    private class SendDmxPacket extends AsyncTask<Void, Void, Void> {
+
+        protected Void doInBackground(Void... packet) {
+            try {
+                //   Log.d("sndDmxPacket", "Sending DmxPacket ");
+                byte[] bytes = dmxPackets.take().buildDmxPacket();
+                //  Log.d("sndDmxPacket", "values = " + bytes[4] + " " + bytes[5] + " " + bytes[6] + " " + bytes[7]);
+                DatagramPacket udpSendPacket = new DatagramPacket(bytes, bytes.length, inetAddress, 6454);
+                socket.send(udpSendPacket);
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+            return null;
+        }
     }
 
     public void pause() {
