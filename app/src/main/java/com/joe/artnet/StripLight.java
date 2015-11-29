@@ -22,10 +22,11 @@ public class StripLight implements DmxLight {
         channels[channel] = value;
     }
     public byte getBrightness() {
-        throw new UnsupportedOperationException();
+        //throw new UnsupportedOperationException();
+        return 0;
     }
     public void setBrightness(byte value) {
-        throw new UnsupportedOperationException();
+      //  throw new UnsupportedOperationException();
     }
     public byte getRed() {
         return channels[1];

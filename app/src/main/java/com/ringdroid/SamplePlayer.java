@@ -53,7 +53,7 @@ class SamplePlayer {
     private OnCompletionListener mListener;
     //DMX packet stuff
     private DatagramSocket socket;
-    private  DmxPacket defaultPacket= new DmxPacket();
+    private  DmxPacket defaultPacket;
     private BlockingQueue<DmxPacket> dmxPackets = new LinkedBlockingQueue<>();
     private BlockingQueue<ShortWrapper> raw = new LinkedBlockingQueue<>();
     private InetAddress inetAddress;
@@ -66,6 +66,7 @@ class SamplePlayer {
         mPlaybackStart = 0;
 
         //TODO: this feels hacky
+        defaultPacket = new DmxPacket();
         SimpleDmxLight light = new SimpleDmxLight();
         defaultPacket.addLight(light);
 
@@ -163,7 +164,7 @@ class SamplePlayer {
                     // Computations here
                     float[] x = MusicAlgorithm.getMetrics(mBuffer);
 
-                    Log.d("Sample Player Values", x[0] + ", " +x[1] + ", "+ x[2] + ", " +x[3]);
+                    Log.e("Sample Player Values", x[0] + ", " +x[1] + ", "+ x[2] + ", " +x[3]);
                     DmxPacket result = new DmxPacket(defaultPacket);
                     result.setRed((byte) x[0]);
                     result.setGreen((byte) x[1]);
@@ -191,7 +192,7 @@ class SamplePlayer {
             try {
                 //   Log.d("sndDmxPacket", "Sending DmxPacket ");
                 byte[] bytes = dmxPackets.take().buildDmxPacket();
-                //  Log.d("sndDmxPacket", "values = " + bytes[4] + " " + bytes[5] + " " + bytes[6] + " " + bytes[7]);
+                Log.e("sndDmxPacket", "values = " + bytes[4] + " " + bytes[5] + " " + bytes[6] + " " + bytes[7]);
                 DatagramPacket udpSendPacket = new DatagramPacket(bytes, bytes.length, inetAddress, 6454);
                 socket.send(udpSendPacket);
             } catch (Exception e) {

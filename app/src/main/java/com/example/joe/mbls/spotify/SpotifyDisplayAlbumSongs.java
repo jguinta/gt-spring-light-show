@@ -1,6 +1,5 @@
 package com.example.joe.mbls.spotify;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.MainMenu;
@@ -26,8 +24,6 @@ import java.util.HashMap;
 
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;
-import kaaes.spotify.webapi.android.models.PlaylistSimple;
-import kaaes.spotify.webapi.android.models.PlaylistTrack;
 import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.TrackSimple;
 
@@ -55,7 +51,7 @@ public class SpotifyDisplayAlbumSongs extends AppCompatActivity {
 
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
-
+        ab.setTitle(getIntent().getStringExtra("album_name"));
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
 
@@ -95,7 +91,7 @@ public class SpotifyDisplayAlbumSongs extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.spotify_go_home:
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, SpotifyMain.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

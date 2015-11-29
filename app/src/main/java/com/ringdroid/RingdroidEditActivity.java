@@ -665,8 +665,9 @@ public class RingdroidEditActivity extends Activity
                         return;
                     }
                     //TODO: Make sure DMX works(Establish Connection with Router)
-                    mPlayer.establishConnection();
+
                     mPlayer = new SamplePlayer(mSoundFile);
+                    mPlayer.establishConnection();
                 } catch (final Exception e) {
                     mProgressDialog.dismiss();
                     e.printStackTrace();

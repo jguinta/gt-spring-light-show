@@ -1,13 +1,11 @@
 package com.example.joe.mbls.spotify;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,7 +16,6 @@ import android.widget.ListView;
 import com.MainMenu;
 import com.R;
 import com.spotify.sdk.android.player.Player;
-import com.spotify.sdk.android.player.Spotify;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +23,6 @@ import java.util.HashMap;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.PlaylistSimple;
-import kaaes.spotify.webapi.android.models.SavedTrack;
 
 public class SpotifyDisplayMyPlaylists extends AppCompatActivity {
 
@@ -54,6 +50,7 @@ public class SpotifyDisplayMyPlaylists extends AppCompatActivity {
 
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
+        ab.setTitle("My Playlists");
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
         SpotifyApplication spotifyApplication = ((SpotifyApplication) getApplicationContext());
@@ -72,6 +69,7 @@ public class SpotifyDisplayMyPlaylists extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PlaylistSimple playlist = (PlaylistSimple) adapter.getItem(position);
                 Intent intent = new Intent(getApplicationContext(), SpotifyDisplayMyPlaylistSongs.class);
+                intent.putExtra("playlist_name", playlist.name);
                 intent.putExtra("playlist_owner", playlist.owner.id);
                 intent.putExtra("playlist", playlist.id);
                 startActivity(intent);
@@ -98,7 +96,7 @@ public class SpotifyDisplayMyPlaylists extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.spotify_go_home:
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, SpotifyMain.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

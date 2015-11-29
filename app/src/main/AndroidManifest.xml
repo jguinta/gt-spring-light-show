@@ -50,7 +50,7 @@
         </activity>
 
         <activity
-            android:name=".example.joe.mbls.spotify.MainActivity"
+            android:name=".example.joe.mbls.spotify.SpotifyMain"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:parentActivityName="com.MainMenu" >
@@ -58,16 +58,16 @@
         </activity>
 
         <activity android:name=".example.joe.mbls.spotify.SpotifySearchTrackActivity"
-            android:parentActivityName=".example.joe.mbls.spotify.MainActivity"
+            android:parentActivityName=".example.joe.mbls.spotify.SpotifyMain"
         />
         <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayMySongs"
-            android:parentActivityName=".example.joe.mbls.spotify.MainActivity"
+            android:parentActivityName=".example.joe.mbls.spotify.SpotifyMain"
         />
         <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayMyPlaylists"
-            android:parentActivityName=".example.joe.mbls.spotify.MainActivity"
+            android:parentActivityName=".example.joe.mbls.spotify.SpotifyMain"
         />
         <activity android:name=".example.joe.mbls.spotify.SpotifySearchArtistActivity"
-            android:parentActivityName=".example.joe.mbls.spotify.MainActivity"
+            android:parentActivityName=".example.joe.mbls.spotify.SpotifyMain"
         />
         <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayAlbums"
             android:parentActivityName=".example.joe.mbls.spotify.SpotifySearchArtistActivity"

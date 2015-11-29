@@ -14,7 +14,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#FFFF"
         android:textAllCaps="true"
-        android:textSize="30dp"
+        android:textSize="130dp"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp" />
@@ -35,13 +35,7 @@
         android:id="@+id/spotifyPlayer"
         android:layout_gravity="center_horizontal" />
 
-   <!-- <Button
-        android:drawableLeft="@drawable/ic_spotify"
-        android:layout_width="245dp"
-        android:layout_height="wrap_content"
-        android:text="Artnet"
-        android:id="@+id/artnet_connect_button"
-        android:layout_gravity="center_horizontal" />-->
+
 
 
 </LinearLayout>

@@ -44,6 +44,7 @@ public class SpotifyDisplayAlbums extends AppCompatActivity {
 
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
+        ab.setTitle("Albums by " + getIntent().getStringExtra("artist_name"));
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
 
@@ -60,7 +61,7 @@ public class SpotifyDisplayAlbums extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Album album = (Album) adapter.getItem(position);
                 Intent albumIntent = new Intent(getApplicationContext(), SpotifyDisplayAlbumSongs.class);
-
+                albumIntent.putExtra("album_name", album.name);
                 albumIntent.putExtra("album", album.id);
                 startActivity(albumIntent);
 
@@ -87,7 +88,7 @@ public class SpotifyDisplayAlbums extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.spotify_go_home:
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, SpotifyMain.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
