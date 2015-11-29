@@ -23,7 +23,7 @@ import com.spotify.sdk.android.player.PlayerNotificationCallback;
 import com.spotify.sdk.android.player.PlayerState;
 import com.spotify.sdk.android.player.PlayerStateCallback;
 
-public class MainActivity extends AppCompatActivity implements PlayerNotificationCallback {
+public class MainActivity extends AppCompatActivity implements PlayerNotificationCallback, PlayerStateCallback {
 
 
 
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements PlayerNotificatio
         });
 
         btnPlayPause = (ImageButton) findViewById(R.id.activity_now_playing_play);
-        btnPlayPause.setTag("pause");
+        btnPlayPause.setTag("play");
         btnPlayPause.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements PlayerNotificatio
             }
 
         });
+        mPlayer.getPlayerState(this);
 
         btnSkipNext = (ImageButton) findViewById(R.id.activity_now_playing_skip_next);
         btnSkipNext.setOnClickListener(new OnClickListener() {
@@ -148,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements PlayerNotificatio
 
             }
         });
+
 
         btnShuffle = (ImageButton) findViewById(R.id.activity_now_playing_shuffle);
         btnShuffle.setTag("false");
@@ -185,6 +187,13 @@ public class MainActivity extends AppCompatActivity implements PlayerNotificatio
         Log.d("MainActivity", "Playback error received: " + errorType.name());
     }
 
+    @Override
+    public void onPlayerState(PlayerState state) {
+        if (state.playing) {
+            btnPlayPause.setTag("pause");
+            btnPlayPause.setImageResource(R.drawable.pause);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
