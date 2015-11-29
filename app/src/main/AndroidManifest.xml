@@ -27,11 +27,14 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launchericon"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        >
 
         <activity
             android:name=".MainMenu"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -48,16 +51,33 @@
 
         <activity
             android:name=".example.joe.mbls.spotify.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:parentActivityName="com.MainMenu" >
 
         </activity>
 
-        <activity android:name=".example.joe.mbls.spotify.SpotifySearchTrackActivity"/>
-        <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayMySongs"/>
-        <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayMyPlaylists"/>
-        <activity android:name=".example.joe.mbls.spotify.SpotifySearchArtistActivity"/>
-        <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayAlbums"/>
-        <activity android:name=".example.joe.mbls.spotify.SpotifyDisplaySongs"/>
+        <activity android:name=".example.joe.mbls.spotify.SpotifySearchTrackActivity"
+            android:parentActivityName=".example.joe.mbls.spotify.MainActivity"
+        />
+        <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayMySongs"
+            android:parentActivityName=".example.joe.mbls.spotify.MainActivity"
+        />
+        <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayMyPlaylists"
+            android:parentActivityName=".example.joe.mbls.spotify.MainActivity"
+        />
+        <activity android:name=".example.joe.mbls.spotify.SpotifySearchArtistActivity"
+            android:parentActivityName=".example.joe.mbls.spotify.MainActivity"
+        />
+        <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayAlbums"
+            android:parentActivityName=".example.joe.mbls.spotify.SpotifySearchArtistActivity"
+        />
+        <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayAlbumSongs"
+            android:parentActivityName=".example.joe.mbls.spotify.SpotifyDisplayAlbums"
+        />
+        <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayMyPlaylistSongs"
+            android:parentActivityName=".example.joe.mbls.spotify.SpotifyDisplayMyPlaylists"
+        />
         <activity android:name=".joe.artnet.ConnectReceiverActivity"/>
 
 
