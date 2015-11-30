@@ -1,8 +1,13 @@
 package com.example.joe.mbls.spotify;
 
 import android.app.Application;
+import android.provider.ContactsContract;
 
 import com.spotify.sdk.android.player.Player;
+
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -15,6 +20,8 @@ public class SpotifyApplication extends Application {
     private SpotifyService spotifyService = null;
     private Player mPlayer  = null;
     private String userId  = null;
+    private DatagramSocket socket;
+    private InetAddress inetAddress;
 
     public void setSpotifyService(SpotifyService spotifyService) {
         this.spotifyService = spotifyService;
@@ -41,4 +48,23 @@ public class SpotifyApplication extends Application {
         return userId;
     }
 
+    public void establishConnection() {
+        try {
+
+            socket = new DatagramSocket(null);
+            socket.setReuseAddress(true);
+            socket.bind(new InetSocketAddress(6454));
+            inetAddress = InetAddress.getByName("255.255.255.255");
+        } catch (Exception e) {
+            System.out.print(e);
+        }
+    }
+
+    public DatagramSocket getSocket() {
+        return socket;
+    }
+
+    public InetAddress getInetAddress() {
+        return inetAddress;
+    }
 }

@@ -172,7 +172,8 @@ class SamplePlayer {
                         mSamples.get(mBuffer, 0, numSamplesLeft);
                     }
                     // Computations here
-                    float[] x = MusicAlgorithm.getMetrics(mBuffer);
+                    float avg = MusicAlgorithm.getAverage(mBuffer);
+                    float[] x = MusicAlgorithm.getColorsAndOpacity(avg);
                     Log.e("Sample Player Values", x[0] + ", " + x[1] + ", " + x[2] + ", " + x[3]);
                     DmxPacket result = new DmxPacket(defaultPacket);
                     result.setRed((byte) x[0]);

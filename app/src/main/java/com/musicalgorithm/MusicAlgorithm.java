@@ -1,13 +1,19 @@
 package com.musicalgorithm;
 
-import android.util.Log;
+
+
+import java.util.Random;
 
 /**
  * Created by yvinogradov on 11/4/2015.
  */
 public class MusicAlgorithm {
+    static int X = 0;
+    static int Y = 0;
+    static Random randomGenerator = new Random();
 
-    public static float[] getMetrics(short[] inputStream) {
+
+    public static float getAverage(short[] inputStream) {
         float[] mag = new float[inputStream.length / 2];
         float average = 0f;
         int j = 0;
@@ -17,32 +23,11 @@ public class MusicAlgorithm {
             j++;
         }
         average /= mag.length;
-        float[] metrics = getColorsAndOpacity(average);
+        return average;
+    }
 
-        return metrics;
-    }/*
 
-    public static float[] getMetrics(short[] inputStream) {
-        int lastBeat = 0;
-        double bpm;
-        float[] mag = new float[inputStream.length / 2];
-        float average = 0f;
-        int j = 0;
-        for (int i = 0; i < inputStream.length - 1; i += 2) {
-            mag[j] = (float) (Math.abs(inputStream[i]) + Math.abs(inputStream[i + 1])) / 2;
-            if((j > 0) && (mag[j] - mag[j - 1]) > 8000) {
-                bpm = 60 / ((double) ((j - lastBeat) / 44100));
-                lastBeat = j;
-                Log.e("MUSICALGORITHM", "Last beat was sample " + lastBeat + " and bpm is " + bpm);
-            }
-            average += mag[j];
-            j++;
-        }
-        average /= mag.length;
-        float[] metrics = getColorsAndOpacity(average);
 
-        return metrics;
-    }*/
 
     public static float[] getColorsAndOpacity(float amplitude) {
         float[] colors = new float[5];
@@ -120,6 +105,48 @@ public class MusicAlgorithm {
         colors[3] = colors[3] > 128 ? colors[3] : amplitude / 16000 * 128;//too hacky bubble it up if it works better
         return colors;
 
+    }
+
+    public static int[] getAxis(float amplitude) {
+        int[] axis = new int[2];
+
+        if (amplitude > 15000) {
+
+            int scale = (int) ((amplitude / 16000) * 25);
+
+            int randomInt = randomGenerator.nextInt(4);
+            if (randomInt == 0) {
+                X += scale;
+                Y += scale;
+            } else if (randomInt == 1) {
+                X += scale;
+                Y -= scale;
+            } else if (randomInt == 2) {
+                X -= scale;
+                Y += scale;
+            } else {
+                X -= scale;
+                Y -= scale;
+            }
+            if (X < 0)
+                X = 0;
+            if (X > 60)
+                X = 60;
+            if (Y > 120)
+                Y = 120;
+            if (Y < 70)
+                Y = 70;
+        }
+        axis[0] = X;
+        axis[1] = Y;
+
+
+        return axis;
+    }
+
+    public static void flush() {
+        X = 0;
+        Y = 0;
     }
 
 

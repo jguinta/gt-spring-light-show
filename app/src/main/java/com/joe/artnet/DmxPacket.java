@@ -98,5 +98,13 @@ public class DmxPacket {
         this.dmx = dmx;
     }
 
+    public void setAxes(int light, byte x, byte y) {
+        DmxLight movingLight = lights.get(light);
+        if (movingLight instanceof MovingHeadLight) {
+            ((MovingHeadLight) movingLight).setAxes(x, y);
+            ((MovingHeadLight) movingLight).setChannel(3, (byte) 255);
+        }
+    }
+
 
 }
