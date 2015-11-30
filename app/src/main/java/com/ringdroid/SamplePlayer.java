@@ -53,7 +53,7 @@ class SamplePlayer {
     private OnCompletionListener mListener;
     //DMX packet stuff
     private DatagramSocket socket;
-    private  DmxPacket defaultPacket;
+    private DmxPacket defaultPacket;
     private BlockingQueue<DmxPacket> dmxPackets = new LinkedBlockingQueue<>();
     private BlockingQueue<ShortWrapper> raw = new LinkedBlockingQueue<>();
     private InetAddress inetAddress;
@@ -69,6 +69,16 @@ class SamplePlayer {
         defaultPacket = new DmxPacket();
         SimpleDmxLight light = new SimpleDmxLight();
         defaultPacket.addLight(light);
+
+        try {
+
+            socket = new DatagramSocket(null);
+            socket.setReuseAddress(true);
+            socket.bind(new InetSocketAddress(6454));
+            inetAddress = InetAddress.getByName("2.10.100.254");
+        } catch (Exception e) {
+            System.out.print(e);
+        }
 
         int bufferSize = AudioTrack.getMinBufferSize(
                 mSampleRate,
@@ -92,17 +102,17 @@ class SamplePlayer {
         mAudioTrack.setNotificationMarkerPosition(mNumSamples - 1);  // Set the marker to the end.
         mAudioTrack.setPlaybackPositionUpdateListener(
                 new AudioTrack.OnPlaybackPositionUpdateListener() {
-            @Override
-            public void onPeriodicNotification(AudioTrack track) {}
+                    @Override
+                    public void onPeriodicNotification(AudioTrack track) {}
 
-            @Override
-            public void onMarkerReached(AudioTrack track) {
-                stop();
-                if (mListener != null) {
-                    mListener.onCompletion();
-                }
-            }
-        });
+                    @Override
+                    public void onMarkerReached(AudioTrack track) {
+                        stop();
+                        if (mListener != null) {
+                            mListener.onCompletion();
+                        }
+                    }
+                });
         mPlayThread = null;
         mKeepPlaying = true;
         mListener = null;
@@ -114,7 +124,7 @@ class SamplePlayer {
             socket = new DatagramSocket(null);
             socket.setReuseAddress(true);
             socket.bind(new InetSocketAddress(6454));
-            inetAddress = InetAddress.getByName("255.255.255.255");
+            inetAddress = InetAddress.getByName("2.10.100.254");//255.255.255.255
         } catch (Exception e) {
             System.out.print(e);
         }
@@ -163,18 +173,17 @@ class SamplePlayer {
                     }
                     // Computations here
                     float[] x = MusicAlgorithm.getMetrics(mBuffer);
-
-                    Log.e("Sample Player Values", x[0] + ", " +x[1] + ", "+ x[2] + ", " +x[3]);
+                    Log.e("Sample Player Values", x[0] + ", " + x[1] + ", " + x[2] + ", " + x[3]);
                     DmxPacket result = new DmxPacket(defaultPacket);
                     result.setRed((byte) x[0]);
-                    result.setGreen((byte) x[1]);
+                    result.setGreen((byte)x[1]);
                     result.setBlue((byte) x[2]);
                     result.setBrightness((byte) x[3]);
 
                     try {
                         dmxPackets.put(result);
                     } catch (InterruptedException e) {
-                        System.out.println("broke here");
+                        Log.e("broke here","player");
                     }
                     new SendDmxPacket().execute();
                     // TODO(nfaralli): use the write method that takes a ByteBuffer as argument.
@@ -192,7 +201,8 @@ class SamplePlayer {
             try {
                 //   Log.d("sndDmxPacket", "Sending DmxPacket ");
                 byte[] bytes = dmxPackets.take().buildDmxPacket();
-                Log.e("sndDmxPacket", "values = " + bytes[4] + " " + bytes[5] + " " + bytes[6] + " " + bytes[7]);
+                inetAddress =  InetAddress.getByName("255.255.255.255");
+                Log.e("Player, Send DMX", "values = " + bytes[4] + " " + bytes[5] + " " + bytes[6] + " " + bytes[7]);
                 DatagramPacket udpSendPacket = new DatagramPacket(bytes, bytes.length, inetAddress, 6454);
                 socket.send(udpSendPacket);
             } catch (Exception e) {
