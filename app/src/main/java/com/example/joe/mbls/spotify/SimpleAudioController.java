@@ -39,21 +39,13 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
 
     private int framesProcessed = 0;
 
-    public SimpleAudioController(DmxPacket dmxPacket) {
+    public SimpleAudioController(DmxPacket dmxPacket, DatagramSocket socket, InetAddress inetAddress) {
         this.defaultPacket = dmxPacket;
+        this.socket = socket;
+        this.inetAddress = inetAddress;
     }
 
-    public void establishConnection() {
-        try {
 
-            socket = new DatagramSocket(null);
-            socket.setReuseAddress(true);
-            socket.bind(new InetSocketAddress(6454));
-            inetAddress = InetAddress.getByName("255.255.255.255");
-        } catch (Exception e) {
-            System.out.print(e);
-        }
-    }
 
     @Override
     public void start() {
@@ -110,6 +102,7 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
                 mAudioTrack = null;
             }
         }
+        MusicAlgorithm.flush();
         mAudioBuffer.clear();
         dmxPackets.clear();
         notifyThreadResume();
@@ -196,15 +189,18 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
                 }
             }
             final int itemsRead = mAudioBuffer.peek(pendingFrames);
-            if (itemsRead != 0 && itemsRead != 4096) Log.d("SAC", "ITEMS READ: " + itemsRead);
             if (itemsRead > 0) {
-                float[] x = MusicAlgorithm.getMetrics(pendingFrames);
+                float avg = MusicAlgorithm.getAverage(pendingFrames);
+                float[] colors = MusicAlgorithm.getColorsAndOpacity(avg);
+                int[] axes = MusicAlgorithm.getAxis(avg);
 
                 DmxPacket result = new DmxPacket(defaultPacket);
-                result.setRed((byte) x[0]);
-                result.setGreen((byte) x[1]);
-                result.setBlue((byte) x[2]);
-                result.setBrightness((byte) x[3]);
+                result.setRed((byte) colors[0]);
+                result.setGreen((byte) colors[1]);
+                result.setBlue((byte) colors[2]);
+                result.setBrightness((byte) colors[3]);
+                result.setAxes(2, (byte) axes[0], (byte) axes[1]);
+               // result.setChannelValue(11, (byte) 50);
                 try {
                    dmxPackets.put(result);
                } catch (Exception e) {
@@ -219,7 +215,7 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
         }
     }
 
-    private class AnalysisThread extends Thread {
+   /* private class AnalysisThread extends Thread {
 
 
         @Override
@@ -244,7 +240,7 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
                 }
             }
         }
-    }
+    }*/
 
     private class SendDmxPacket extends AsyncTask<Void, Void, Void> {
 

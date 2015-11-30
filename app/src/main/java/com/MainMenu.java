@@ -13,6 +13,7 @@ import com.example.joe.mbls.spotify.SimpleAudioController;
 import com.example.joe.mbls.spotify.SpotifyApplication;
 import com.example.joe.mbls.spotify.SpotifyMain;
 import com.joe.artnet.DmxPacket;
+import com.joe.artnet.MovingHeadLight;
 import com.joe.artnet.ShortWrapper;
 import com.joe.artnet.SimpleDmxLight;
 import com.joe.artnet.StripLight;
@@ -56,28 +57,15 @@ public class MainMenu extends Activity implements
     private static final int REQUEST_CODE = 1337;
 
 
-    private DatagramSocket socket;
-    private  DmxPacket defaultPacket;
-    private BlockingQueue<DmxPacket> dmxPackets = new LinkedBlockingQueue<>();
-    private BlockingQueue<ShortWrapper> raw = new LinkedBlockingQueue<>();
-    private InetAddress inetAddress;
 
-    public void establishConnection() {
-        try {
-
-            socket = new DatagramSocket(null);
-            socket.setReuseAddress(true);
-            socket.bind(new InetSocketAddress(6454));
-            inetAddress = InetAddress.getByName("255.255.255.255");
-        } catch (Exception e) {
-            System.out.print(e);
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
+
+        SpotifyApplication spotifyApplication = (SpotifyApplication) getApplication();
+        spotifyApplication.establishConnection();
 
         Button spotifyPlayer = (Button) findViewById(R.id.spotifyPlayer);
 
@@ -104,29 +92,19 @@ public class MainMenu extends Activity implements
         });
 
 
-        establishConnection();
 
-        //float[] x = MusicAlgorithm.getMetrics(mBuffer);
-        defaultPacket=new DmxPacket();
-        SimpleDmxLight light = new SimpleDmxLight();
-        defaultPacket.addLight(light);
-        //Log.e("Sample Player Values", x[0] + ", " + x[1] + ", " + x[2] + ", " + x[3]);
-        DmxPacket result = new DmxPacket(defaultPacket);
-        result.setRed((byte) 150);
-        result.setGreen((byte) 0);
-        result.setBlue((byte) 0);
-        result.setBrightness((byte) 255);
-        try {
-            dmxPackets.put(result);
-        } catch (InterruptedException e) {
-            System.out.println("broke here");
-        }
-        new SendDmxPacket().execute();
 
         Button googlePlayer = (Button) findViewById(R.id.googlePlayer);
         googlePlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SpotifyApplication spotifyApplication = ((SpotifyApplication)getApplicationContext());
+                if (mPlayer != null) {
+                    mPlayer.shutdownNow();
+                    mPlayer = null;
+                    spotifyApplication.setPlayer(null);
+                }
+
                 startActivity(new Intent(getApplicationContext(), RingdroidSelectActivity.class));
             }
         });
@@ -158,9 +136,12 @@ public class MainMenu extends Activity implements
                 StripLight stripLight = new StripLight();
                 dmxPacket.addLight(stripLight);
 
+                MovingHeadLight movingHeadLight = new MovingHeadLight();
+                dmxPacket.addLight(movingHeadLight);
 
-                SimpleAudioController audioController = new SimpleAudioController(dmxPacket);
-                audioController.establishConnection();
+
+                SimpleAudioController audioController = new SimpleAudioController(dmxPacket,
+                        spotifyApplication.getSocket(), spotifyApplication.getInetAddress());
                 Player.Builder builder = new Player.Builder(playerConfig);
                 builder.setAudioController(audioController);
 
@@ -192,21 +173,6 @@ public class MainMenu extends Activity implements
     }
 
 
-    private class SendDmxPacket extends AsyncTask<Void, Void, Void> {
-
-        protected Void doInBackground(Void... packet) {
-            try {
-                //   Log.d("sndDmxPacket", "Sending DmxPacket ");
-                byte[] bytes = dmxPackets.take().buildDmxPacket();
-                Log.e("sndDmxPacket", "values = " + bytes[4] + " " + bytes[5] + " " + bytes[6] + " " + bytes[7]);
-                DatagramPacket udpSendPacket = new DatagramPacket(bytes, bytes.length, inetAddress, 6454);
-                socket.send(udpSendPacket);
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-            return null;
-        }
-    }
 
     @Override
     public void onLoggedIn() {
