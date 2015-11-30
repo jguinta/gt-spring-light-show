@@ -59,8 +59,8 @@ import java.io.StringWriter;
  * start / end text boxes, and handles all of the buttons and controls.
  */
 public class RingdroidEditActivity extends Activity
-    implements MarkerView.MarkerListener,
-               WaveformView.WaveformListener
+        implements MarkerView.MarkerListener,
+        WaveformView.WaveformListener
 {
     private long mLoadingLastUpdateTime;
     private boolean mLoadingKeepGoing;
@@ -278,19 +278,19 @@ public class RingdroidEditActivity extends Activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.action_save:
-            onSave();
-            return true;
-        case R.id.action_reset:
-            resetPositions();
-            mOffsetGoal = 0;
-            updateDisplay();
-            return true;
-        case R.id.action_about:
-            onAbout(this);
-            return true;
-        default:
-            return false;
+            case R.id.action_save:
+                onSave();
+                return true;
+            case R.id.action_reset:
+                resetPositions();
+                mOffsetGoal = 0;
+                updateDisplay();
+                return true;
+            case R.id.action_about:
+                onAbout(this);
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -344,9 +344,9 @@ public class RingdroidEditActivity extends Activity
         if (elapsedMsec < 300) {
             if (mIsPlaying) {
                 int seekMsec = mWaveformView.pixelsToMillisecs(
-                    (int)(mTouchStart + mOffset));
+                        (int)(mTouchStart + mOffset));
                 if (seekMsec >= mPlayStartMsec &&
-                    seekMsec < mPlayEndMsec) {
+                        seekMsec < mPlayEndMsec) {
                     mPlayer.seekTo(seekMsec);
                 } else {
                     handlePause();
@@ -492,10 +492,10 @@ public class RingdroidEditActivity extends Activity
         // response to a touch event, we want to receive the touch
         // event too before updating the display.
         mHandler.postDelayed(new Runnable() {
-                public void run() {
-                    updateDisplay();
-                }
-            }, 100);
+            public void run() {
+                updateDisplay();
+            }
+        }, 100);
     }
 
     //
@@ -512,11 +512,11 @@ public class RingdroidEditActivity extends Activity
             versionName = "unknown";
         }
         new AlertDialog.Builder(activity)
-            .setTitle(R.string.about_title)
-            .setMessage(activity.getString(R.string.about_text, versionName))
-            .setPositiveButton(R.string.alert_ok_button, null)
-            .setCancelable(false)
-            .show();
+                .setTitle(R.string.about_title)
+                .setMessage(activity.getString(R.string.about_text, versionName))
+                .setPositiveButton(R.string.alert_ok_button, null)
+                .setCancelable(false)
+                .show();
     }
 
     //
@@ -597,7 +597,7 @@ public class RingdroidEditActivity extends Activity
         mFile = new File(mFilename);
 
         SongMetadataReader metadataReader = new SongMetadataReader(
-            this, mFilename);
+                this, mFilename);
         mTitle = metadataReader.mTitle;
         mArtist = metadataReader.mArtist;
 
@@ -615,26 +615,26 @@ public class RingdroidEditActivity extends Activity
         mProgressDialog.setTitle(R.string.progress_dialog_loading);
         mProgressDialog.setCancelable(true);
         mProgressDialog.setOnCancelListener(
-            new DialogInterface.OnCancelListener() {
-                public void onCancel(DialogInterface dialog) {
-                    mLoadingKeepGoing = false;
-                    mFinishActivity = true;
-                }
-            });
+                new DialogInterface.OnCancelListener() {
+                    public void onCancel(DialogInterface dialog) {
+                        mLoadingKeepGoing = false;
+                        mFinishActivity = true;
+                    }
+                });
         mProgressDialog.show();
 
         final SoundFile.ProgressListener listener =
-            new SoundFile.ProgressListener() {
-                public boolean reportProgress(double fractionComplete) {
-                    long now = getCurrentTime();
-                    if (now - mLoadingLastUpdateTime > 100) {
-                        mProgressDialog.setProgress(
-                                (int) (mProgressDialog.getMax() * fractionComplete));
-                        mLoadingLastUpdateTime = now;
+                new SoundFile.ProgressListener() {
+                    public boolean reportProgress(double fractionComplete) {
+                        long now = getCurrentTime();
+                        if (now - mLoadingLastUpdateTime > 100) {
+                            mProgressDialog.setProgress(
+                                    (int) (mProgressDialog.getMax() * fractionComplete));
+                            mLoadingLastUpdateTime = now;
+                        }
+                        return mLoadingKeepGoing;
                     }
-                    return mLoadingKeepGoing;
-                }
-            };
+                };
 
         // Load the sound file in a background thread
         mLoadSoundFileThread = new Thread() {
@@ -649,11 +649,11 @@ public class RingdroidEditActivity extends Activity
                         String err;
                         if (components.length < 2) {
                             err = getResources().getString(
-                                R.string.no_extension_error);
+                                    R.string.no_extension_error);
                         } else {
                             err = getResources().getString(
-                                R.string.bad_extension_error) + " " +
-                                components[components.length - 1];
+                                    R.string.bad_extension_error) + " " +
+                                    components[components.length - 1];
                         }
                         final String finalErr = err;
                         Runnable runnable = new Runnable() {
@@ -667,7 +667,7 @@ public class RingdroidEditActivity extends Activity
                     //TODO: Make sure DMX works(Establish Connection with Router)
 
                     mPlayer = new SamplePlayer(mSoundFile);
-                    mPlayer.establishConnection();
+
                 } catch (final Exception e) {
                     mProgressDialog.dismiss();
                     e.printStackTrace();
@@ -714,20 +714,20 @@ public class RingdroidEditActivity extends Activity
         adBuilder.setTitle(getResources().getText(R.string.progress_dialog_recording));
         adBuilder.setCancelable(true);
         adBuilder.setNegativeButton(
-            getResources().getText(R.string.progress_dialog_cancel),
-            new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    mRecordingKeepGoing = false;
-                    mFinishActivity = true;
-                }
-            });
+                getResources().getText(R.string.progress_dialog_cancel),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mRecordingKeepGoing = false;
+                        mFinishActivity = true;
+                    }
+                });
         adBuilder.setPositiveButton(
-            getResources().getText(R.string.progress_dialog_stop),
-            new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    mRecordingKeepGoing = false;
-                }
-            });
+                getResources().getText(R.string.progress_dialog_stop),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mRecordingKeepGoing = false;
+                    }
+                });
         // TODO(nfaralli): try to use a FrameLayout and pass it to the following inflate call.
         // Using null, android:layout_width etc. may not work (hence text is at the top of view).
         // On the other hand, if the text is big enough, this is good enough.
@@ -736,24 +736,24 @@ public class RingdroidEditActivity extends Activity
         mTimerTextView = (TextView)mAlertDialog.findViewById(R.id.record_audio_timer);
 
         final SoundFile.ProgressListener listener =
-            new SoundFile.ProgressListener() {
-                public boolean reportProgress(double elapsedTime) {
-                    long now = getCurrentTime();
-                    if (now - mRecordingLastUpdateTime > 5) {
-                        mRecordingTime = elapsedTime;
-                        // Only UI thread can update Views such as TextViews.
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                int min = (int)(mRecordingTime/60);
-                                float sec = (float)(mRecordingTime - 60 * min);
-                                mTimerTextView.setText(String.format("%d:%05.2f", min, sec));
-                            }
-                        });
-                        mRecordingLastUpdateTime = now;
+                new SoundFile.ProgressListener() {
+                    public boolean reportProgress(double elapsedTime) {
+                        long now = getCurrentTime();
+                        if (now - mRecordingLastUpdateTime > 5) {
+                            mRecordingTime = elapsedTime;
+                            // Only UI thread can update Views such as TextViews.
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+                                    int min = (int)(mRecordingTime/60);
+                                    float sec = (float)(mRecordingTime - 60 * min);
+                                    mTimerTextView.setText(String.format("%d:%05.2f", min, sec));
+                                }
+                            });
+                            mRecordingLastUpdateTime = now;
+                        }
+                        return mRecordingKeepGoing;
                     }
-                    return mRecordingKeepGoing;
-                }
-            };
+                };
 
         // Record the audio stream in a background thread
         mRecordAudioThread = new Thread() {
@@ -765,8 +765,8 @@ public class RingdroidEditActivity extends Activity
                         Runnable runnable = new Runnable() {
                             public void run() {
                                 showFinalAlert(
-                                    new Exception(),
-                                    getResources().getText(R.string.record_error)
+                                        new Exception(),
+                                        getResources().getText(R.string.record_error)
                                 );
                             }
                         };
@@ -826,11 +826,11 @@ public class RingdroidEditActivity extends Activity
             mEndPos = mMaxPos;
 
         mCaption =
-            mSoundFile.getFiletype() + ", " +
-            mSoundFile.getSampleRate() + " Hz, " +
-            mSoundFile.getAvgBitrateKbps() + " kbps, " +
-            formatTime(mMaxPos) + " " +
-            getResources().getString(R.string.time_seconds);
+                mSoundFile.getFiletype() + ", " +
+                        mSoundFile.getSampleRate() + " Hz, " +
+                        mSoundFile.getAvgBitrateKbps() + " kbps, " +
+                        formatTime(mMaxPos) + " " +
+                        getResources().getString(R.string.time_seconds);
         //mInfo.setText(mCaption);
 
         updateDisplay();
@@ -959,9 +959,9 @@ public class RingdroidEditActivity extends Activity
     }
 
     private Runnable mTimerRunnable = new Runnable() {
-            public void run() {
-                // Updating an EditText is slow on Android.  Make sure
-                // we only do the update if the text has actually changed.
+        public void run() {
+            // Updating an EditText is slow on Android.  Make sure
+            // we only do the update if the text has actually changed.
                /* if (mStartPos != mLastDisplayedStartPos &&
                    !mStartText.hasFocus()) {
                     mStartText.setText(formatTime(mStartPos));
@@ -974,9 +974,9 @@ public class RingdroidEditActivity extends Activity
                     mLastDisplayedEndPos = mEndPos;
                 }
                 */
-                mHandler.postDelayed(mTimerRunnable, 100);
-            }
-        };
+            mHandler.postDelayed(mTimerRunnable, 100);
+        }
+    };
 
     private void enableDisableButtons() {
         if (mIsPlaying) {
@@ -1085,12 +1085,12 @@ public class RingdroidEditActivity extends Activity
             /*if (startPosition < mStartPos) {
                 mPlayEndMsec = mWaveformView.pixelsToMillisecs(mStartPos);
             } else if (startPosition > mEndPos) {*/
-                mPlayEndMsec = mWaveformView.pixelsToMillisecs(mMaxPos);
+            mPlayEndMsec = mWaveformView.pixelsToMillisecs(mMaxPos);
             /*} else {
                 mPlayEndMsec = mWaveformView.pixelsToMillisecs(mEndPos);
             }*/
             //TODO: figure out which one works
-            mPlayer.establishConnection();
+
             mPlayer.setOnCompletionListener(new SamplePlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion() {
@@ -1129,18 +1129,18 @@ public class RingdroidEditActivity extends Activity
         }
 
         new AlertDialog.Builder(RingdroidEditActivity.this)
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(
-                R.string.alert_ok_button,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int whichButton) {
-                        finish();
-                    }
-                })
-            .setCancelable(false)
-            .show();
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(
+                        R.string.alert_ok_button,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int whichButton) {
+                                finish();
+                            }
+                        })
+                .setCancelable(false)
+                .show();
     }
 
     private void showFinalAlert(Exception e, int messageResourceId) {
@@ -1154,21 +1154,21 @@ public class RingdroidEditActivity extends Activity
             externalRootDir += "/";
         }
         switch(mNewFileKind) {
-        default:
-        case FileSaveDialog.FILE_KIND_MUSIC:
-            // TODO(nfaralli): can directly use Environment.getExternalStoragePublicDirectory(
-            // Environment.DIRECTORY_MUSIC).getPath() instead
-            subdir = "media/audio/music/";
-            break;
-        case FileSaveDialog.FILE_KIND_ALARM:
-            subdir = "media/audio/alarms/";
-            break;
-        case FileSaveDialog.FILE_KIND_NOTIFICATION:
-            subdir = "media/audio/notifications/";
-            break;
-        case FileSaveDialog.FILE_KIND_RINGTONE:
-            subdir = "media/audio/ringtones/";
-            break;
+            default:
+            case FileSaveDialog.FILE_KIND_MUSIC:
+                // TODO(nfaralli): can directly use Environment.getExternalStoragePublicDirectory(
+                // Environment.DIRECTORY_MUSIC).getPath() instead
+                subdir = "media/audio/music/";
+                break;
+            case FileSaveDialog.FILE_KIND_ALARM:
+                subdir = "media/audio/alarms/";
+                break;
+            case FileSaveDialog.FILE_KIND_NOTIFICATION:
+                subdir = "media/audio/notifications/";
+                break;
+            case FileSaveDialog.FILE_KIND_RINGTONE:
+                subdir = "media/audio/ringtones/";
+                break;
         }
         String parentdir = externalRootDir + subdir;
 
@@ -1311,15 +1311,15 @@ public class RingdroidEditActivity extends Activity
                 // Try to load the new file to make sure it worked
                 try {
                     final SoundFile.ProgressListener listener =
-                        new SoundFile.ProgressListener() {
-                            public boolean reportProgress(double frac) {
-                                // Do nothing - we're not going to try to
-                                // estimate when reloading a saved sound
-                                // since it's usually fast, but hard to
-                                // estimate anyway.
-                                return true;  // Keep going
-                            }
-                        };
+                            new SoundFile.ProgressListener() {
+                                public boolean reportProgress(double frac) {
+                                    // Do nothing - we're not going to try to
+                                    // estimate when reloading a saved sound
+                                    // since it's usually fast, but hard to
+                                    // estimate anyway.
+                                    return true;  // Keep going
+                                }
+                            };
                     SoundFile.create(outPath, listener);
                 } catch (final Exception e) {
                     mProgressDialog.dismiss();
@@ -1344,12 +1344,12 @@ public class RingdroidEditActivity extends Activity
 
                 final String finalOutPath = outPath;
                 Runnable runnable = new Runnable() {
-                        public void run() {
-                            afterSavingRingtone(title,
-                                                finalOutPath,
-                                                duration);
-                        }
-                    };
+                    public void run() {
+                        afterSavingRingtone(title,
+                                finalOutPath,
+                                duration);
+                    }
+                };
                 mHandler.post(runnable);
             }
         };
@@ -1364,11 +1364,11 @@ public class RingdroidEditActivity extends Activity
         if (fileSize <= 512) {
             outFile.delete();
             new AlertDialog.Builder(this)
-                .setTitle(R.string.alert_title_failure)
-                .setMessage(R.string.too_small_error)
-                .setPositiveButton(R.string.alert_ok_button, null)
-                .setCancelable(false)
-                .show();
+                    .setTitle(R.string.alert_title_failure)
+                    .setMessage(R.string.too_small_error)
+                    .setPositiveButton(R.string.alert_ok_button, null)
+                    .setCancelable(false)
+                    .show();
             return;
         }
 
@@ -1395,13 +1395,13 @@ public class RingdroidEditActivity extends Activity
         values.put(MediaStore.Audio.Media.DURATION, duration);
 
         values.put(MediaStore.Audio.Media.IS_RINGTONE,
-                   mNewFileKind == FileSaveDialog.FILE_KIND_RINGTONE);
+                mNewFileKind == FileSaveDialog.FILE_KIND_RINGTONE);
         values.put(MediaStore.Audio.Media.IS_NOTIFICATION,
-                   mNewFileKind == FileSaveDialog.FILE_KIND_NOTIFICATION);
+                mNewFileKind == FileSaveDialog.FILE_KIND_NOTIFICATION);
         values.put(MediaStore.Audio.Media.IS_ALARM,
-                   mNewFileKind == FileSaveDialog.FILE_KIND_ALARM);
+                mNewFileKind == FileSaveDialog.FILE_KIND_ALARM);
         values.put(MediaStore.Audio.Media.IS_MUSIC,
-                   mNewFileKind == FileSaveDialog.FILE_KIND_MUSIC);
+                mNewFileKind == FileSaveDialog.FILE_KIND_MUSIC);
 
         // Insert it into the database
         Uri uri = MediaStore.Audio.Media.getContentUriForPath(outPath);
@@ -1417,11 +1417,11 @@ public class RingdroidEditActivity extends Activity
         // There's nothing more to do with music or an alarm.  Show a
         // success message and then quit.
         if (mNewFileKind == FileSaveDialog.FILE_KIND_MUSIC ||
-            mNewFileKind == FileSaveDialog.FILE_KIND_ALARM) {
+                mNewFileKind == FileSaveDialog.FILE_KIND_ALARM) {
             Toast.makeText(this,
-                           R.string.save_success_message,
-                           Toast.LENGTH_SHORT)
-                .show();
+                    R.string.save_success_message,
+                    Toast.LENGTH_SHORT)
+                    .show();
             finish();
             return;
         }
@@ -1430,28 +1430,28 @@ public class RingdroidEditActivity extends Activity
         // this their default notification.  If they say no, we're finished.
         if (mNewFileKind == FileSaveDialog.FILE_KIND_NOTIFICATION) {
             new AlertDialog.Builder(RingdroidEditActivity.this)
-                .setTitle(R.string.alert_title_success)
-                .setMessage(R.string.set_default_notification)
-                .setPositiveButton(R.string.alert_yes_button,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,
-                                            int whichButton) {
-                            RingtoneManager.setActualDefaultRingtoneUri(
-                                RingdroidEditActivity.this,
-                                RingtoneManager.TYPE_NOTIFICATION,
-                                newUri);
-                            finish();
-                        }
-                    })
-                .setNegativeButton(
-                    R.string.alert_no_button,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            finish();
-                        }
-                    })
-                .setCancelable(false)
-                .show();
+                    .setTitle(R.string.alert_title_success)
+                    .setMessage(R.string.set_default_notification)
+                    .setPositiveButton(R.string.alert_yes_button,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton) {
+                                    RingtoneManager.setActualDefaultRingtoneUri(
+                                            RingdroidEditActivity.this,
+                                            RingtoneManager.TYPE_NOTIFICATION,
+                                            newUri);
+                                    finish();
+                                }
+                            })
+                    .setNegativeButton(
+                            R.string.alert_no_button,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    finish();
+                                }
+                            })
+                    .setCancelable(false)
+                    .show();
             return;
         }
 
@@ -1460,19 +1460,19 @@ public class RingdroidEditActivity extends Activity
         // contact, or do nothing.
 
         final Handler handler = new Handler() {
-                public void handleMessage(Message response) {
-                    int actionId = response.arg1;
-                    switch (actionId) {
+            public void handleMessage(Message response) {
+                int actionId = response.arg1;
+                switch (actionId) {
                     case R.id.button_make_default:
                         RingtoneManager.setActualDefaultRingtoneUri(
-                            RingdroidEditActivity.this,
-                            RingtoneManager.TYPE_RINGTONE,
-                            newUri);
+                                RingdroidEditActivity.this,
+                                RingtoneManager.TYPE_RINGTONE,
+                                newUri);
                         Toast.makeText(
-                            RingdroidEditActivity.this,
-                            R.string.default_ringtone_success_message,
-                            Toast.LENGTH_SHORT)
-                            .show();
+                                RingdroidEditActivity.this,
+                                R.string.default_ringtone_success_message,
+                                Toast.LENGTH_SHORT)
+                                .show();
                         finish();
                         break;
                     case R.id.button_choose_contact:
@@ -1482,12 +1482,12 @@ public class RingdroidEditActivity extends Activity
                     case R.id.button_do_nothing:
                         finish();
                         break;
-                    }
                 }
-            };
+            }
+        };
         Message message = Message.obtain(handler);
         AfterSaveActionDialog dlog = new AfterSaveActionDialog(
-            this, message);
+                this, message);
         dlog.show();
     }
 
@@ -1495,8 +1495,8 @@ public class RingdroidEditActivity extends Activity
         try {
             Intent intent = new Intent(Intent.ACTION_EDIT, uri);
             intent.setClassName(
-                "com.ringdroid",
-                "com.ringdroid.ChooseContactActivity");
+                    "com.ringdroid",
+                    "com.ringdroid.ChooseContactActivity");
             startActivityForResult(intent, REQUEST_CODE_CHOOSE_CONTACT);
         } catch (Exception e) {
             Log.e("Ringdroid", "Couldn't open Choose Contact window");
@@ -1509,83 +1509,83 @@ public class RingdroidEditActivity extends Activity
         }
 
         final Handler handler = new Handler() {
-                public void handleMessage(Message response) {
-                    CharSequence newTitle = (CharSequence)response.obj;
-                    mNewFileKind = response.arg1;
-                    saveRingtone(newTitle);
-                }
-            };
+            public void handleMessage(Message response) {
+                CharSequence newTitle = (CharSequence)response.obj;
+                mNewFileKind = response.arg1;
+                saveRingtone(newTitle);
+            }
+        };
         Message message = Message.obtain(handler);
         FileSaveDialog dlog = new FileSaveDialog(
-            this, getResources(), mTitle, message);
+                this, getResources(), mTitle, message);
         dlog.show();
     }
 
     private OnClickListener mPlayListener = new OnClickListener() {
-            public void onClick(View sender) {
-                onPlay(mStartPos);
-            }
-        };
+        public void onClick(View sender) {
+            onPlay(mStartPos);
+        }
+    };
 
     private OnClickListener mRewindListener = new OnClickListener() {
-            public void onClick(View sender) {
-                if (mIsPlaying) {
-                    int newPos = mPlayer.getCurrentPosition() - 5000;
-                    if (newPos < mPlayStartMsec)
-                        newPos = mPlayStartMsec;
-                    mPlayer.seekTo(newPos);
-                } else {
+        public void onClick(View sender) {
+            if (mIsPlaying) {
+                int newPos = mPlayer.getCurrentPosition() - 5000;
+                if (newPos < mPlayStartMsec)
+                    newPos = mPlayStartMsec;
+                mPlayer.seekTo(newPos);
+            } else {
                     /*mStartMarker.requestFocus();
                     markerFocus(mStartMarker);*/
-                }
             }
-        };
+        }
+    };
 
     private OnClickListener mFfwdListener = new OnClickListener() {
-            public void onClick(View sender) {
-                if (mIsPlaying) {
-                    int newPos = 5000 + mPlayer.getCurrentPosition();
-                    if (newPos > mPlayEndMsec)
-                        newPos = mPlayEndMsec;
-                    mPlayer.seekTo(newPos);
-                } else {
+        public void onClick(View sender) {
+            if (mIsPlaying) {
+                int newPos = 5000 + mPlayer.getCurrentPosition();
+                if (newPos > mPlayEndMsec)
+                    newPos = mPlayEndMsec;
+                mPlayer.seekTo(newPos);
+            } else {
                     /*mEndMarker.requestFocus();
                     markerFocus(mEndMarker);*/
-                }
             }
-        };
+        }
+    };
 
     private OnClickListener mMarkStartListener = new OnClickListener() {
-            public void onClick(View sender) {
-                if (mIsPlaying) {
-                    mStartPos = mWaveformView.millisecsToPixels(
+        public void onClick(View sender) {
+            if (mIsPlaying) {
+                mStartPos = mWaveformView.millisecsToPixels(
                         mPlayer.getCurrentPosition());
-                    updateDisplay();
-                }
+                updateDisplay();
             }
-        };
+        }
+    };
 
     private OnClickListener mMarkEndListener = new OnClickListener() {
-            public void onClick(View sender) {
-                if (mIsPlaying) {
-                    mEndPos = mWaveformView.millisecsToPixels(
+        public void onClick(View sender) {
+            if (mIsPlaying) {
+                mEndPos = mWaveformView.millisecsToPixels(
                         mPlayer.getCurrentPosition());
-                    updateDisplay();
-                    handlePause();
-                }
+                updateDisplay();
+                handlePause();
             }
-        };
+        }
+    };
 
     private TextWatcher mTextWatcher = new TextWatcher() {
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
+        public void beforeTextChanged(CharSequence s, int start,
+                                      int count, int after) {
+        }
 
-            public void onTextChanged(CharSequence s,
-                                      int start, int before, int count) {
-            }
+        public void onTextChanged(CharSequence s,
+                                  int start, int before, int count) {
+        }
 
-            public void afterTextChanged(Editable s) {
+        public void afterTextChanged(Editable s) {
                 /*if (mStartText.hasFocus()) {
                     try {
                         mStartPos = mWaveformView.secondsToPixels(
@@ -1604,8 +1604,8 @@ public class RingdroidEditActivity extends Activity
                     } catch (NumberFormatException e) {
                     }
                 }*/
-            }
-        };
+        }
+    };
 
     private long getCurrentTime() {
         return System.nanoTime() / 1000000;
