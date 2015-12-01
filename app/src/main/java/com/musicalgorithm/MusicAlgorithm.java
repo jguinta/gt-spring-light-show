@@ -46,28 +46,28 @@ public class MusicAlgorithm {
             colors[2] = amplitude / 2000 * 94;
         } else if (amplitude <= 3000) {
             colors[0] = 0;
-            colors[1] = 94 * amplitude/3000;
+            colors[1] = 94 * amplitude / 3000;
             colors[2] = 2 * amplitude / 3000;
         } else if (amplitude <= 4000) {
-            colors[0] = 255 * amplitude/4000;
+            colors[0] = 255 * amplitude / 4000;
             colors[1] = 105 * amplitude / 4000;
             colors[2] = 252 * amplitude / 4000;
         } else if (amplitude <= 5000) {
-            colors[0] = 112 * amplitude/ 5000 ;
+            colors[0] = 112 * amplitude / 5000 ;
             colors[1] = 94 * amplitude / 5000;
-            colors[2] = 255 *amplitude/5000;
+            colors[2] = 255 *amplitude / 5000;
         } else if (amplitude <= 6000) {
             colors[0] = 105 * amplitude / 6000;
             colors[1] = 255 * amplitude / 6000;
             colors[2] = 110 * amplitude / 6000;
         } else if (amplitude <= 7000) {
-            colors[0] = 151 * amplitude / 7000;
-            colors[1] =140*amplitude/7000;
-            colors[2] = 255 * amplitude/7000;
+            colors[0] = 185 * amplitude / 7000;
+            colors[1] = 140 * amplitude/7000;
+            colors[2] = 180 * amplitude/7000;
         } else if (amplitude <= 8000) {
-            colors[0] = 159 * amplitude / 8000;
-            colors[1] = 255 * amplitude / 8000;
-            colors[2] =140 * amplitude/8000;
+            colors[0] = 150 * amplitude / 8000;
+            colors[1] = 100 * amplitude / 8000;
+            colors[2] =  100 * amplitude/8000;
         } else if (amplitude <= 9000) {
             colors[0] = 246 * amplitude/9000;
             colors[1] = 255 *amplitude/9000;
@@ -92,14 +92,30 @@ public class MusicAlgorithm {
             colors[0] = 255 * amplitude / 14000;
             colors[1] = 228 * amplitude / 14000;
             colors[2] = 140 * amplitude / 14000;
-        } /*else if (amplitude <= 15000) {
+        } else if (amplitude <= 15000) {
             colors[0] = 255 * amplitude / 15000;
             colors[1] = 140 * amplitude / 15000;
-            colors[2] = 140 * amplitude/15000;
-        } */else {
-            colors[0] = 255;
-            colors[1] = 255;
-            colors[2] = 255;
+            colors[2] = 140 * amplitude / 15000;
+        } else {
+            int r = randomGenerator.nextInt(4);
+            if (r == 1) {
+                colors[0] = 255 * amplitude/11000;
+                colors[1] = 4 * amplitude/11000;
+                colors[2] = 0;
+            } else if (r == 2) {
+                colors[0] = 255 * amplitude/12000;
+                colors[1] = 102 * amplitude/12000;
+                colors[2] = 102 * amplitude/12000;
+            } else if (r == 3) {
+                colors[0] = 255 * amplitude / 15000;
+                colors[1] = 140 * amplitude / 15000;
+                colors[2] = 140 * amplitude/15000;
+            } else {
+                colors[0] = 255;
+                colors[1] = 255;
+                colors[2] = 255;
+            }
+
             colors[3] = (127 + (amplitude / 16000) * 128) > 255 ? 255 : (127 + (amplitude / 16000) * 128);
         }
         colors[3] = colors[3] > 128 ? colors[3] : amplitude / 16000 * 128;//too hacky bubble it up if it works better

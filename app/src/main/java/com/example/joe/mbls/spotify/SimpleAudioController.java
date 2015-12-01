@@ -156,8 +156,6 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
         synchronized (mMutex) {
             mAudioTrack = new AudioTrack(type, rate, outChannel, size, length,
                     AudioTrack.MODE_STREAM);
-            mAudioTrack.setPositionNotificationPeriod(4096);
-            mAudioTrack.setPlaybackPositionUpdateListener(this);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mAudioTrack.setVolume(AudioTrack.getMaxVolume());
             } else {
@@ -177,7 +175,7 @@ public final class SimpleAudioController implements AudioController, AudioTrack.
 
 
     private void pfxThread() {
-        final short[] pendingFrames = new short[4096];
+        final short[] pendingFrames = new short[2048];
         while (mActive) {
             synchronized (this) {
                 while (mSuspended) {

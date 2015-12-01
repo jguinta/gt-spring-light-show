@@ -25,6 +25,7 @@ import android.util.Log;
 import com.joe.artnet.DmxPacket;
 import com.joe.artnet.ShortWrapper;
 import com.joe.artnet.SimpleDmxLight;
+import com.joe.artnet.StripLight;
 import com.musicalgorithm.MusicAlgorithm;
 import com.ringdroid.soundfile.SoundFile;
 
@@ -69,6 +70,9 @@ class SamplePlayer {
         defaultPacket = new DmxPacket();
         SimpleDmxLight light = new SimpleDmxLight();
         defaultPacket.addLight(light);
+
+        StripLight stripLight = new StripLight();
+        defaultPacket.addLight(stripLight);
 
         try {
 
