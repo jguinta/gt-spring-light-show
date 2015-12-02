@@ -68,9 +68,11 @@
         />
         <activity android:name=".example.joe.mbls.spotify.SpotifySearchArtistActivity"
             android:parentActivityName=".example.joe.mbls.spotify.SpotifyMain"
+            android:launchMode="singleTop"
         />
         <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayAlbums"
             android:parentActivityName=".example.joe.mbls.spotify.SpotifySearchArtistActivity"
+            android:launchMode="singleTop"
         />
         <activity android:name=".example.joe.mbls.spotify.SpotifyDisplayAlbumSongs"
             android:parentActivityName=".example.joe.mbls.spotify.SpotifyDisplayAlbums"
@@ -83,7 +85,7 @@
 
 
 
-        <activity android:name=".ringdroid.RingdroidSelectActivity"
+        <activity android:name="com.ringdroid.RingdroidSelectActivity"
             android:label="@string/main_activity_label">
             <intent-filter>
                 <action android:name="android.intent.action.GET_CONTENT" />
@@ -98,7 +100,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ringdroid.RingdroidEditActivity"
+        <activity android:name="com.ringdroid.RingdroidEditActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="adjustResize"
             android:hardwareAccelerated="true">
@@ -109,7 +111,7 @@
         </activity>
 
         <!-- Activity for choosing a contact to assign a ringtone to. -->
-        <activity android:name=".ringdroid.ChooseContactActivity"
+        <activity android:name="com.ringdroid.ChooseContactActivity"
             android:configChanges="orientation|keyboardHidden">
         </activity>
 
