@@ -19,7 +19,6 @@ package com.ringdroid;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.LoaderManager;
-import android.content.ComponentName;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -517,7 +516,7 @@ public class RingdroidSelectActivity
         try {
             Intent intent = new Intent(Intent.ACTION_EDIT, Uri.parse(filename));
             intent.putExtra("was_get_content_intent", mWasGetContentIntent);
-            intent.setComponent(new ComponentName("com.ringdroid", "com.ringdroid.RingdroidEditActivity"));
+            intent.setClassName( "com.ringdroid", "com.ringdroid.RingdroidEditActivity");
             startActivityForResult(intent, REQUEST_CODE_EDIT);
         } catch (Exception e) {
             Log.e("Ringdroid", "Couldn't start editor");

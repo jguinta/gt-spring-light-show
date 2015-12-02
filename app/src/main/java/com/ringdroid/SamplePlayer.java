@@ -92,7 +92,7 @@ class SamplePlayer {
         if (bufferSize < mChannels * mSampleRate * 2) {
             bufferSize = mChannels * mSampleRate * 2;
         }
-        mBuffer = new short[4096]; // bufferSize is in Bytes.
+        mBuffer = new short[2048]; // bufferSize is in Bytes.
         mAudioTrack = new AudioTrack(
                 AudioManager.STREAM_MUSIC,
                 mSampleRate,
