@@ -26,6 +26,8 @@ Currently we support WiFi and Ad-hoc mode (Note: WF 310 DMX receiver needs to be
 #### Ad-hoc mode(no internet required)
   Mobile device connects directly to the WF 310 receiver. Only local player is supported in this mode, as Spotify requires Wi-Fi conncetion
   
+![WF 310 setup screenshot](https://scontent-iad3-1.xx.fbcdn.net/hphotos-xpa1/v/t34.0-12/12080775_10205167397160661_2021509336_n.jpg?oh=6000722b17cf59308eb15d6c687f4174&oe=566A0270)
+  
 ##  Setup WF 310:
 1. Install Wi-Fi manager from cd that comes with the recevier.
 2. Connect receiver to your PC via USB.
