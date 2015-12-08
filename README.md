@@ -45,7 +45,7 @@ Currently we support WiFi and Ad-hoc mode (Note: WF 310 DMX receiver needs to be
       1. Connect your mobile device to the WF 310 receiver directly, it should show up as WF310 in your mobile wi-fi manager.
       2. Play your favorite music via Local Player and enjoy the light show!
 
-Videos with setup and demonstration will be here shortly!!!      
-  
+Click on image below, for video with setup and demonstration.
+[![image alt text](http://www.swisswinefestival.org/images/lightshow2.jpg)](https://www.youtube.com/watch?v=ejyIAlnloN8)
   
 
