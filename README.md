@@ -26,9 +26,25 @@ Currently we support WiFi and Ad-hoc mode (Note: WF 310 DMX receiver needs to be
 #### Ad-hoc mode(no internet required)
   Mobile device connects directly to the WF 310 receiver. Only local player is supported in this mode, as Spotify requires Wi-Fi conncetion
   
-  
-Videos for how to  setup the receiver and the lights to come.......
-  
+##  Setup WF 310:
+1. Install Wi-Fi manager from cd that comes with the recevier.
+2. Connect receiver to your PC via USB.
+3. Open Wi-Fi manager wait for a few seconds to let your PC recognize the receiver.
+4. Select mode you would like receiver to work in: Wi-Fi or Ad-hoc. (If you selected Wi-Fi select desired network you want your receiver to be on.)
+5. Save your settings, and wait for a few seconds to let receiver store your settings.
+6. Restart the receiver by disconnecting the power source for 5 seconds.
+7. Connect your receiver to the amplifier that is connected to the light fixtures.
+
+
+## Connect to the receiver 
+####    Wi-Fi Mode
+        1. Connect your mobile device to the same network as the receiver.
+        2. Choose Spotify or Local Player.
+        3. Play your favorite music and enjoy the light show!
+####    Ad-hoc
+        1. Connect your mobile device to the WF 310 receiver directly, it should show up as WF310 in your mobile wi-fi manager.
+        2. Play your favorite music via Local Player and enjoy the light show!
+        
   
   
 
